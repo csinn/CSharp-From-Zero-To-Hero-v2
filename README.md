@@ -1,7 +1,5 @@
 # From Zero To Hero
 
-## C#: From Zero To Hero
-
 ## The vision
 
 "Programming is hard". Yes, but not harder than running a marathon for a person who has never run. It's not harder than 
