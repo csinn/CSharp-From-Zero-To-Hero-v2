@@ -27,20 +27,15 @@ namespace Homework1.Models
         {
             var ret = new Person();
 
-            Console.WriteLine("Please enter a Persons's first name: ");
-            ret.FirstName = Console.ReadLine();
+            ret.FirstName = GetFromConsole("first name");
 
-            Console.WriteLine("Please enter a Persons's last name: ");
-            ret.LastName = Console.ReadLine();
+            ret.LastName = GetFromConsole("last name");
 
-            Console.WriteLine("Please enter a Persons's age: ");
-            ret.Age = uint.Parse(Console.ReadLine());
+            ret.Age = uint.Parse(GetFromConsole("age"));
 
-            Console.WriteLine("Please enter a Persons's weight (in kg): ");
-            ret.Weight = double.Parse(Console.ReadLine());
+            ret.Weight = double.Parse(GetFromConsole("weight", "kg"));
 
-            Console.WriteLine("Please enter a Persons's height (in cm): ");
-            ret.Height = double.Parse(Console.ReadLine());
+            ret.Height = double.Parse(GetFromConsole("height", "cm"));
 
             return ret;
         }
@@ -71,5 +66,11 @@ namespace Homework1.Models
         }
 
         #endregion Public Methods
+
+        static string GetFromConsole(string property, string unit = default)
+        {
+            Console.WriteLine($"Enter a person's {property}{(unit is default(string) ? ": " : $" (in {unit}): ")}");
+            return Console.ReadLine();
+        }
     }
 }
