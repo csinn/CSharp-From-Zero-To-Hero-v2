@@ -26,6 +26,10 @@ Join us and find answers to questions that bother you: [C# Inn on Discord](https
 
 More theoretical lesson material can be found in the [boot camp wiki](https://github.com/csinn/CSharp-From-Zero-To-Hero-v2/wiki).
 
+#### Homework & Questions
+
+Every lesson wiki ends with a homework and questions section.
+
 ### Checklist
 
 Before you start, make sure you have the following:
