@@ -24,7 +24,7 @@ Join us and find answers to questions that bother you: [C# Inn on Discord](https
 
 ### Wiki
 
-More theoretical lesson material can be found in the [boot camp wiki](https://github.com/csinn/CSharp-From-Zero-To-Hero-v2/wiki).
+Lesson theory can be found in the [boot camp wiki](https://github.com/csinn/CSharp-From-Zero-To-Hero-v2/wiki).
 
 #### Homework & Questions
 
