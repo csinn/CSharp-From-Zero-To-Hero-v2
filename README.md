@@ -22,4 +22,4 @@ Live lessons start at **6PM UTC, Sunday**. 2h for giving material as we make a p
 There is a helpful community with thousands of members to help you learn and answer your questions. 
 Join us and find answers to questions that bother you: [C# Inn on Discord](https://discord.gg/rCMKcUU) 
 
-![Boot Camp Banner](Res/kaisi_banner.png)
+![Boot Camp Banner](res/kaisi_banner.png)
