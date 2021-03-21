@@ -15,11 +15,20 @@ and you will not be left alone.
 ### YouTube
 
 Live lessons are streamed and uploaded on [YouTube channel: Full Stack Boot Camp: From Zero To Hero](https://www.youtube.com/watch?v=Onfuqjn8h0w&list=PLbwOopTjJke49hTBrmz8ayxQj_Zro4zrg&ab_channel=Kaisinel).
-Live lessons start at **6PM UTC, Sunday**. 2h for giving material as we make a project and then 1h is for consultations on voice chat.
+Live lessons start at **6PM UTC, Sunday**: 2h live-coding and then 1h consultations on voice chat.
 
 ### Discord
 
 There is a helpful community with thousands of members to help you learn and answer your questions. 
-Join us and find answers to questions that bother you: [C# Inn on Discord](https://discord.gg/rCMKcUU) 
+Join us and find answers to questions that bother you: [C# Inn on Discord](https://discord.gg/rCMKcUU)
 
-![Boot Camp Banner](Res/kaisi_banner.png)
+### Checklist
+
+Before you start, make sure you have the following:
+[Visual Studio Community Edition]( https://visualstudio.microsoft.com/vs/community/) with the configuration from below (numbers are for each month features. F stands for future- as in maybe we will use it).
+Also git: https://git-scm.com/downloads
+And account on GitHub: https://github.com/
+
+![Required Setup](res/Required-Setup.png)
+___
+![Boot Camp Banner](res/kaisi_banner.png)
