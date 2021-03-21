@@ -43,34 +43,41 @@ namespace Homework1.Models
         public double CalcBMI()
         {
             return Weight / Math.Pow(Height / 100, 2);
-        }  
-        
-        public void WriteBMI()
-        {
-            Console.WriteLine($"{FirstName}'s BMI is {CalcBMI():f2}."); 
         }
 
         public override string ToString()
         {
-            string pronoun = Gender switch
+            return
+                $"{FirstName} {LastName} is {Age} years old, " +
+                $"{GetPronoun()} weight is {Weight} kg and " +
+                $"{GetPronoun()} height is {Height} cm.";
+        }
+
+        public void WriteBMI()
+        {
+            Console.WriteLine($"{FirstName}'s BMI is {CalcBMI():f2}.");
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static string GetFromConsole(string property, string unit = default)
+        {
+            Console.WriteLine($"Enter a person's {property}{(unit is default(string) ? ": " : $" (in {unit}): ")}");
+            return Console.ReadLine();
+        }
+
+        private string GetPronoun()
+        {
+            return Gender switch
             {
                 Gender.Male => "his",
                 Gender.Female => "her",
                 _ => "their",
             };
-
-            return
-                $"{FirstName} {LastName} is {Age} years old, " +
-                $"{pronoun} weight is {Weight} kg and " +
-                $"{pronoun} height is {Height} cm.";
         }
 
-        #endregion Public Methods
-
-        static string GetFromConsole(string property, string unit = default)
-        {
-            Console.WriteLine($"Enter a person's {property}{(unit is default(string) ? ": " : $" (in {unit}): ")}");
-            return Console.ReadLine();
-        }
+        #endregion Private Methods
     }
 }
