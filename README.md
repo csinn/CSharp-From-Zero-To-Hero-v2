@@ -25,9 +25,9 @@ Join us and find answers to questions that bother you: [C# Inn on Discord](https
 ### Checklist
 
 Before you start, make sure you have the following:
-[Visual Studio Community Edition]( https://visualstudio.microsoft.com/vs/community/) with the configuration from below (numbers are for each month features. F stands for future- as in maybe we will use it).
-Also git: https://git-scm.com/downloads
-And account on GitHub: https://github.com/
+- [Visual Studio Community Edition]( https://visualstudio.microsoft.com/vs/community/) with the configuration from below (numbers are for each month features. F stands for future- as in maybe we will use it).
+- Git: https://git-scm.com/downloads
+- Account on GitHub: https://github.com/
 
 ![Required Setup](res/Required-Setup.png)
 ___
