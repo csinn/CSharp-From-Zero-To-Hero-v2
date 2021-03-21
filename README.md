@@ -22,6 +22,10 @@ Live lessons start at **6PM UTC, Sunday**: 2h live-coding and then 1h consultati
 There is a helpful community with thousands of members to help you learn and answer your questions. 
 Join us and find answers to questions that bother you: [C# Inn on Discord](https://discord.gg/rCMKcUU)
 
+### Wiki
+
+More theoretical lesson material can be found in the [boot camp wiki](https://github.com/csinn/CSharp-From-Zero-To-Hero-v2/wiki).
+
 ### Checklist
 
 Before you start, make sure you have the following:
