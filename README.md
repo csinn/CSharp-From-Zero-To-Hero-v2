@@ -31,4 +31,5 @@ Before you start, make sure you have the following:
 
 ![Required Setup](res/Required-Setup.png)
 ___
+Never stop fighting, trying. Fail, rise and succeed.
 ![Boot Camp Banner](res/kaisi_banner.png)
