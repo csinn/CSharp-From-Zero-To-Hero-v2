@@ -26,30 +26,30 @@ namespace BmiCalculator
 
         private static void PrintBmi()
         {
-            GetPersonsData(out string personsName, out int personsAge, 
-                out double personsWeight, out double personsHeight);
+            GetPersonData(out string personName, out int personAge, 
+                out double personWeight, out double personHeight);
 
-            double bmiResult = CalculateBmi(personsWeight, personsHeight);
+            double bmiResult = CalculateBmi(personWeight, personHeight);
 
             Console.WriteLine(
-                $"{personsName} is {personsAge}, his weight is {personsWeight} kg and his height is {personsHeight} cm.");
+                $"{personName} is {personAge}, his weight is {personWeight} kg and his height is {personHeight} cm.");
             Console.WriteLine($"His Body Mass Index is {bmiResult:F1}");
         }
 
-        private static void GetPersonsData(out string personsName, out int personsAge, 
-            out double personsWeight, out double personsHeight)
+        private static void GetPersonData(out string personName, out int personAge, 
+            out double personWeight, out double personHeight)
         {
             const string messageNameRequest = "Input the persons name: ";
-            personsName = PromptString(messageNameRequest);
+            personName = PromptString(messageNameRequest);
 
             const string messageAgeRequest = "Input the persons age: ";
-            personsAge = PromptInt(messageAgeRequest);
+            personAge = PromptInt(messageAgeRequest);
 
             const string messageWeightRequest = "Input the persons weight: ";
-            personsWeight = PromptDouble(messageWeightRequest);
+            personWeight = PromptDouble(messageWeightRequest);
 
             const string messageHeightRequest = "Input the persons height:";
-            personsHeight = PromptDouble(messageHeightRequest);
+            personHeight = PromptDouble(messageHeightRequest);
         }
 
         private static string PromptString(string message)
