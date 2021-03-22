@@ -48,7 +48,7 @@ namespace BmiCalculator
             const string messageWeightRequest = "Input the persons weight: ";
             personWeight = PromptDouble(messageWeightRequest);
 
-            const string messageHeightRequest = "Input the persons height:";
+            const string messageHeightRequest = "Input the persons height: ";
             personHeight = PromptDouble(messageHeightRequest);
         }
 
