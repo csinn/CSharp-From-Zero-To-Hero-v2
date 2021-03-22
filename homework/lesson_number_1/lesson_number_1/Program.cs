@@ -15,12 +15,20 @@ namespace lesson_number_1
 
         static void Main(string[] args)
         {
-            var person1 = ReadStatsFromConsole(1);
-            CalculateBMI(person1);
-            Console.WriteLine("");
+            var personCount = GetPersonCount();
 
-            var person2 = ReadStatsFromConsole(2);
-            CalculateBMI(person2);
+            for (int i = 0; i < personCount; i++)
+            {
+                var person = ReadStatsFromConsole(i + 1);
+                CalculateBMI(person);
+            }
+        }
+
+        static int GetPersonCount()
+        {
+            Console.WriteLine("How many people's BMI would you like to calculate");
+            var personCount = Convert.ToInt32(Console.ReadLine());
+            return personCount;
         }
 
         static Person ReadStatsFromConsole(int personNumber)
@@ -32,19 +40,15 @@ namespace lesson_number_1
             var surname = Console.ReadLine();
 
             Console.WriteLine($"What is the age of person {personNumber}: ");
-            var ageString = Console.ReadLine();
+            var age = int.Parse(Console.ReadLine());
 
             Console.WriteLine($"What is the weight (in KG) of person {personNumber}: ");
-            var weightString = Console.ReadLine();
+            var weight = float.Parse(Console.ReadLine());
 
             Console.WriteLine($"What is the height of person {personNumber}: ");
-            var heightString = Console.ReadLine();
+            var height= float.Parse(Console.ReadLine());
 
-            Console.WriteLine($"{name} {surname} is {ageString} years old, their weight is {weightString} kg and their height is {heightString} cm");
-
-            int age = int.Parse(ageString);
-            float weight = float.Parse(weightString);
-            float height = float.Parse(heightString);
+            Console.WriteLine($"{name} {surname} is {age} years old, their weight is {weight} kg and their height is {height} cm");
 
             Person person = new Person(name, surname, age, weight, height);
 
