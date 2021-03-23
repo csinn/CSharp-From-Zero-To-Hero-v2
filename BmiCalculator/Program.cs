@@ -26,18 +26,18 @@ namespace BmiCalculator
 
         private static void PrintBmi()
         {
-            GetPersonData(out string personName, out int personAge, 
-                out double personWeight, out double personHeight);
+            GetPersonData(out string personName, out SmallNumber personAge, 
+                out SmallNumber personWeight, out SmallNumber personHeight);
 
-            double bmiResult = CalculateBmi(personWeight, personHeight);
+            SmallNumber bmiResult = CalculateBmi(personWeight, personHeight);
 
             Console.WriteLine(
                 $"{personName} is {personAge}, his weight is {personWeight} kg and his height is {personHeight} cm.");
-            Console.WriteLine($"His Body Mass Index is {bmiResult:F1}");
+            Console.WriteLine($"His Body Mass Index is {bmiResult}");
         }
 
-        private static void GetPersonData(out string personName, out int personAge, 
-            out double personWeight, out double personHeight)
+        private static void GetPersonData(out string personName, out SmallNumber personAge, 
+            out SmallNumber personWeight, out SmallNumber personHeight)
         {
             const string messageNameRequest = "Input the persons name: ";
             personName = PromptString(messageNameRequest);
@@ -54,7 +54,6 @@ namespace BmiCalculator
 
         private static string PromptString(string message)
         {
-
             string userInput;
             do
             {
@@ -65,24 +64,24 @@ namespace BmiCalculator
             return userInput;
         }
 
-        private static int PromptInt(string message)
+        private static SmallNumber PromptInt(string message)
         {
-            int output;
+            SmallNumber output;
             do
             {
                 Console.Write(message);
-            } while (!int.TryParse(Console.ReadLine(), out output));
+            } while (!SmallNumber.TryParse(Console.ReadLine(), out output));
 
             return output;
         }
 
-        private static double PromptDouble(string message)
+        private static SmallNumber PromptDouble(string message)
         {
-            double output;
+            SmallNumber output;
             do
             {
                 Console.Write(message);
-            } while (!double.TryParse(Console.ReadLine(), out output));
+            } while (!SmallNumber.TryParse(Console.ReadLine(), out output));
 
             return output;
         }
@@ -95,10 +94,10 @@ namespace BmiCalculator
             return pressedKey == requiredKey;
         }
 
-        private static double CalculateBmi(double weight, double height)
+        private static SmallNumber CalculateBmi(SmallNumber weight, SmallNumber height)
         {
-            double heightInMeters = height / 100.0;
-            double output = weight / Math.Pow(heightInMeters, 2);
+            SmallNumber heightInMeters = height / 100;
+            SmallNumber output = weight / (heightInMeters * heightInMeters);
 
             return output;
         }
