@@ -1,17 +1,22 @@
 using System;
+using System.Globalization;
 
 namespace BmiCalculator
 {
-    public struct SmallNumber : IEquatable<SmallNumber>
+    public readonly struct SmallNumber : IEquatable<SmallNumber>
     {
         private const int NumberOfDecimals = 2;
         private readonly double _value;
-
+        
+        private const double LowerLimit = 0;
+        private const double UpperLimit = 9000;
+        
         private SmallNumber(double value)
         {
-            if (value >= 9000 || value <= 0)
+            
+            if (value < LowerLimit || value >= UpperLimit)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), "values allowed between 0 and 9000");
+                throw new ArgumentOutOfRangeException(nameof(value), "power level allowed in 0-9000 range");
             }
             _value = Math.Round(value, NumberOfDecimals);
         }
@@ -27,7 +32,7 @@ namespace BmiCalculator
 
             try
             {
-                output = double.Parse(input);
+                output = new SmallNumber(double.Parse(input));
                 return true;
             }
             catch (Exception)
@@ -123,12 +128,12 @@ namespace BmiCalculator
 
         public static bool operator >(SmallNumber left, SmallNumber right)
         {
-            return left > right;
+            return (double)left > (double)right;
         }
 
         public static bool operator <(SmallNumber left, SmallNumber right)
         {
-            return left < right;
+            return (double)left < (double)right;
         }
 
         public static bool operator <=(SmallNumber left, SmallNumber right)
@@ -139,6 +144,11 @@ namespace BmiCalculator
         public static bool operator >=(SmallNumber left, SmallNumber right)
         {
             return (left > right) && (left == right);
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.CurrentCulture);
         }
     }
 }
