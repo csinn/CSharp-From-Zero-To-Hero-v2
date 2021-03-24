@@ -35,9 +35,9 @@ namespace Homework1
             } while (keepGoing);
         }
 
-        private static bool CheckIfValuesCorrect(Person person)
+        private static bool CheckIfValuesNotNull(Person person)
         {
-            if (person.Age == null || person.Height == null || person.Name == null || person.Weight == null)
+            if (person.Age == null || person.Height == null || person.Name == null | person.Weight == null)
                 {
                     return false;
                 }
@@ -55,15 +55,16 @@ namespace Homework1
             }
             catch (Exception)
             {
-                Console.WriteLine("One of value that you entered is not correct, please retry");
+                Console.WriteLine("One or more value that you entered is not a correct number, please retry");
+                Console.WriteLine("Hint: It could maybe be cause because you used \".\" instead of \",\"");
             }
 
-            if (CheckIfValuesCorrect(person))
+            if (!CheckIfValuesNotNull(person))
             {
-                return person;
+                Console.WriteLine("One or more value you entered is empty, please retry");
+                return null;
             }
-            Console.WriteLine("One of value that you entered is not correct, please retry");
-            return null;
+            return person;
         }
 
         private static string ConsoleQuestion(string valueName)
