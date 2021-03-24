@@ -46,12 +46,12 @@ namespace Homework1
 
         private static Person GettingInfos()
         {
-            Person person = new Person { Name = ConsoleQuestion("full name") };
+            Person person = new Person { Name = AskQuestion("full name") };
             try
             {
-                person.Age = short.Parse(ConsoleQuestion("age"));
-                person.Weight = double.Parse(ConsoleQuestion("weight (kg)"));
-                person.Height = double.Parse(ConsoleQuestion("height (m)"));
+                person.Age = short.Parse(AskQuestion("age"));
+                person.Weight = double.Parse(AskQuestion("weight (kg)"));
+                person.Height = double.Parse(AskQuestion("height (m)"));
             }
             catch (Exception)
             {
@@ -67,7 +67,7 @@ namespace Homework1
             return person;
         }
 
-        private static string ConsoleQuestion(string valueName)
+        private static string AskQuestion(string valueName)
         {
             Console.WriteLine($"What's your {valueName}");
             return Console.ReadLine();
