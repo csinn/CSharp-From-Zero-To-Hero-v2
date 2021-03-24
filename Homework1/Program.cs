@@ -15,29 +15,40 @@ namespace Homework1
                 Person person_ = GettingPersonInfos();
                 if (person_ == null)
                     break;
-                Console.WriteLine("Do you want to show all persons ? ( y/n )");
-                string resp = Console.ReadLine();
-                if (resp == "yes" || resp == "y")
-                {
-                    foreach (var person in Persons)
-                    {
-                        Console.WriteLine($"{person.Name} is {person.Age} years old, his/her weight is {person.Weight} kg and his/her height is {person.Height} cm.");
-                        Console.WriteLine($"Their BMI is {(decimal)person.Weight / (decimal)(person.Height * person.Height)}\n");
-                    }
-                }
-
-                Console.WriteLine("Do you want to continue? ( y/n )");
-                resp = Console.ReadLine();
-                if (resp == "no" || resp == "n")
-                {
-                    keepGoing = false;
-                }
+                AskShowingAllPersons();
+                keepGoing = AskContinue();
+                
             } while (keepGoing);
         }
 
-        private static bool CheckIfValuesNotNull(Person person)
+        public static void AskShowingAllPersons()
         {
-            if (person.Age == null || person.Height == null || person.Name == null | person.Weight == null)
+            Console.WriteLine("Do you want to show all persons ? ( y/n )");
+            string resp = Console.ReadLine();
+            if (resp == "yes" || resp == "y")
+            {
+                foreach (var person in Persons)
+                {
+                    Console.WriteLine($"{person.Name} is {person.Age} years old, his/her weight is {person.Weight} kg and his/her height is {person.Height} cm.");
+                    Console.WriteLine($"Their BMI is {(decimal)person.Weight / (decimal)(person.Height * person.Height)}\n");
+                }
+            }
+        }
+
+        public static bool AskContinue()
+        {
+            Console.WriteLine("Do you want to continue? ( y/n )");
+            string resp = Console.ReadLine();
+            if (resp == "no" || resp == "n")
+                return false;
+            else
+                return true;
+        }
+        
+
+        private static bool CheckPersonValuesCorrect(Person person)
+        {
+            if (person.Age == null || person.Height == null || string.IsNullOrEmpty(person.Name) || person.Weight == null)
                 {
                     return false;
                 }
@@ -59,7 +70,7 @@ namespace Homework1
                 Console.WriteLine("Hint: It could maybe be because you used \".\" instead of \",\"");
             }
 
-            if (!CheckIfValuesNotNull(person))
+            if (!CheckPersonValuesCorrect(person))
             {
                 Console.WriteLine("One or more value you entered is empty, please retry");
                 return null;
