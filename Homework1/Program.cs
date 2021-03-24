@@ -12,7 +12,7 @@ namespace Homework1
             bool keepGoing = true;
             do
             {
-                Person person_ = GettingInfos();
+                Person person_ = GettingPersonInfos();
                 if (person_ == null)
                     break;
                 Console.WriteLine("Do you want to show all persons ? ( y/n )");
@@ -44,7 +44,7 @@ namespace Homework1
             return true;
         }
 
-        private static Person GettingInfos()
+        private static Person GettingPersonInfos()
         {
             Person person = new Person { Name = AskQuestion("full name") };
             try
