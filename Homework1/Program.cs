@@ -56,7 +56,7 @@ namespace Homework1
             catch (Exception)
             {
                 Console.WriteLine("One or more value that you entered is not a correct number, please retry");
-                Console.WriteLine("Hint: It could maybe be cause because you used \".\" instead of \",\"");
+                Console.WriteLine("Hint: It could maybe be because you used \".\" instead of \",\"");
             }
 
             if (!CheckIfValuesNotNull(person))
