@@ -21,13 +21,10 @@ namespace Homework1
 
         private static void RequestAndReadInput()
         {
-            string personName;
-            string personSurname;
-
             Console.WriteLine("Please input name:");
-            personName = Console.ReadLine();
+            string personName = Console.ReadLine();
             Console.WriteLine("Surname:");
-            personSurname = Console.ReadLine();
+            string personSurname = Console.ReadLine();
             Console.WriteLine("Age:");
             if (!int.TryParse(Console.ReadLine(), out int personAge))
             {
