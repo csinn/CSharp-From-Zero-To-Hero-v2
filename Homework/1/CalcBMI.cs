@@ -4,7 +4,6 @@ namespace Homework1
 {
     class CalcBMI
     {
-
         /*
             Homework:
             1. Read name, surname, age, weight (in kg) and height (in cm) from console.
@@ -23,10 +22,10 @@ namespace Homework1
         static void Main(string[] args)
         {
             Console.WriteLine("Hello!\n");
-            requestAndReadInput();
+            RequestAndReadInput();
         }
 
-        private static void requestAndReadInput()
+        private static void RequestAndReadInput()
         {
             Console.WriteLine("Please input name:");
             personName = Console.ReadLine();
@@ -36,32 +35,30 @@ namespace Homework1
             if (!int.TryParse(Console.ReadLine(), out int personAge))
             {
                 Console.WriteLine("Bad value input. Try again.\n");
-                requestAndReadInput();
+                RequestAndReadInput();
                 return;
             }
             Console.WriteLine("Weight(kg):");
             if (!float.TryParse(Console.ReadLine(), out float personWeight))
             {
                 Console.WriteLine("Bad value input. Try again.\n");
-                requestAndReadInput();
+                RequestAndReadInput();
                 return;
             }
             Console.WriteLine("Height(cm):");
             if (!float.TryParse(Console.ReadLine(), out float personHeight))
             {
                 Console.WriteLine("Bad value input. Try again.\n");
-                requestAndReadInput();
+                RequestAndReadInput();
                 return;
             }
             Console.WriteLine($"{personName} {personSurname} is {personAge} years old, his weight is {personWeight} kg and his height is {personHeight} cm.\n");
-            //Console.WriteLine($"BMI is {Math.Round(personWeight / Math.Pow((personHeight/100),2),2)}");
             Console.WriteLine($"BMI is {personWeight / Math.Pow(personHeight / 100, 2):F2}");
             Console.WriteLine("Do you want to do another person? y/n");
             if (Console.ReadLine().ToLower() == "y")
             {
-                requestAndReadInput();
+                RequestAndReadInput();
             }
         }
-
     }
 }
