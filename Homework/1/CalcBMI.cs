@@ -12,13 +12,7 @@ namespace Homework1
             3. Calculate and print body-mass index (BMI)
             4. Do 1 and 2 for another person.
         */
-
-        static string personName;
-        static string personSurname;
-        static int personAge;
-        static float personWeight;
-        static float personHeight;
-
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Hello!\n");
@@ -27,6 +21,9 @@ namespace Homework1
 
         private static void RequestAndReadInput()
         {
+            string personName;
+            string personSurname;
+
             Console.WriteLine("Please input name:");
             personName = Console.ReadLine();
             Console.WriteLine("Surname:");
