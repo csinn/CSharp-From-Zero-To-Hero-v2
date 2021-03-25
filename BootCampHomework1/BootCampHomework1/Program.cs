@@ -12,6 +12,8 @@ namespace BootCampHomework1
          *
          * Calculate and print body-mass index(BMI)
          * Do 1 and 2 for another person.         
+		 *
+		 * Making a random change to test what happens :)
          */
         static void Main(string[] args)
         {
