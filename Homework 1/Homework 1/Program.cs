@@ -1,5 +1,5 @@
 ﻿using System;
-
+//program
 namespace Homework_1
 {
     class Program
