@@ -13,39 +13,40 @@ namespace BootCampHomework1
          * Calculate and print body-mass index(BMI)
          * Do 1 and 2 for another person.         
 		 *
-		 * Making a random change to test what happens :)
          */
         static void Main(string[] args)
         {
+			char continueChar = ' ';	
+				while(continueChar!='n' && continueChar!='N'){
+					string name = PromptUserInfo("name - ") ;
+					string surname = PromptUserInfo("surname - ");
+					int age = int.Parse(PromptUserInfo("age - "));
+					double weightInKg = double.Parse(PromptUserInfo("weight (kg) - "));
+					double heightInCm = double.Parse(PromptUserInfo("height (cm) - "));
+					double BMI = calculateBMI(weightInKg,heightInCm);
 
-            Console.Write("Your name - ");
-            string name = Console.ReadLine() ;
-
-            Console.Write("Your surname - ");
-            string surname = Console.ReadLine();
-
-            Console.Write("Your age - ");
-            int age = int.Parse(Console.ReadLine());
-
-            Console.Write("Your weight in kg - ");
-            string weightString = Console.ReadLine();
-            double weightInKg = double.Parse(weightString);
-
-            Console.Write("Your height in cm - ");
-            string heightString = Console.ReadLine(); 
-            double heightInCm = double.Parse(heightString);
-
-            PrintInfoForPerson(name,surname,age,weightInKg,heightInCm);
-
-            var BMI = calculateBMI(weightInKg,heightInCm);
-            Console.WriteLine($"{name}'s BMI is {BMI:F3}");
+					PrintInfoForPerson(name,surname,age,weightInKg,heightInCm);
+					PrintPersonBMI(name,BMI);
+				
+					Console.Write("Do you wish to continue (y/n) - ");
+					continueChar=Console.ReadKey().KeyChar;
+					Console.WriteLine();
+				}
         }
+		static string PromptUserInfo(string prompt){
+			Console.Write($"Please enter your {prompt}");
+			return Console.ReadLine();
+		}
 
         static void PrintInfoForPerson(string name,string surname,int age,double weightInKg,double heightInCm)
         {
             Console.WriteLine($"{name} {surname} is {age} years old, his weight is {weightInKg} kg and his height is {heightInCm} cm.");
         }
-
+		
+		static void PrintPersonBMI(string name,double BMI){
+			Console.WriteLine($"{name}'s BMI is {BMI:F3}");
+		}
+		
         static double calculateBMI(double weightInKg,double heightInCm)
         {
             return weightInKg / (heightInCm * heightInCm) * 10000;
