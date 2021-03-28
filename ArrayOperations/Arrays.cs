@@ -2,8 +2,17 @@ using System;
 
 namespace ArrayOperations
 {
+  /// <summary>
+  /// This class contain methods for array operations.
+  /// </summary>
   public static class Arrays
   {
+    /// <summary>
+    /// Sort an array using 'Bubble Sort' algorithm.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public static void Sort(int[] input)
     {
       if (input == null)
@@ -16,20 +25,26 @@ namespace ArrayOperations
         throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
       }
       
-      for (var i = input.Length - 1; i >= 0; i--)
+      for (var i = 0; i < input.Length - 1; i++)
       {
-        for (var j = 1; j <= i; j++)
+        for (var j = 0; j < input.Length - i - 1; j++)
         {
-          if (input[j - 1] <= input[j])
+          if (input[j] > input[j + 1 ])
           {
-            continue;
+            SwapElements(input, j, j + 1);
           }
-
-          SwapElements(input, j, j - 1);
         }
       }
     }
-
+    
+    /// <summary>
+    /// Swap the elements of an array.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     private static void SwapElements(int[] input, int left, int right)
     {
       if (input == null)
@@ -47,6 +62,16 @@ namespace ArrayOperations
       input[right] = temp;
     }
     
+    /// <summary>
+    /// Inserts a new element in an array at the specified position.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="number"></param>
+    /// <param name="index"></param>
+    /// <returns>A new array with it's size increased by one and a new element located at the specified index.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static int[] InsertAt(int[] input, int number, int index)
     {
       if (input == null)
@@ -81,7 +106,15 @@ namespace ArrayOperations
 
       return output;
     }
-
+    
+    /// <summary>
+    /// Inserts a new element at the beginning of the array.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="number"></param>
+    /// <returns>A new array with it's size increased by one and a new element located at the front of the array.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public static int[] InsertFirst(int[] input, int number)
     {
       if (input == null)
@@ -99,6 +132,14 @@ namespace ArrayOperations
       return output;
     }
 
+    /// <summary>
+    /// Inserts a new element at the end of the array.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="number"></param>
+    /// <returns> new array with it's size increased by one and a new element located at the end of the array.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public static int[] InsertLast(int[] input, int number)
     {
       if (input == null)
@@ -115,6 +156,15 @@ namespace ArrayOperations
       return output;
     }
     
+    /// <summary>
+    /// Removes an element from the specified index of the array.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="index"></param>
+    /// <returns>A new array with the size decreased by one and without the element found at specified index.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static int[] RemoveAt(int[] input, int index)
     {
       if (input == null)
@@ -140,7 +190,14 @@ namespace ArrayOperations
 
       return output;
     }
-
+    
+    /// <summary>
+    /// Removes the first element from the array.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns>A new array with it's size decreased by one and without the first element.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public static int[] RemoveFirst(int[] input)
     {
       if (input == null)
@@ -158,12 +215,24 @@ namespace ArrayOperations
       return output;
     }
 
+    /// <summary>
+    /// Removes the last element from the array.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns>A new array with it's size decreased by one and without the last element.</returns>
     public static int[] RemoveLast(int[] input)
     {
       var output = RemoveAt(input, input.Length - 1);
       return output;
     }
 
+    /// <summary>
+    /// Prints the elements of an array separated by an empty space.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="message"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
     public static void Print(int[] input, string message)
     {
       if (input == null)
