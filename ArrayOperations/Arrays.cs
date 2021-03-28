@@ -251,14 +251,9 @@ namespace ArrayOperations
       }
 
       Console.WriteLine(message);
-      var output = "";
-      foreach (var item in input)
-      {
-        output += item;
-        output += " ";
-      }
 
-      Console.WriteLine(output.Trim());
+      var output = string.Join(" ", input);
+      Console.WriteLine(output);
     }
   }
 }
