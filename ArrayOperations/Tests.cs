@@ -1,3 +1,5 @@
+using System;
+
 namespace ArrayOperations
 {
   public static class Demo
@@ -6,23 +8,36 @@ namespace ArrayOperations
     {
       var input = new[] {1, 3, 5, 6, 7, 10, 8, 2};
       
-      TestSort(input);
-      TestInsertFirst(input);
-      TestInsertLast(input);
-      TestRemoveFirst(input);
-      TestRemoveLast(input);
-      TestInsertAtGivenIndex(input);
-      TestRemoveAtGivenIndex(input);
+      Sort(input);
+      Pause();
+
+      InsertFirst(input);
+      Pause();
+      
+      InsertLast(input);
+      Pause();
+
+      RemoveFirst(input);
+      Pause();
+
+      RemoveLast(input);
+      Pause();
+
+      InsertAtGivenIndex(input);
+      Pause();
+
+      RemoveAtGivenIndex(input);
+      Pause();
     }
 
-    private static void TestSort(int[] input)
+    private static void Sort(int[] input)
     {
       Arrays.Print(input, "Initial array elements:");
       Arrays.Sort(input);
       Arrays.Print(input, "Array after sort operation:");
     }
 
-    private static void TestInsertFirst(int[] input)
+    private static void InsertFirst(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
 
@@ -32,7 +47,7 @@ namespace ArrayOperations
       Arrays.Print(output, $"Array elements after {numberToInsert} was inserted:");
     }
 
-    private static void TestInsertLast(int[] input)
+    private static void InsertLast(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
       
@@ -42,7 +57,7 @@ namespace ArrayOperations
       Arrays.Print(output,$"Array elements after {numberToInsert} was inserted:");
     }
 
-    private static void TestRemoveFirst(int[] input)
+    private static void RemoveFirst(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
       
@@ -50,7 +65,7 @@ namespace ArrayOperations
       Arrays.Print(output,$"Array elements after first element was removed:");
     }
 
-    private static void TestRemoveLast(int[] input)
+    private static void RemoveLast(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
       
@@ -58,7 +73,7 @@ namespace ArrayOperations
       Arrays.Print(output,$"Array elements after last element was removed:");
     }
 
-    private static void TestInsertAtGivenIndex(int[] input)
+    private static void InsertAtGivenIndex(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
       
@@ -69,13 +84,19 @@ namespace ArrayOperations
       Arrays.Print(output, $"Array elements after inserting {number} at position {index}:");
     }
 
-    private static void TestRemoveAtGivenIndex(int[] input)
+    private static void RemoveAtGivenIndex(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
       const int index = 5;
 
       var output = Arrays.RemoveAt(input, index);
       Arrays.Print(output, $"Array elements after removing element at position {index}:");
+    }
+
+    private static void Pause(string message = "Press ENTER to continue...")
+    {
+      Console.WriteLine(message);
+      Console.ReadLine();
     }
   }
 }
