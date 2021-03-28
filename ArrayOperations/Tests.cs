@@ -4,7 +4,7 @@ namespace ArrayOperations
 {
   public static class Demo
   {
-    public static void RunArrayOperations()
+    public static void Run()
     {
       var input = new[] {1, 3, 5, 6, 7, 10, 8, 2};
       
@@ -27,7 +27,7 @@ namespace ArrayOperations
       Pause();
 
       RemoveAtGivenIndex(input);
-      Pause();
+      Pause("Press ENTER to exit...");
     }
 
     private static void Sort(int[] input)

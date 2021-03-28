@@ -6,7 +6,7 @@ namespace ArrayOperations
   {
     private static void Main(string[] args)
     {
-      Demo.RunArrayOperations();
+      Demo.Run();
     }
   }
 }
