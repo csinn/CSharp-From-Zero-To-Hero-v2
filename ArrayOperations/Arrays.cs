@@ -10,9 +10,9 @@ namespace ArrayOperations
     /// <summary>
     /// Sort an array using 'Bubble Sort' algorithm.
     /// </summary>
-    /// <param name="input"></param>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="input">Source array.</param>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source array has no elements.</exception>
     public static void Sort(int[] input)
     {
       if (input == null)
@@ -40,11 +40,11 @@ namespace ArrayOperations
     /// <summary>
     /// Swap the elements of an array.
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="left"></param>
-    /// <param name="right"></param>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="input">Source array.</param>
+    /// <param name="left">Source array item.</param>
+    /// <param name="right">Destination array item.</param>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source array has no elements.</exception>
     private static void SwapElements(int[] input, int left, int right)
     {
       if (input == null)
@@ -65,13 +65,13 @@ namespace ArrayOperations
     /// <summary>
     /// Inserts a new element in an array at the specified position.
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="number"></param>
-    /// <param name="index"></param>
+    /// <param name="input">Destination array.</param>
+    /// <param name="number">Number to insert in the array.</param>
+    /// <param name="index">Position at which to insert the new number.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the specified index.</returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The destination array has no elements.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Destination index is outside the bounds of the array.</exception>
     public static int[] InsertAt(int[] input, int number, int index)
     {
       if (input == null)
@@ -110,11 +110,11 @@ namespace ArrayOperations
     /// <summary>
     /// Inserts a new element at the beginning of the array.
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="number"></param>
+    /// <param name="input">Destination array.</param>
+    /// <param name="number">The number to be inserted.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the front of the array.</returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The destination array has no elements.</exception>
     public static int[] InsertFirst(int[] input, int number)
     {
       if (input == null)
@@ -135,11 +135,11 @@ namespace ArrayOperations
     /// <summary>
     /// Inserts a new element at the end of the array.
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="number"></param>
-    /// <returns> new array with it's size increased by one and a new element located at the end of the array.</returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="input">Destination array.</param>
+    /// <param name="number">The number to be inserted.</param>
+    /// <returns>A new array with it's size increased by one and a new element located at the end of the array.</returns>
+    /// <exception cref="ArgumentNullException">The destination array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The destination array has no elements.</exception>
     public static int[] InsertLast(int[] input, int number)
     {
       if (input == null)
@@ -159,12 +159,12 @@ namespace ArrayOperations
     /// <summary>
     /// Removes an element from the specified index of the array.
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="index"></param>
+    /// <param name="input">Source array.</param>
+    /// <param name="index">The position at which we remove an element from the array.</param>
     /// <returns>A new array with the size decreased by one and without the element found at specified index.</returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source array has no elements.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Destination index is outside the bounds of the array.</exception>
     public static int[] RemoveAt(int[] input, int index)
     {
       if (input == null)
@@ -194,10 +194,10 @@ namespace ArrayOperations
     /// <summary>
     /// Removes the first element from the array.
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="input">Source array.</param>
     /// <returns>A new array with it's size decreased by one and without the first element.</returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source array has no elements.</exception>
     public static int[] RemoveFirst(int[] input)
     {
       if (input == null)
@@ -218,10 +218,22 @@ namespace ArrayOperations
     /// <summary>
     /// Removes the last element from the array.
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="input">Source array.</param>
     /// <returns>A new array with it's size decreased by one and without the last element.</returns>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source has no elements.</exception>
     public static int[] RemoveLast(int[] input)
     {
+      if (input == null)
+      {
+        throw new ArgumentNullException(nameof(input));
+      }
+
+      if (input.Length == 0)
+      {
+        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
+      }
+      
       var output = RemoveAt(input, input.Length - 1);
       return output;
     }
@@ -229,10 +241,11 @@ namespace ArrayOperations
     /// <summary>
     /// Prints the elements of an array separated by an empty space.
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="message"></param>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="input">Source array.</param>
+    /// <param name="message">Explanatory message displayed to the user.</param>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source has no elements.</exception>
+    /// <exception cref="ArgumentException">The message is null or empty.</exception>
     public static void Print(int[] input, string message)
     {
       if (input == null)
