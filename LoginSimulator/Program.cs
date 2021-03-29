@@ -26,6 +26,7 @@ namespace LoginSimulator
         Console.WriteLine(successfulLoginMessage);
       }
     }
+    
     private static string PromptString(string message, bool isKeyVisible = false)
     {
       if (string.IsNullOrWhiteSpace(message))
