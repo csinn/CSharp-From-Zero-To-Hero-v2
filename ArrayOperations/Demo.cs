@@ -10,7 +10,7 @@ namespace ArrayOperations
       
       try
       {
-        Sort(input);
+        SortArray(input);
         Pause();
         
         InsertAnElementAtBeginningOfTheArray(input);
@@ -32,14 +32,14 @@ namespace ArrayOperations
         Pause("Press ENTER to exit...");
       }
       catch (Exception ex) when (ex is ArgumentException 
-                                 || ex is ArgumentNullException 
-                                 || ex is ArgumentOutOfRangeException)
+                                 or ArgumentNullException 
+                                 or ArgumentOutOfRangeException)
       {
         Console.WriteLine(ex.Message);
       }
     }
 
-    private static void Sort(int[] input)
+    private static void SortArray(int[] input)
     {
       Arrays.Print(input, "Initial array elements:");
       Arrays.Sort(input);

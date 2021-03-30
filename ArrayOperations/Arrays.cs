@@ -243,10 +243,11 @@ namespace ArrayOperations
     /// </summary>
     /// <param name="input">Source array.</param>
     /// <param name="message">Explanatory message displayed to the user.</param>
+    /// <param name="separator"></param>
     /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
     /// <exception cref="ArgumentException">The source has no elements.</exception>
     /// <exception cref="ArgumentException">The message is null or empty.</exception>
-    public static void Print(int[] input, string message)
+    public static void Print(int[] input, string message, char separator = ' ')
     {
       if (input == null)
       {
@@ -265,7 +266,7 @@ namespace ArrayOperations
 
       Console.WriteLine(message);
 
-      var output = string.Join(" ", input);
+      var output = string.Join(separator, input);
       Console.WriteLine(output);
     }
   }
