@@ -1,16 +1,15 @@
-using System;
+﻿using System;
 
-namespace RecipeApp.Homework
+namespace BootCampV2.Homeworks
 {
     class FirstHomework
     {
-        //Entry point
-        static void Main(string[] args)
+        public FirstHomework(int amount)
         {
-            //Person 1
-            InitPerson();
-            //Person 2
-            InitPerson();
+            for(int i = 0; i < amount; i++)
+            {
+                InitPerson();
+            }
         }
 
         //Print a message and ask for an input
@@ -69,3 +68,4 @@ namespace RecipeApp.Homework
         }
 
     }
+}
