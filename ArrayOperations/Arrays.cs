@@ -7,6 +7,12 @@ namespace ArrayOperations
   /// </summary>
   public static class Arrays
   {
+    /// <summary>
+    /// Sort an array using 'Bubble Sort' algorithm.
+    /// </summary>
+    /// <param name="input">Source array.</param>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source array has no elements.</exception>
     public static int[] Sort(int[] input)
     {
       if (input == null)
