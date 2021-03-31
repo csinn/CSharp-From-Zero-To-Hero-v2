@@ -103,32 +103,7 @@ namespace ArrayOperations
       }
       return output;
     }
-    
-    /// <summary>
-    /// Swap the elements of an array.
-    /// </summary>
-    /// <param name="input">Source array.</param>
-    /// <param name="left">Source array item.</param>
-    /// <param name="right">Destination array item.</param>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source array has no elements.</exception>
-    private static void SwapElements(int[] input, int left, int right)
-    {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
-
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
-
-      var temp = input[left];
-      input[left] = input[right];
-      input[right] = temp;
-    }
-    
+ 
     /// <summary>
     /// Inserts a new element in an array at the specified position.
     /// </summary>
