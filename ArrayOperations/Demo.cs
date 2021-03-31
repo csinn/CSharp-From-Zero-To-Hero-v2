@@ -32,8 +32,8 @@ namespace ArrayOperations
         Pause("Press ENTER to exit...");
       }
       catch (Exception ex) when (ex is ArgumentException 
-                                 or ArgumentNullException 
-                                 or ArgumentOutOfRangeException)
+                                 || ex is ArgumentNullException 
+                                 || ex is ArgumentOutOfRangeException)
       {
         Console.WriteLine(ex.Message);
       }
