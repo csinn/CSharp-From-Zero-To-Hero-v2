@@ -7,13 +7,7 @@ namespace ArrayOperations
   /// </summary>
   public static class Arrays
   {
-    /// <summary>
-    /// Sort an array using 'Bubble Sort' algorithm.
-    /// </summary>
-    /// <param name="input">Source array.</param>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source array has no elements.</exception>
-    public static void Sort(int[] input)
+    public static int[] Sort(int[] input)
     {
       if (input == null)
       {
@@ -24,17 +18,90 @@ namespace ArrayOperations
       {
         throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
       }
-      
-      for (var i = 0; i < input.Length - 1; i++)
+
+      if (input.Length == 1)
       {
-        for (var j = 0; j < input.Length - i - 1; j++)
-        {
-          if (input[j] > input[j + 1 ])
+        return  input;
+      }
+
+      var midPoint = input.Length / 2;  
+      
+      var left = new int[midPoint];
+      var right = input.Length % 2 == 0 ? new int[midPoint] : new int[midPoint + 1];
+
+      for (var i = 0; i < midPoint; i++)
+      {
+        left[i] = input[i];
+      }  
+
+      var counter = 0;
+      for (var i = midPoint; i < input.Length; i++)
+      {
+        right[counter] = input[i];
+        counter++;
+      }
+      
+      left = Sort(left);
+      right = Sort(right);
+
+      var output = Merge(left, right);  
+      
+      return output;
+    }
+    
+    /// <summary>
+    /// Combine the elements of two arrays in to a new array.
+    /// </summary>
+    /// <param name="left">First source array.</param>
+    /// <param name="right">Second source array.</param>
+    /// <returns>A new array witch has the combined size and elements of both input arrays.</returns>
+    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The source array has no elements.</exception>
+    public static int[] Merge(int[] left, int[] right)
+    {
+      if (left == null) throw new ArgumentNullException(nameof(left));
+      if (right == null) throw new ArgumentNullException(nameof(right));
+      if (left.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(left));
+      if (right.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(right));
+
+      var outputLength = right.Length + left.Length;
+      var output = new int[outputLength];
+      
+      var indexLeft = 0;
+      var indexRight = 0;
+      var indexOutput = 0;  
+
+      while (indexLeft < left.Length || indexRight < right.Length)
+      {
+        if (indexLeft < left.Length && indexRight < right.Length)  
+        {  
+          if (left[indexLeft] <= right[indexRight])
           {
-            SwapElements(input, j, j + 1);
+            output[indexOutput] = left[indexLeft];
+            indexLeft++;
+            indexOutput++;
+          }
+          else
+          {
+            output[indexOutput] = right[indexRight];
+            indexRight++;
+            indexOutput++;
           }
         }
+        else if (indexLeft < left.Length)
+        {
+          output[indexOutput] = left[indexLeft];
+          indexLeft++;
+          indexOutput++;
+        }
+        else if (indexRight < right.Length)
+        {
+          output[indexOutput] = right[indexRight];
+          indexRight++;
+          indexOutput++;
+        }  
       }
+      return output;
     }
     
     /// <summary>

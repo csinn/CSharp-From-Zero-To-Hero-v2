@@ -42,8 +42,8 @@ namespace ArrayOperations
     private static void SortArray(int[] input)
     {
       Arrays.Print(input, "Initial array elements:");
-      Arrays.Sort(input);
-      Arrays.Print(input, "Array after sort operation:");
+      var output = Arrays.Sort(input);
+      Arrays.Print(output, "Array after sort operation:");
     }
 
     private static void InsertAnElementAtBeginningOfTheArray(int[] input)
