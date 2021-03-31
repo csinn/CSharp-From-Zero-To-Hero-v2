@@ -314,7 +314,10 @@ namespace ArrayOperations
 
       Console.WriteLine(message);
 
-      var output = string.Join(separator, input);
+      var output = "";
+      output += "[ ";
+      output += string.Join(", ", input);
+      output += " ]";
       Console.WriteLine(output);
     }
   }
