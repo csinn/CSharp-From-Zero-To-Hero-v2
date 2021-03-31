@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrayOperations", "ArrayOpe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginSimulator", "LoginSimulator\LoginSimulator.csproj", "{35378F1F-5EE2-42D2-A1B9-6395CEC37B82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrayOperationTests", "ArrayOperationTests\ArrayOperationTests.csproj", "{B46014E1-3BAC-437F-A58D-B96F2B752102}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -19,6 +21,8 @@ Global
 		{5574A8F6-A8F0-4285-914B-DA3F30913893}.Any|Any CPU.Build.0 = Any|Any CPU
 		{35378F1F-5EE2-42D2-A1B9-6395CEC37B82}.Any|Any CPU.ActiveCfg = Debug|Any CPU
 		{35378F1F-5EE2-42D2-A1B9-6395CEC37B82}.Any|Any CPU.Build.0 = Debug|Any CPU
+		{B46014E1-3BAC-437F-A58D-B96F2B752102}.Any|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46014E1-3BAC-437F-A58D-B96F2B752102}.Any|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Any|Any CPU = Any|Any CPU
