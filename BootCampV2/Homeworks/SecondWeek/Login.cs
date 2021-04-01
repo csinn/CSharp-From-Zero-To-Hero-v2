@@ -26,7 +26,7 @@ namespace BootCampV2.Homeworks.SecondWeek
             var validUsername = ValidateUsername(username);
             var validPassword = ValidatePassword(password);
 
-            if(validPassword && validPassword)
+            if(validUsername && validPassword)
                 Console.WriteLine("Logged In");
             else
                 Console.WriteLine("Wrong username or password");

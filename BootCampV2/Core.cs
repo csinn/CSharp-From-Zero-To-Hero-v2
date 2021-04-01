@@ -9,6 +9,7 @@ namespace BootCampV2
     {
         static public void Main(string[] args)
         {
+            ArrayExtension.RemoveFirst(new int[5]);
         }       
     }
 }
