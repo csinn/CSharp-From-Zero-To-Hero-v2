@@ -12,9 +12,9 @@ namespace ArrayOperationTests
     {
       var input = new int[] {};
       
-      Action test = () => Arrays.Sort(input);
+      Action actual = () => Arrays.Sort(input);
       
-      Assert.Throws<ArgumentException>(test);
+      Assert.Throws<ArgumentException>(actual);
     }
 
     [Fact]
@@ -22,9 +22,9 @@ namespace ArrayOperationTests
     {
       int[] input = null;
       
-      Action test = () => Arrays.Sort(input);
+      Action actual = () => Arrays.Sort(input);
       
-      Assert.Throws<ArgumentNullException>(test);
+      Assert.Throws<ArgumentNullException>(actual);
     }
 
     [Theory]
@@ -32,25 +32,26 @@ namespace ArrayOperationTests
     [InlineData(new [] {0})]
     public void Sort_Should_Return_Input_When_Array_Has_One_Element(int[] input)
     {
-      int[] test;
+      int[] actual;
       
-      test = Arrays.Sort(input);
+      actual = Arrays.Sort(input);
       
-      Assert.Equal(input,test);
+      Assert.Equal(input,actual);
     }
 
     [Theory]
-    [InlineData(new[] {9, 2, 6, 10}, new[] {2, 6, 9, 10})]
-    [InlineData(new[] {3, 2, 1}, new[] {1, 2, 3})]
-    [InlineData(new[] {2, 1, 3}, new[] {1, 2, 3})]
-    [InlineData(new[] {'a', 1, 7, 'b', 'D'}, new[] {1, 7, 'D', 'a', 'b'})]
-    public void Sort_Should_Return_Ordered_Array(int[] input, int[] expected)
+    [InlineData(new[] {1, 0}, new[] {0, 1})]
+    [InlineData(new[] {0, 1}, new[] {0, 1})]
+    [InlineData(new[] {1, 0, 2, -1, 3}, new[] {-1, 0, 1, 2, 3})]
+    [InlineData(new[] {1, -1, 1}, new[] {-1, 1, 1})]
+    [InlineData(new[] {1, 1, 1}, new[] {1, 1, 1})]
+    public void Sort_Should_Return_Expected_Array(int[] input, int[] expected)
     {
-      int[] test; 
+      int[] actual; 
       
-      test= Arrays.Sort(input);
+      actual = Arrays.Sort(input);
       
-      Assert.Equal(expected, test);
+      Assert.Equal(expected, actual);
     }
   }
 }
