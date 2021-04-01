@@ -7,9 +7,9 @@ namespace ControlFlowArraysAndStrings
         static void Main(string[] args)
         {
             string[] fruits = { "banana",
+                                "pineapple",
                                 "apple",
                                 "orange",
-                                "pineapple",
                                 "blueberry",
                                 "raspberry",
                                 "apricot" };
@@ -64,6 +64,10 @@ namespace ControlFlowArraysAndStrings
 
             string[] removeEnd = RemoveElementFromAnywhere(fruits, 6);
             Print(removeEnd);
+
+            // Login method.
+            Console.WriteLine("\nTesting the Login method:");
+            Login();
         }
 
         /// <summary>
@@ -75,37 +79,17 @@ namespace ControlFlowArraysAndStrings
         {
             string[] sorted = Copy(array);
 
-            for (int i = 0; i < sorted.Length; i++)
+            for (int i = 0; i < sorted.Length - 1; i++)
             {
-                bool isShifted = false;
-
-                for (int j = 0; j < sorted.Length; j++)
+                for (int j = 0; j < sorted.Length - i - 1; j++)
                 {
-                    // Check that this is not the last index in the array.
-                    if (j != sorted.Length - 1)
+                    // Check if CompareTo() returns 1, if it does, swap positions.
+                    if (sorted[j].CompareTo(sorted[j + 1]) == 1)
                     {
-                        string shiftedValue;
-
-                        // Check if CompareTo() return 1. 
-                        // If it does, switch positions.
-                        if (sorted[j].CompareTo(sorted[j + 1]) == 1)
-                        {
-                            shiftedValue = sorted[j];
-
-                            sorted[j] = sorted[j + 1];
-
-                            sorted[j + 1] = shiftedValue;
-
-                            isShifted = true;
-                        }
+                        string shiftedValue = sorted[j];
+                        sorted[j] = sorted[j + 1];
+                        sorted[j + 1] = shiftedValue;
                     }
-                }
-
-                // If no value has been changed after one full pass 
-                // of the inner loop, break out of the outer loop.
-                if (!isShifted)
-                {
-                    break;
                 }
             }
 
@@ -127,19 +111,37 @@ namespace ControlFlowArraysAndStrings
         }
 
         /// <summary>
+        /// Prints the array to the console.
+        /// </summary>
+        /// <param name="array">The array to be printed.</param>
+        public static void Print(string[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i != array.Length - 1)
+                {
+                    Console.Write(array[i] + ", ");
+                }
+                else
+                {
+                    Console.Write(array[i] + "\n");
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds a specified value to the beginning of the specified array
         /// and returns the new array.
         /// </summary>
         /// <param name="array">The array to be changed.</param>
         /// <param name="value">The value to be added to the array.</param>
-        /// <returns>A copy of the array with a new value added to the first index.</returns>
+        /// <returns>A new array with a value added to the first index.</returns>
         public static string[] AddElementToStart(string[] array, string value)
         {
             string[] newArray = new string[array.Length + 1];
 
             newArray[0] = value;
 
-            // Copy values from old array into new array.
             for (int i = 1; i < newArray.Length; i++)
             {
                 newArray[i] = array[i - 1];
@@ -154,12 +156,11 @@ namespace ControlFlowArraysAndStrings
         /// </summary>
         /// <param name="array">The array to be changed.</param>
         /// <param name="value">The value to be added to the array.</param>
-        /// <returns>The new array with the specified value added to the last index.</returns>
+        /// <returns>The new array with a value added to the last index.</returns>
         public static string[] AddElementToEnd(string[] array, string value)
         {
             string[] newArray = new string[array.Length + 1];
 
-            // Copy values from old array into new array.
             for (int i = 0; i < array.Length; i++)
             {
                 newArray[i] = array[i];
@@ -177,7 +178,7 @@ namespace ControlFlowArraysAndStrings
         /// <param name="array">The array to be changed.</param>
         /// <param name="value">The index where the new value should be added.</param>
         /// <param name="value">The value to be added to the array.</param>
-        /// <returns>A copy of the array with a new value added to the specified index.</returns>
+        /// <returns>A new array with a value added to the specified index.</returns>
         public static string[] AddElementAnywhere(string[] array, int index, string value)
         {
             string[] newArray = new string[array.Length + 1];
@@ -263,22 +264,107 @@ namespace ControlFlowArraysAndStrings
         }
 
         /// <summary>
-        /// Prints the array to the console.
+        /// Attempts to log in a user and prints a message to the console if login 
+        /// was successful or unsuccessful. Allows 3 unsuccessful attempts before lock out.
         /// </summary>
-        /// <param name="array">The array to be printed.</param>
-        public static void Print(string[] array)
+        public static void Login()
         {
-            for (int i = 0; i < array.Length; i++)
+            int loginAttempts = 3;
+            bool isValidUserName = false;
+            bool isValidPassword = false;
+
+            do
             {
-                if (i != array.Length - 1)
+                string userName = GetUserName();
+                isValidUserName = ValidateUserName(userName);
+
+                if (!isValidUserName)
                 {
-                    Console.Write(array[i] + ", ");
+                    loginAttempts--;
+                    Console.WriteLine("Invalid user name. " + loginAttempts + " tries left.");
                 }
-                else
+
+                if (loginAttempts == 0)
                 {
-                    Console.Write(array[i] + "\n");
+                    Console.WriteLine("You have been locked out. Please contact your system administrator.");
+                    break;
                 }
+
+            } while (!isValidUserName);
+
+            if (loginAttempts != 0)
+            {
+                do
+                {
+                    string password = GetPassword();
+                    isValidPassword = ValidatePassword(password);
+
+                    if (!isValidPassword)
+                    {
+                        loginAttempts--;
+                        Console.WriteLine("Invalid user name. " + loginAttempts + " tries left.");
+                    }
+
+                    if (loginAttempts == 0)
+                    {
+                        Console.WriteLine("You have been locked out. Please contact your system administrator.");
+                        break;
+                    }
+
+                } while (!isValidPassword);
             }
+
+            if (isValidUserName && isValidPassword)
+            {
+                Console.WriteLine("Logged in!");
+            }
+        }
+
+        /// <summary>
+        /// Gets the user name from the user.
+        /// </summary>
+        /// <returns>The user name.</returns>
+        public static string GetUserName()
+        {
+            Console.Write("Please enter your user name: ");
+            return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Gets the password from the user.
+        /// </summary>
+        /// <returns>The password.</returns>
+        public static string GetPassword()
+        {
+            Console.Write("Please enter your password: ");
+            return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Validates the specified user name against a hidden value.
+        /// </summary>
+        /// <param name="userName">The user name to be validated.</param>
+        /// <returns>True if  valid, or false if invalid.</returns>
+        public static bool ValidateUserName(string userName)
+        {
+            string hiddenUsername = "CSharp";
+            bool isValidUserName = userName.Equals(hiddenUsername,
+                                                   StringComparison.OrdinalIgnoreCase);
+
+            return isValidUserName;
+        }
+
+        /// <summary>
+        /// Validates the specified password against a hidden value.
+        /// </summary>
+        /// <param name="password">The password to be validated.</param>
+        /// <returns>True if valid, or false if invalid.</returns>
+        public static bool ValidatePassword(string password)
+        {
+            string hiddenPassword = "Password123";
+            bool isValidPassword = password.Equals(hiddenPassword);
+
+            return isValidPassword;
         }
     }
 }
