@@ -14,9 +14,9 @@ namespace ArrayOperationTests
       var element = 1;
       var index = 0;
       
-      Action test = () => Arrays.InsertAt(input,element, index);
+      Action actual = () => Arrays.InsertAt(input,element, index);
       
-      Assert.Throws<ArgumentException>(test);
+      Assert.Throws<ArgumentException>(actual);
     }
 
     [Fact]
@@ -26,9 +26,9 @@ namespace ArrayOperationTests
       var element = 1;
       var index = 0;
       
-      Action test = () => Arrays.InsertAt(input,element, index);
+      Action actual = () => Arrays.InsertAt(input,element, index);
       
-      Assert.Throws<ArgumentNullException>(test);
+      Assert.Throws<ArgumentNullException>(actual);
     }
 
     [Theory]
@@ -39,11 +39,11 @@ namespace ArrayOperationTests
     [InlineData(new[] {1},0,0, new[] {0,1})]
     public void InsertAt_Should_Return_New_Array_With_Item_Inserted_At_Correct_Position(int[] input, int number, int index, int[] expected)
     { 
-      int[] test; 
+      int[] actual; 
        
-      test = Arrays.InsertAt(input, number, index);
+      actual = Arrays.InsertAt(input, number, index);
      
-      Assert.Equal(expected, test);
+      Assert.Equal(expected, actual);
     }
   }
 }
