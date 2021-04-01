@@ -295,7 +295,7 @@ namespace ArrayOperations
     /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
     /// <exception cref="ArgumentException">The source has no elements.</exception>
     /// <exception cref="ArgumentException">The message is null or empty.</exception>
-    public static void Print(int[] input, string message, char separator = ' ')
+    public static void Print(int[] input, string message)
     {
       if (input == null)
       {
