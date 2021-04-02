@@ -74,24 +74,16 @@ namespace Homework2
 
         static int[] AddToStart(int[] arr, int item)
         {
-            int[] copiedArray = new int[arr.Length + 1];
-            Array.Copy(arr, 0, copiedArray, 1, arr.Length);
-            copiedArray[0] = item;
-            return copiedArray;
+            return AddToArray(arr, item, 0);
         }
 
         static int[] AddToEnd(int[] arr, int item)
         {
-            int[] copiedArray = new int[arr.Length + 1];
-            Array.Copy(arr, copiedArray, arr.Length);
-            copiedArray[copiedArray.Length - 1] = item;
-            return copiedArray;
+            return AddToArray(arr, item, arr.Length);
         }
 
         static int[] AddToArray(int[] arr, int item, int index)
         {
-            if (index == 0) return AddToStart(arr, item);
-            else if (index == arr.Length - 1) return AddToEnd(arr, item);
             int[] copiedArray = new int[arr.Length + 1];
             Array.Copy(arr, copiedArray, index);
             copiedArray[index] = item;
@@ -101,22 +93,16 @@ namespace Homework2
 
         static int[] RemoveFromStart(int[] arr)
         {
-            int[] copiedArray = new int[arr.Length - 1];
-            Array.Copy(arr, 1, copiedArray, 0, copiedArray.Length);
-            return copiedArray;
+            return RemoveFromArray(arr, 0);
         }
 
         static int[] RemoveFromEnd(int[] arr)
         {
-            int[] copiedArray = new int[arr.Length - 1];
-            Array.Copy(arr, copiedArray, copiedArray.Length);
-            return copiedArray;
+            return RemoveFromArray(arr, arr.Length - 1);
         }
 
         static int[] RemoveFromArray(int[] arr, int index)
         {
-            if (index == 0) return RemoveFromStart(arr);
-            else if (index == arr.Length - 1) return RemoveFromEnd(arr);
             int[] copiedArray = new int[arr.Length - 1];
             Array.Copy(arr, copiedArray, index);
             Array.Copy(arr, index + 1, copiedArray, index, copiedArray.Length - index);
@@ -125,7 +111,7 @@ namespace Homework2
 
         static void SignUp()
         {
-            Console.Write("Add an username:");
+            Console.Write("Add a username:");
             username = Console.ReadLine();
             Console.Write("Add a password:");
             password = Console.ReadLine();
