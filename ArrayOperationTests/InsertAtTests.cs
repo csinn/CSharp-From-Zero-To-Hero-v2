@@ -8,18 +8,6 @@ namespace ArrayOperationTests
   public class InsertAtTests
   {
     [Fact]
-    public void InsertAt_Should_Throw_ArgumentException_When_Input_Array_Is_Empty()
-    {
-      var input = new int[] {};
-      var element = 1;
-      var index = 0;
-      
-      Action actual = () => Arrays.InsertAt(input,element, index);
-      
-      Assert.Throws<ArgumentException>(actual);
-    }
-
-    [Fact]
     public void InsertAt_Should_Throw_ArgumentNullException_When_Input_Is_Null()
     {
       int[] input = null;
@@ -37,9 +25,8 @@ namespace ArrayOperationTests
     public void InsertAt_Should_Throw_ArgumentOutOfRange_When_Index_Is_Outside_Of_Array_Bounds(int[] input, int index)
     {
       const int item = 9;
-      Action actual;
         
-      actual = () => Arrays.InsertAt(input, item, index);
+      Action actual = () => Arrays.InsertAt(input, item, index);
 
       Assert.Throws<ArgumentOutOfRangeException>(actual);
     }
@@ -52,9 +39,7 @@ namespace ArrayOperationTests
     [InlineData(new[] {1},0,0, new[] {0,1})]
     public void InsertAt_Should_Return_New_Array_With_Item_Inserted_At_Correct_Position(int[] input, int number, int index, int[] expected)
     { 
-      int[] actual; 
-       
-      actual = Arrays.InsertAt(input, number, index);
+      var actual = Arrays.InsertAt(input, number, index);
      
       Assert.Equal(expected, actual);
     }
