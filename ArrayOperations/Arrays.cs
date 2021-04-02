@@ -10,10 +10,9 @@ namespace ArrayOperations
     /// <summary>
     /// Sort an array using 'Merge Sort' algorithm.
     /// </summary>
-    /// <param name="input">Source array.</param>
-    /// <returns>A new array containing all the source elements sorted in ascending order.</returns>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source array has no elements.</exception>
+    /// <param name="input">Array to be sorted.</param>
+    /// <returns>A new array containing all the elements from 'input' sorted in ascending order.</returns>
+    /// <exception cref="ArgumentNullException">The array is not initialized.</exception>
     public static int[] Sort(int[] input)
     {
       if (input == null)
@@ -21,14 +20,9 @@ namespace ArrayOperations
         throw new ArgumentNullException(nameof(input));
       }
 
-      if (input.Length == 0)
+      if (input.Length == 0 || input.Length == 1)
       {
         return input;
-      }
-
-      if (input.Length == 1)
-      {
-        return  input;
       }
 
       var midPoint = input.Length / 2;  
@@ -51,19 +45,17 @@ namespace ArrayOperations
       left = Sort(left);
       right = Sort(right);
 
-      var output = Merge(left, right);  
-      
-      return output;
+      return Merge(left, right);
     }
     
     /// <summary>
     /// Combine the elements of two arrays in to a new array.
     /// </summary>
-    /// <param name="left">First source array.</param>
-    /// <param name="right">Second source array.</param>
+    /// <param name="left">First array.</param>
+    /// <param name="right">Second array.</param>
     /// <returns>A new array witch has the combined size and elements of both input arrays.</returns>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source array has no elements.</exception>
+    /// <exception cref="ArgumentNullException">The array is not initialized.</exception>
+    /// <exception cref="ArgumentException">The array has no elements.</exception>
     public static int[] Merge(int[] left, int[] right)
     {
       if (left == null) throw new ArgumentNullException(nameof(left));
@@ -101,7 +93,7 @@ namespace ArrayOperations
           indexLeft++;
           indexOutput++;
         }
-        else if (indexRight < right.Length)
+        else
         {
           output[indexOutput] = right[indexRight];
           indexRight++;
@@ -119,7 +111,7 @@ namespace ArrayOperations
     /// <param name="index">Position at which to insert the new number.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the specified index.</returns>
     /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Destination index is outside the bounds of the array.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Index is outside the bounds of the array.</exception>
     public static int[] InsertAt(int[] input, int number, int index)
     {
       if (input == null)
@@ -159,31 +151,30 @@ namespace ArrayOperations
     public static int[] InsertFirst(int[] input, int number)
     {
       const int index = 0;
-      var output = InsertAt(input, number, index);
-      return output;
+      return InsertAt(input, number, index);
+      
     }
 
     /// <summary>
     /// Inserts a new element at the end of the array.
     /// </summary>
-    /// <param name="input">Source array.</param>
+    /// <param name="input">The array</param>
     /// <param name="number">The number to be inserted.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the end of the array.</returns>
     public static int[] InsertLast(int[] input, int number)
     {
-      var output = InsertAt(input, number, input.Length);
-      return output;
+      return InsertAt(input, number, input.Length);
     }
     
     /// <summary>
     /// Removes an element from the specified index of the array.
     /// </summary>
-    /// <param name="input">Source array.</param>
-    /// <param name="index">The position at which we remove an element from the array.</param>
-    /// <returns>A new array with the size decreased by one and without the element found at specified index.</returns>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source array has no elements.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Destination index is outside the bounds of the array.</exception>
+    /// <param name="input">The array from which to remove the element.</param>
+    /// <param name="index">The position at which we remove the element from the array.</param>
+    /// <returns>A new array with the size decreased by 1 and without the element found at specified index.</returns>
+    /// <exception cref="ArgumentNullException">Array is not initialized.</exception>
+    /// <exception cref="ArgumentException">Array has no elements.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Index is outside the bounds of the array.</exception>
     public static int[] RemoveAt(int[] input, int index)
     {
       if (input == null)
@@ -201,7 +192,8 @@ namespace ArrayOperations
         throw new ArgumentOutOfRangeException(nameof(index));
       }
 
-      var output = new int[input.Length - 1];
+      var newSize = input.Length - 1;
+      var output = new int[newSize];
       for (var i = 0; i < output.Length; i++)
       {
         output[i] = i < index ? input[i] : input[i + 1];
@@ -213,59 +205,32 @@ namespace ArrayOperations
     /// <summary>
     /// Removes the first element from the array.
     /// </summary>
-    /// <param name="input">Source array.</param>
+    /// <param name="input">The array from which to remove the element.</param>
     /// <returns>A new array with it's size decreased by one and without the first element.</returns>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source array has no elements.</exception>
     public static int[] RemoveFirst(int[] input)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
-
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
-
-      const int index = 0;
-      var output = RemoveAt(input, index);
-      return output;
+      const int Index = 0;
+      return RemoveAt(input, Index);
     }
 
     /// <summary>
     /// Removes the last element from the array.
     /// </summary>
-    /// <param name="input">Source array.</param>
+    /// <param name="input">The array from which to remove the element.</param>
     /// <returns>A new array with it's size decreased by one and without the last element.</returns>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source has no elements.</exception>
     public static int[] RemoveLast(int[] input)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
-
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
-      
-      var output = RemoveAt(input, input.Length - 1);
-      return output;
+      var lastIndex = input.Length - 1;
+      return RemoveAt(input, lastIndex);
     }
 
     /// <summary>
-    /// Prints the elements of an array separated by an empty space.
+    /// Prints the elements of an array separated by comma.
     /// </summary>
-    /// <param name="input">Source array.</param>
-    /// <param name="message">Explanatory message displayed to the user.</param>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The source has no elements.</exception>
-    /// <exception cref="ArgumentException">The message is null or empty.</exception>
-    public static void Print(int[] input, string message)
+    /// <param name="input">The array to be printed.</param>
+    /// <exception cref="ArgumentNullException">Array is not initialized.</exception>
+    /// <exception cref="ArgumentException">Array has no elements.</exception>
+    public static void Print(int[] input)
     {
       if (input == null)
       {
@@ -277,13 +242,6 @@ namespace ArrayOperations
         throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
       }
       
-      if (string.IsNullOrWhiteSpace(message))
-      {
-        throw new ArgumentException("Value cannot be null or empty.", nameof(message));
-      }
-
-      Console.WriteLine(message);
-
       var output = "";
       output += "[ ";
       output += string.Join(", ", input);

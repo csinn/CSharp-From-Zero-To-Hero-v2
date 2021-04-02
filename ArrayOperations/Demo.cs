@@ -41,65 +41,80 @@ namespace ArrayOperations
 
     private static void SortArray(int[] input)
     {
-      Arrays.Print(input, "Initial array elements:");
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
+
+      Console.WriteLine("Array after sort operation:");
       var output = Arrays.Sort(input);
-      Arrays.Print(output, "Array after sort operation:");
+      Arrays.Print(output);
     }
 
     private static void InsertAnElementAtBeginningOfTheArray(int[] input)
     {
-      Arrays.Print(input,"Initial array elements:");
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
 
       const int NumberToInsert = 12;
 
+      Console.WriteLine($"Array elements after {NumberToInsert} was inserted:");
       var output = Arrays.InsertFirst(input, NumberToInsert);
-      Arrays.Print(output, $"Array elements after {NumberToInsert} was inserted:");
+      Arrays.Print(output);
     }
 
     private static void InsertAnElementAtEndOfArray(int[] input)
     {
-      Arrays.Print(input,"Initial array elements:");
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
       
       const int NumberToInsert = 4;
 
+      Console.WriteLine($"Array elements after {NumberToInsert} was inserted:");
       var output = Arrays.InsertLast(input, NumberToInsert);
-      Arrays.Print(output,$"Array elements after {NumberToInsert} was inserted:");
+      Arrays.Print(output);
     }
 
     private static void RemoveFirstElementOfArray(int[] input)
     {
-      Arrays.Print(input,"Initial array elements:");
-      
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
+
+      Console.WriteLine("Array elements after first element was removed:");
       var output = Arrays.RemoveFirst(input);
-      Arrays.Print(output,$"Array elements after first element was removed:");
+      Arrays.Print(output);
     }
 
     private static void RemoveLastElementOfArray(int[] input)
     {
-      Arrays.Print(input,"Initial array elements:");
-      
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
+
+      Console.WriteLine($"Array elements after last element was removed:");
       var output = Arrays.RemoveLast(input);
-      Arrays.Print(output,$"Array elements after last element was removed:");
+      Arrays.Print(output);
     }
 
     private static void InsertElementAtGivenIndex(int[] input)
     {
-      Arrays.Print(input,"Initial array elements:");
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
       
       const int Index = 4;
       const int Number = 99;
 
+      Console.WriteLine($"Array elements after inserting {Number} at position {Index}:");
       var output = Arrays.InsertAt(input, Number, Index);
-      Arrays.Print(output, $"Array elements after inserting {Number} at position {Index}:");
+      Arrays.Print(output);
     }
 
     private static void RemoveElementAtGivenIndex(int[] input)
     {
-      Arrays.Print(input,"Initial array elements:");
+      Console.WriteLine("Initial array elements:");
+      Arrays.Print(input);
       const int Index = 5;
 
+      Console.WriteLine($"Array elements after removing element at position {Index}:");
       var output = Arrays.RemoveAt(input, Index);
-      Arrays.Print(output, $"Array elements after removing element at position {Index}:");
+      Arrays.Print(output);
     }
 
     private static void Pause(string message = "Press ENTER to continue...")
