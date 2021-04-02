@@ -156,20 +156,8 @@ namespace ArrayOperations
     /// <param name="input">Destination array.</param>
     /// <param name="number">The number to be inserted.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the front of the array.</returns>
-    /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The destination array has no elements.</exception>
     public static int[] InsertFirst(int[] input, int number)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
-
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
-      
       const int index = 0;
       var output = InsertAt(input, number, index);
       return output;
@@ -178,23 +166,11 @@ namespace ArrayOperations
     /// <summary>
     /// Inserts a new element at the end of the array.
     /// </summary>
-    /// <param name="input">Destination array.</param>
+    /// <param name="input">Source array.</param>
     /// <param name="number">The number to be inserted.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the end of the array.</returns>
-    /// <exception cref="ArgumentNullException">The destination array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The destination array has no elements.</exception>
     public static int[] InsertLast(int[] input, int number)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
-
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
-
       var output = InsertAt(input, number, input.Length);
       return output;
     }
