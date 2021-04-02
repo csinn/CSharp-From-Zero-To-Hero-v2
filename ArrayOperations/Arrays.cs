@@ -23,7 +23,7 @@ namespace ArrayOperations
 
       if (input.Length == 0)
       {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
+        return input;
       }
 
       if (input.Length == 1)
