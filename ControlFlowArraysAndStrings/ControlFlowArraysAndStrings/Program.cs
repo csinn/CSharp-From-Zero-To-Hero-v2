@@ -278,8 +278,8 @@ namespace ControlFlowArraysAndStrings
 
             do
             {
-                string userName = GetUserName();
-                isValidUserName = ValidateUserName(userName);
+                string userName = GetLoginCredentialsFromUser("user name");
+                isValidUserName = ValidateCredential("user Name", userName);
 
                 if (!isValidUserName)
                 {
@@ -299,13 +299,13 @@ namespace ControlFlowArraysAndStrings
             {
                 do
                 {
-                    string password = GetPassword();
-                    isValidPassword = ValidatePassword(password);
+                    string password = GetLoginCredentialsFromUser("password");
+                    isValidPassword = ValidateCredential("PASSworD", password);
 
                     if (!isValidPassword)
                     {
                         loginAttempts--;
-                        Console.WriteLine($"Invalid user name. {loginAttempts} tries left.");
+                        Console.WriteLine($"Invalid password. {loginAttempts} tries left.");
                     }
 
                     if (loginAttempts == 0)
@@ -324,50 +324,39 @@ namespace ControlFlowArraysAndStrings
         }
 
         /// <summary>
-        /// Gets the user name from the user.
+        /// Gets the login credentials from the user.
         /// </summary>
         /// <returns>The user name.</returns>
-        public static string GetUserName()
+        public static string GetLoginCredentialsFromUser(string credentialType)
         {
-            Console.Write("Please enter your user name: ");
+            Console.Write($"Please enter your {credentialType}: ");
             return Console.ReadLine();
         }
 
         /// <summary>
-        /// Gets the password from the user.
+        /// Validates the specified user name or password against a hidden value.
         /// </summary>
-        /// <returns>The password.</returns>
-        public static string GetPassword()
-        {
-            Console.Write("Please enter your password: ");
-            return Console.ReadLine();
-        }
-
-        /// <summary>
-        /// Validates the specified user name against a hidden value.
-        /// </summary>
-        /// <param name="userName">The user name to be validated.</param>
-        /// <returns>True if  valid, or false if invalid.</returns>
-        public static bool ValidateUserName(string userName)
-        {
-            string hiddenUsername = "CSharp";
-            bool isValidUserName = userName.Equals(hiddenUsername,
-                                                   StringComparison.OrdinalIgnoreCase);
-
-            return isValidUserName;
-        }
-
-        /// <summary>
-        /// Validates the specified password against a hidden value.
-        /// </summary>
-        /// <param name="password">The password to be validated.</param>
+        /// <param name="credentialType">The type of credential.</param>
+        /// <param name="credential">The credential to be validated.</param>
         /// <returns>True if valid, or false if invalid.</returns>
-        public static bool ValidatePassword(string password)
+        public static bool ValidateCredential(string credentialType, string credential)
         {
-            string hiddenPassword = "Password123";
-            bool isValidPassword = password.Equals(hiddenPassword);
+            bool isValid = false;
 
-            return isValidPassword;
+            if (credentialType.ToLower().Equals("user name"))
+            {
+                string hiddenUsername = "CSharp";
+                isValid = credential.Equals(hiddenUsername,
+                                               StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (credentialType.ToLower().Equals("password"))
+            {
+                string hiddenPassword = "Password123";
+                isValid = credential.Equals(hiddenPassword);
+            }
+
+            return isValid;
         }
     }
 }
