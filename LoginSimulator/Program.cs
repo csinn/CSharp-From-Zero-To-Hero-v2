@@ -16,7 +16,7 @@ namespace LoginSimulator
       
       const string successfulLoginMessage = "Logged in!";
       
-      var userName = PromptString("Username: ");
+      var userName = PromptString("Username: ", true);
       var userPassword = PromptString("Password: ");
 
       var isValidCredential = string.Equals(userName, storedUserName, StringComparison.OrdinalIgnoreCase) &&
