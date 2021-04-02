@@ -50,20 +50,20 @@ namespace ArrayOperations
     {
       Arrays.Print(input,"Initial array elements:");
 
-      const int numberToInsert = 12;
+      const int NumberToInsert = 12;
 
-      var output = Arrays.InsertFirst(input, numberToInsert);
-      Arrays.Print(output, $"Array elements after {numberToInsert} was inserted:");
+      var output = Arrays.InsertFirst(input, NumberToInsert);
+      Arrays.Print(output, $"Array elements after {NumberToInsert} was inserted:");
     }
 
     private static void InsertAnElementAtEndOfArray(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
       
-      const int numberToInsert = 4;
+      const int NumberToInsert = 4;
 
-      var output = Arrays.InsertLast(input, numberToInsert);
-      Arrays.Print(output,$"Array elements after {numberToInsert} was inserted:");
+      var output = Arrays.InsertLast(input, NumberToInsert);
+      Arrays.Print(output,$"Array elements after {NumberToInsert} was inserted:");
     }
 
     private static void RemoveFirstElementOfArray(int[] input)
@@ -86,20 +86,20 @@ namespace ArrayOperations
     {
       Arrays.Print(input,"Initial array elements:");
       
-      const int index = 4;
-      const int number = 99;
+      const int Index = 4;
+      const int Number = 99;
 
-      var output = Arrays.InsertAt(input, number, index);
-      Arrays.Print(output, $"Array elements after inserting {number} at position {index}:");
+      var output = Arrays.InsertAt(input, Number, Index);
+      Arrays.Print(output, $"Array elements after inserting {Number} at position {Index}:");
     }
 
     private static void RemoveElementAtGivenIndex(int[] input)
     {
       Arrays.Print(input,"Initial array elements:");
-      const int index = 5;
+      const int Index = 5;
 
-      var output = Arrays.RemoveAt(input, index);
-      Arrays.Print(output, $"Array elements after removing element at position {index}:");
+      var output = Arrays.RemoveAt(input, Index);
+      Arrays.Print(output, $"Array elements after removing element at position {Index}:");
     }
 
     private static void Pause(string message = "Press ENTER to continue...")
