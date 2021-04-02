@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/contentModel.xml
+/.idea.RecipeApp.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../../:\Repos\C#\Bootcamp\RecipeApp\.idea\.idea.RecipeApp\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

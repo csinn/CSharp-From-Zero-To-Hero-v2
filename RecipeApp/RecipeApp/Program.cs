@@ -1,5 +1,7 @@
 ﻿// Import classes from system namespace
+
 using System;
+using System.Collections.Generic;
 
 // Holder of classes
 namespace RecipeApp
@@ -28,83 +30,142 @@ namespace RecipeApp
         // We can do that with dynamic keyword: dynamic a; a.IsPerfectly.Fine().CsharpCode().
         static void Main(string[] args)
         {
-            double totalMl = PrintTeaspoonsToMl() + PrintTablespoonsToMl();
-            PrintHowMany100MlBottles(totalMl);
+            string ingredients =
+                "1.5 cups all-purpose flour. 3.5 teaspoons baking powder. 1 teaspoon salt. 1 tablespoon white sugar. 1.25 cups milk. " +
+                "1 egg. 3 tablespoons butter, melted";
+
+
+            string recipe = StandardizeRecipe(ingredients);
+
+            Console.WriteLine(recipe);
         }
 
-        static double PrintTeaspoonsToMl()
+        static string StandardizeRecipe(string recipe)
         {
-            var teaspoons = GetAmountFromConsole("teaspoons");
-            var mlOfTeaspoons = TeaspoonsToMl(teaspoons);
-            Print(teaspoons, "teaspoons", mlOfTeaspoons);
+            string[] words = recipe.Split(" ");
+            List<string> sentenceList = new List<string>();
+            string[] units = {"cup", "teaspoon", "tablespoon"};
 
-            return mlOfTeaspoons;
+            var unitsList = CreateDictionary();
+
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                string word = words[i];
+                var isUnit = IsUnitOfCooking(word, unitsList);
+
+                if (isUnit != "")
+                {
+                    ModifyUnitInSentence(sentenceList, words, i, isUnit, units, unitsList);
+                    continue;
+                }
+
+                sentenceList.Add(word);
+            }
+
+            string sentence = CreateSentence(sentenceList);
+
+            return sentence.Trim();
         }
 
-        static double PrintTablespoonsToMl()
+        private static string CreateSentence(List<string> sentenceList)
         {
-            double tablespoons = GetAmountFromConsole("tablespoons");
-            double mlOfTablespoons = TableSpoonsToMl(tablespoons);
-            Print(tablespoons, "tablespoons", mlOfTablespoons);
+            string sentence = "";
+            
+            foreach (var word in sentenceList)
+            {
+                sentence += $"{word} ";
+            }
 
-            return mlOfTablespoons;
+            return sentence;
         }
 
-        static void PrintHowMany100MlBottles(double ml)
+        private static Dictionary<string, Func<double, double>> CreateDictionary()
         {
-            // 1 / 0 = error
-            // 1 / 2 = 0
-            // int / int = int
-            // 1.0 / 2 = 0.5
-            // double / int = double
-            // 1.0 + 1 = 2.0
-            // double + int = double
-            // We have bottles of 100 ml.
-            // How many bottles can we fill after the conversion?
-            // int is a whole number
-            int bottlesCount = (int)(ml / 100) + 1;
-            Console.WriteLine($"{ml:F2} can fill {bottlesCount} bottles of 100ml");
+            Dictionary<string, Func<double, double>> unitsList = new Dictionary<string, Func<double, double>>();
+            unitsList.Add("teaspoon", TeaspoonsToMl);
+            unitsList.Add("tablespoon", TableSpoonsToMl);
+            unitsList.Add("cup", CupsToMl);
+            return unitsList;
         }
 
-        // GetTeaspoonsFromConsole is a lower level function.
-        // Because it implement HOW we can read a number from a console.
-        static double GetAmountFromConsole(string unit)
+        private static void ModifyUnitInSentence(List<string> sentenceList, string[] words, int i, string isUnit,
+            string[] units, Dictionary<string, Func<double, double>> unitsList)
         {
-            Console.WriteLine($"Please enter {unit} amount: ");
-            // variable
-            // holds data
-            // type, name, value
-            var amountText = Console.ReadLine();
-            // Floating point number with double precision.
-            double amount = double.Parse(amountText);
+            string word;
+            sentenceList.RemoveAt(sentenceList.Count - 1);
+            string convertedMlAmount = PerformConversion(words[i - 1], isUnit, units, unitsList);
+            sentenceList.Add(convertedMlAmount);
 
-            return amount;
+            word = "mililiters";
+            sentenceList.Add(word);
         }
 
+        static string PerformConversion(string num, string word, string[] units,
+            Dictionary<string, Func<double, double>> unitsList)
+        {
+            bool isValidNumber = double.TryParse(num, out double unitCount);
+
+            if (isValidNumber)
+            {
+                return FindAppropriateConversion(word, unitCount, units, unitsList);
+            }
+
+            Console.WriteLine("Error - PerformConversion - Not a valid number");
+
+            return "";
+        }
+
+        static string FindAppropriateConversion(string word, double unitCount, string[] units,
+            Dictionary<string, Func<double, double>> unitsList)
+        {
+            foreach (string unit in units)
+            {
+                string wordTrimmed = word.TrimEnd('s');
+
+                if (unit.Equals(wordTrimmed, StringComparison.OrdinalIgnoreCase))
+                {
+                    return unitsList[unit].DynamicInvoke(unitCount).ToString();
+                }
+            }
+
+            return "";
+        }
+
+        static string IsUnitOfCooking(string word, Dictionary<string, Func<double, double>> unitsList)
+        {
+            foreach (KeyValuePair<string, Func<double, double>> unit in unitsList)
+            {
+                string unitPlural = unit.Key + "s";
+                if (unit.Key.Equals(word, StringComparison.OrdinalIgnoreCase) ||
+                    (unitPlural.Equals(word, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return word;
+                }
+            }
+
+            return "";
+        }
         static double TeaspoonsToMl(double teaspoons)
         {
-            // 4.93m is a decimal - use it for money- for absolute accuracy- use decimal.
-            // 4.93 is double
-            // 4.93f is a float- use it when you don't plan to use math.
             double ml = teaspoons * 4.93;
 
             return ml;
         }
 
-        static double TableSpoonsToMl(double teaspoons)
+        static double TableSpoonsToMl(double tablespoons)
         {
-            double tablespoons = teaspoons * 14.79;
+            double ml = tablespoons * 14.79;
 
-            return tablespoons;
+            return ml;
         }
 
-        static void Print(double cookingUnitAmount, string cookingUnit, double ml)
+        static double CupsToMl(double cups)
         {
-            // string convertedDescription = teaspoonsText + " teaspoons = " + ml + " ml";
-            // $- string interpolation
-            // F2- 2 digits after decimal point.
-            string convertedDescription = $"{cookingUnitAmount} {cookingUnit} = {ml:F2} ml";
-            Console.WriteLine(convertedDescription);
+            double ml = cups * 236.588;
+
+            return ml;
         }
+
     }
 }

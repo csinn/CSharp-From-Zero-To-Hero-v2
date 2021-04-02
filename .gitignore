@@ -348,3 +348,15 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+.idea/.idea.Bootcamp.dir/.idea/workspace.xml
+.idea/.idea.FromZeroToHero/.idea/.gitignore
+.idea/.idea.FromZeroToHero/.idea/.name
+.idea/.idea.FromZeroToHero/.idea/encodings.xml
+.idea/.idea.FromZeroToHero/.idea/indexLayout.xml
+.idea/.idea.FromZeroToHero/.idea/riderModule.iml
+.idea/.idea.FromZeroToHero/.idea/vcs.xml
+homework/lesson_number_2/.idea/.idea.lesson_number_2/.idea/.gitignore
+homework/lesson_number_2/.idea/.idea.lesson_number_2/.idea/encodings.xml
+homework/lesson_number_2/.idea/.idea.lesson_number_2/.idea/indexLayout.xml
+homework/lesson_number_2/.idea/.idea.lesson_number_2/.idea/riderModule.iml
+homework/lesson_number_2/.idea/.idea.lesson_number_2/.idea/vcs.xml
