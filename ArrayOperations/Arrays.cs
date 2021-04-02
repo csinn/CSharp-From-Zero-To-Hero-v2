@@ -8,9 +8,10 @@ namespace ArrayOperations
   public static class Arrays
   {
     /// <summary>
-    /// Sort an array using 'Bubble Sort' algorithm.
+    /// Sort an array using 'Merge Sort' algorithm.
     /// </summary>
     /// <param name="input">Source array.</param>
+    /// <returns>A new array containing all the source elements sorted in ascending order.</returns>
     /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
     /// <exception cref="ArgumentException">The source array has no elements.</exception>
     public static int[] Sort(int[] input)
@@ -291,7 +292,6 @@ namespace ArrayOperations
     /// </summary>
     /// <param name="input">Source array.</param>
     /// <param name="message">Explanatory message displayed to the user.</param>
-    /// <param name="separator"></param>
     /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
     /// <exception cref="ArgumentException">The source has no elements.</exception>
     /// <exception cref="ArgumentException">The message is null or empty.</exception>
