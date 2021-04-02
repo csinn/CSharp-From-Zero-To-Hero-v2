@@ -306,7 +306,8 @@ namespace ControlFlowArraysAndStrings
         /// <summary>
         /// Gets the login credentials from the user.
         /// </summary>
-        /// <returns>The user name.</returns>
+        /// <param name="credentialType">The type of credential.</param>
+        /// <returns>The user's credential.</returns>
         public static string GetLoginCredentialsFromUser(string credentialType)
         {
             Console.Write($"Please enter your {credentialType}: ");
@@ -323,14 +324,14 @@ namespace ControlFlowArraysAndStrings
         {
             bool isValid = false;
 
-            if (credentialType.ToLower().Equals("user name"))
+            if (credentialType.Equals("user name", StringComparison.OrdinalIgnoreCase))
             {
                 string hiddenUsername = "CSharp";
                 isValid = credential.Equals(hiddenUsername,
-                                               StringComparison.OrdinalIgnoreCase);
+                                            StringComparison.OrdinalIgnoreCase);
             }
 
-            if (credentialType.ToLower().Equals("password"))
+            if (credentialType.Equals("password", StringComparison.OrdinalIgnoreCase))
             {
                 string hiddenPassword = "Password123";
                 isValid = credential.Equals(hiddenPassword);
