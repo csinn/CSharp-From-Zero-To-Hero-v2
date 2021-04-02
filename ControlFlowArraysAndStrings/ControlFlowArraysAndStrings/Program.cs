@@ -273,39 +273,20 @@ namespace ControlFlowArraysAndStrings
         public static void Login()
         {
             int loginAttempts = 3;
-            bool isValidUserName;
-            bool isValidPassword = false;
+            string[] credentialType = { "user name", "password"};
+            bool[] isValid = { false, false };
 
-            do
+            for (int i = 0; i < credentialType.Length; i++)
             {
-                string userName = GetLoginCredentialsFromUser("user name");
-                isValidUserName = ValidateCredential("user Name", userName);
-
-                if (!isValidUserName)
+                while (!isValid[i] && loginAttempts != 0)
                 {
-                    loginAttempts--;
-                    Console.WriteLine($"Invalid user name. {loginAttempts} tries left.");
-                }
+                    string credential = GetLoginCredentialsFromUser(credentialType[i]);
+                    isValid[i] = ValidateCredential(credentialType[i], credential);
 
-                if (loginAttempts == 0)
-                {
-                    Console.WriteLine("You have been locked out. Please contact your system administrator.");
-                    break;
-                }
-
-            } while (!isValidUserName);
-
-            if (loginAttempts != 0)
-            {
-                do
-                {
-                    string password = GetLoginCredentialsFromUser("password");
-                    isValidPassword = ValidateCredential("PASSworD", password);
-
-                    if (!isValidPassword)
+                    if (!isValid[i])
                     {
                         loginAttempts--;
-                        Console.WriteLine($"Invalid password. {loginAttempts} tries left.");
+                        Console.WriteLine($"Invalid {credentialType[i]}. {loginAttempts} tries left.");
                     }
 
                     if (loginAttempts == 0)
@@ -313,11 +294,10 @@ namespace ControlFlowArraysAndStrings
                         Console.WriteLine("You have been locked out. Please contact your system administrator.");
                         break;
                     }
-
-                } while (!isValidPassword);
+                }
             }
 
-            if (isValidUserName && isValidPassword)
+            if (isValid[0] && isValid[1])
             {
                 Console.WriteLine("Logged in!");
             }
