@@ -105,7 +105,10 @@ namespace ControlFlowArraysAndStrings
         {
             string[] newArray = new string[array.Length];
 
-            Array.Copy(array, newArray, array.Length);
+            for (int i = 0; i < array.Length; i++)
+            {
+                newArray[i] = array[i];
+            }
 
             return newArray;
         }
@@ -120,11 +123,11 @@ namespace ControlFlowArraysAndStrings
             {
                 if (i != array.Length - 1)
                 {
-                    Console.Write(array[i] + ", ");
+                    Console.Write($"{array[i]}, ");
                 }
                 else
                 {
-                    Console.Write(array[i] + "\n");
+                    Console.Write($"{array[i]}\n");
                 }
             }
         }
@@ -270,7 +273,7 @@ namespace ControlFlowArraysAndStrings
         public static void Login()
         {
             int loginAttempts = 3;
-            bool isValidUserName = false;
+            bool isValidUserName;
             bool isValidPassword = false;
 
             do
@@ -281,7 +284,7 @@ namespace ControlFlowArraysAndStrings
                 if (!isValidUserName)
                 {
                     loginAttempts--;
-                    Console.WriteLine("Invalid user name. " + loginAttempts + " tries left.");
+                    Console.WriteLine($"Invalid user name. {loginAttempts} tries left.");
                 }
 
                 if (loginAttempts == 0)
@@ -302,7 +305,7 @@ namespace ControlFlowArraysAndStrings
                     if (!isValidPassword)
                     {
                         loginAttempts--;
-                        Console.WriteLine("Invalid user name. " + loginAttempts + " tries left.");
+                        Console.WriteLine($"Invalid user name. {loginAttempts} tries left.");
                     }
 
                     if (loginAttempts == 0)
