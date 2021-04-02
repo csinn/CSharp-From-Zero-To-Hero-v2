@@ -114,23 +114,17 @@ namespace ArrayOperations
     /// <summary>
     /// Inserts a new element in an array at the specified position.
     /// </summary>
-    /// <param name="input">Destination array.</param>
+    /// <param name="input">Source array.</param>
     /// <param name="number">Number to insert in the array.</param>
     /// <param name="index">Position at which to insert the new number.</param>
     /// <returns>A new array with it's size increased by one and a new element located at the specified index.</returns>
     /// <exception cref="ArgumentNullException">The source array is not initialized.</exception>
-    /// <exception cref="ArgumentException">The destination array has no elements.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Destination index is outside the bounds of the array.</exception>
     public static int[] InsertAt(int[] input, int number, int index)
     {
       if (input == null)
       {
         throw new ArgumentNullException(nameof(input));
-      }
-
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
       }
 
       if (index < 0 || index > input.Length)
