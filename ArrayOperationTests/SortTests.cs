@@ -1,7 +1,6 @@
 using System;
-using System.Runtime.InteropServices;
-using Xunit;
 using ArrayOperations;
+using Xunit;
 
 namespace ArrayOperationTests
 {
@@ -11,14 +10,14 @@ namespace ArrayOperationTests
     public void Sort_Should_Throw_ArgumentNullException_When_Input_Is_Null()
     {
       int[] input = null;
-      
+
       Action actual = () => Arrays.Sort(input);
-      
+
       Assert.Throws<ArgumentNullException>(actual);
     }
 
     [Theory]
-    [InlineData(new int[] {}, new int[] {})]
+    [InlineData(new int[] { }, new int[] { })]
     [InlineData(new[] {0}, new[] {0})]
     [InlineData(new[] {1, 0}, new[] {0, 1})]
     [InlineData(new[] {0, 1}, new[] {0, 1})]
@@ -27,10 +26,8 @@ namespace ArrayOperationTests
     [InlineData(new[] {1, 1, 1}, new[] {1, 1, 1})]
     public void Sort_Should_Return_Expected_Array(int[] input, int[] expected)
     {
-      int[] actual; 
-      
-      actual = Arrays.Sort(input);
-      
+      var actual = Arrays.Sort(input);
+
       Assert.Equal(expected, actual);
     }
   }
