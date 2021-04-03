@@ -1,5 +1,6 @@
 using System;
 using ArrayOperations;
+using FluentAssertions;
 using Xunit;
 
 namespace ArrayOperationTests
@@ -14,7 +15,7 @@ namespace ArrayOperationTests
 
       Action actual = () => Arrays.RemoveAt(input, Index);
 
-      Assert.Throws<ArgumentException>(actual);
+      actual.Should().ThrowExactly<ArgumentException>();
     }
 
     [Fact]
@@ -25,7 +26,7 @@ namespace ArrayOperationTests
 
       Action actual = () => Arrays.RemoveAt(input, Index);
 
-      Assert.Throws<ArgumentNullException>(actual);
+      actual.Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Theory]
@@ -35,7 +36,7 @@ namespace ArrayOperationTests
     {
       Action actual = () => Arrays.RemoveAt(input, index);
 
-      Assert.Throws<ArgumentOutOfRangeException>(actual);
+      actual.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
 
     [Theory]
@@ -50,7 +51,7 @@ namespace ArrayOperationTests
     {
       var actual = Arrays.RemoveAt(input, index);
 
-      Assert.Equal(expected, actual);
+      actual.Should().Equal(expected);
     }
   }
 }

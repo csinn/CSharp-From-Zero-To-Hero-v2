@@ -1,5 +1,6 @@
 using System;
 using ArrayOperations;
+using FluentAssertions;
 using Xunit;
 
 namespace ArrayOperationTests
@@ -13,7 +14,7 @@ namespace ArrayOperationTests
 
       Action actual = () => Arrays.Sort(input);
 
-      Assert.Throws<ArgumentNullException>(actual);
+      actual.Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Theory]
@@ -28,7 +29,7 @@ namespace ArrayOperationTests
     {
       var actual = Arrays.Sort(input);
 
-      Assert.Equal(expected, actual);
+      actual.Should().Equal(expected);
     }
   }
 }

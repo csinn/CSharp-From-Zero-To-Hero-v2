@@ -1,5 +1,6 @@
 using System;
 using ArrayOperations;
+using FluentAssertions;
 using Xunit;
 
 namespace ArrayOperationTests
@@ -9,13 +10,13 @@ namespace ArrayOperationTests
     [Fact]
     public void InsertAt_Should_Throw_ArgumentNullException_When_Input_Is_Null()
     {
-      int[] Input = null;
+      int[] input = null;
       const int Element = 1;
       const int Index = 0;
 
-      Action actual = () => Arrays.InsertAt(Input, Element, Index);
+      Action actual = () => Arrays.InsertAt(input, Element, Index);
 
-      Assert.Throws<ArgumentNullException>(actual);
+      actual.Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Theory]
@@ -27,7 +28,7 @@ namespace ArrayOperationTests
 
       Action actual = () => Arrays.InsertAt(input, Item, index);
 
-      Assert.Throws<ArgumentOutOfRangeException>(actual);
+      actual.Should().ThrowExactly<ArgumentOutOfRangeException>();
     }
 
     [Theory]
