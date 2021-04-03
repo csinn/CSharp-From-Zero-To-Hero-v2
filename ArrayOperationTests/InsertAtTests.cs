@@ -42,7 +42,7 @@ namespace ArrayOperationTests
     {
       var actual = Arrays.InsertAt(input, number, index);
 
-      Assert.Equal(expected, actual);
+      actual.Should().Equal(expected);
     }
   }
 }

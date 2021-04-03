@@ -3,37 +3,28 @@ using System;
 namespace ArrayOperations
 {
   /// <summary>
-  /// This class contain methods for array operations.
+  ///   This class contain methods for array operations.
   /// </summary>
   public static class Arrays
   {
     /// <summary>
-    /// Sort an array using 'Merge Sort' algorithm.
+    ///   Sort an array using 'Merge Sort' algorithm.
     /// </summary>
     /// <param name="input">Array to be sorted.</param>
     /// <returns>A new array containing all the elements from 'input' sorted in ascending order.</returns>
     /// <exception cref="ArgumentNullException">The array is not initialized.</exception>
     public static int[] Sort(int[] input)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
+      if (input == null) throw new ArgumentNullException(nameof(input));
 
-      if (input.Length == 0 || input.Length == 1)
-      {
-        return input;
-      }
+      if (input.Length == 0 || input.Length == 1) return input;
 
-      var midPoint = input.Length / 2;  
-      
+      var midPoint = input.Length / 2;
+
       var left = new int[midPoint];
       var right = input.Length % 2 == 0 ? new int[midPoint] : new int[midPoint + 1];
 
-      for (var i = 0; i < midPoint; i++)
-      {
-        left[i] = input[i];
-      }  
+      for (var i = 0; i < midPoint; i++) left[i] = input[i];
 
       var counter = 0;
       for (var i = midPoint; i < input.Length; i++)
@@ -41,15 +32,15 @@ namespace ArrayOperations
         right[counter] = input[i];
         counter++;
       }
-      
+
       left = Sort(left);
       right = Sort(right);
 
       return Merge(left, right);
     }
-    
+
     /// <summary>
-    /// Combine the elements of two arrays in to a new array.
+    ///   Combine the elements of two arrays in to a new array.
     /// </summary>
     /// <param name="left">First array.</param>
     /// <param name="right">Second array.</param>
@@ -65,15 +56,14 @@ namespace ArrayOperations
 
       var outputLength = right.Length + left.Length;
       var output = new int[outputLength];
-      
+
       var indexLeft = 0;
       var indexRight = 0;
-      var indexOutput = 0;  
+      var indexOutput = 0;
 
       while (indexLeft < left.Length || indexRight < right.Length)
-      {
-        if (indexLeft < left.Length && indexRight < right.Length)  
-        {  
+        if (indexLeft < left.Length && indexRight < right.Length)
+        {
           if (left[indexLeft] <= right[indexRight])
           {
             output[indexOutput] = left[indexLeft];
@@ -98,13 +88,13 @@ namespace ArrayOperations
           output[indexOutput] = right[indexRight];
           indexRight++;
           indexOutput++;
-        }  
-      }
+        }
+
       return output;
     }
- 
+
     /// <summary>
-    /// Inserts a new element in an array at the specified position.
+    ///   Inserts a new element in an array at the specified position.
     /// </summary>
     /// <param name="input">Source array.</param>
     /// <param name="number">Number to insert in the array.</param>
@@ -114,36 +104,24 @@ namespace ArrayOperations
     /// <exception cref="ArgumentOutOfRangeException">Index is outside the bounds of the array.</exception>
     public static int[] InsertAt(int[] input, int number, int index)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
+      if (input == null) throw new ArgumentNullException(nameof(input));
 
-      if (index < 0 || index > input.Length)
-      {
-        throw new ArgumentOutOfRangeException(nameof(index));
-      }
+      if (index < 0 || index > input.Length) throw new ArgumentOutOfRangeException(nameof(index));
 
       var output = new int[input.Length + 1];
       output[index] = number;
 
       for (var i = 0; i < input.Length; i++)
-      {
         if (i < index)
-        {
           output[i] = input[i];
-        }
         else
-        {
           output[i + 1] = input[i];
-        }
-      }
 
       return output;
     }
-    
+
     /// <summary>
-    /// Inserts a new element at the beginning of the array.
+    ///   Inserts a new element at the beginning of the array.
     /// </summary>
     /// <param name="input">Destination array.</param>
     /// <param name="number">The number to be inserted.</param>
@@ -152,11 +130,10 @@ namespace ArrayOperations
     {
       const int index = 0;
       return InsertAt(input, number, index);
-      
     }
 
     /// <summary>
-    /// Inserts a new element at the end of the array.
+    ///   Inserts a new element at the end of the array.
     /// </summary>
     /// <param name="input">The array</param>
     /// <param name="number">The number to be inserted.</param>
@@ -165,9 +142,9 @@ namespace ArrayOperations
     {
       return InsertAt(input, number, input.Length);
     }
-    
+
     /// <summary>
-    /// Removes an element from the specified index of the array.
+    ///   Removes an element from the specified index of the array.
     /// </summary>
     /// <param name="input">The array from which to remove the element.</param>
     /// <param name="index">The position at which we remove the element from the array.</param>
@@ -177,33 +154,21 @@ namespace ArrayOperations
     /// <exception cref="ArgumentOutOfRangeException">Index is outside the bounds of the array.</exception>
     public static int[] RemoveAt(int[] input, int index)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
+      if (input == null) throw new ArgumentNullException(nameof(input));
 
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
+      if (input.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
 
-      if (index < 0 || index >= input.Length)
-      {
-        throw new ArgumentOutOfRangeException(nameof(index));
-      }
+      if (index < 0 || index >= input.Length) throw new ArgumentOutOfRangeException(nameof(index));
 
       var newSize = input.Length - 1;
       var output = new int[newSize];
-      for (var i = 0; i < output.Length; i++)
-      {
-        output[i] = i < index ? input[i] : input[i + 1];
-      }
+      for (var i = 0; i < output.Length; i++) output[i] = i < index ? input[i] : input[i + 1];
 
       return output;
     }
-    
+
     /// <summary>
-    /// Removes the first element from the array.
+    ///   Removes the first element from the array.
     /// </summary>
     /// <param name="input">The array from which to remove the element.</param>
     /// <returns>A new array with it's size decreased by one and without the first element.</returns>
@@ -214,7 +179,7 @@ namespace ArrayOperations
     }
 
     /// <summary>
-    /// Removes the last element from the array.
+    ///   Removes the last element from the array.
     /// </summary>
     /// <param name="input">The array from which to remove the element.</param>
     /// <returns>A new array with it's size decreased by one and without the last element.</returns>
@@ -225,28 +190,21 @@ namespace ArrayOperations
     }
 
     /// <summary>
-    /// Prints the elements of an array separated by comma.
+    ///   Converts an array to a formatted string.
     /// </summary>
-    /// <param name="input">The array to be printed.</param>
+    /// <param name="input">The array to be converted.</param>
     /// <exception cref="ArgumentNullException">Array is not initialized.</exception>
-    /// <exception cref="ArgumentException">Array has no elements.</exception>
-    public static void Print(int[] input)
+    public static string ToString(int[] input)
     {
-      if (input == null)
-      {
-        throw new ArgumentNullException(nameof(input));
-      }
+      if (input == null) throw new ArgumentNullException(nameof(input));
 
-      if (input.Length == 0)
-      {
-        throw new ArgumentException("Value cannot be an empty collection.", nameof(input));
-      }
-      
+      if (input.Length == 0) return "[ ]";
+
       var output = "";
       output += "[ ";
       output += string.Join(", ", input);
       output += " ]";
-      Console.WriteLine(output);
+      return output;
     }
   }
 }
