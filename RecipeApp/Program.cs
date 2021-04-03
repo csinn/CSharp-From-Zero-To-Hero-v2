@@ -1,110 +1,85 @@
-﻿// Import classes from system namespace
-using System;
+﻿using System;
+using System.Globalization;
 
-// Holder of classes
 namespace RecipeApp
 {
-    // Here is a list of standard cooking units:
-    //    Cup	0.24 l
-    //    Gallon  3.79 l
-    //    Fluid Ounce	29.57 ml
-    //    Pint    0.47 l
-    //    Quart   0.95 l
-    //    Tablespoon  14.79 ml
-    //    Teaspoon    4.93 ml
-
-    // Holder of functions and data
     class Program
     {
-        // The less a function implements itself- the higher level it is
-        // Main function simply the application- so it is the highest level function
-        // It just consumes other functions.
+        // Here is a list of standard cooking units:
+        // Cup	0.24 l
+        // Tablespoon  14.79 ml
+        // Teaspoon    4.93 ml
 
-        // Named block of code
-        // cw + tab autocompletes to Console.WriteLine();
-        // strongly typed means that I don't need to guess what I can do with a class or a variable
-        // So, when I get errors, they will be before my application runs- in compile time.
-        // Weekly typed means that there is no check on what a function or variable cna do.
-        // We can do that with dynamic keyword: dynamic a; a.IsPerfectly.Fine().CsharpCode().
+        static double[] multipliers = {240, 14.79, 4.93};
+        static string[] units = {"cup", "tablespoon", "teaspoon"};
+
         static void Main(string[] args)
         {
-            double totalMl = PrintTeaspoonsToMl() + PrintTablespoonsToMl();
-            PrintHowMany100MlBottles(totalMl);
+            string ingredients = "1.5 cups all-purpose flour. 3.5 teaspoons baking powder. " +
+                                 "1 teaspoon salt. 1 tablespoon white sugar. 1.25 cups milk. " +
+                                 "1 egg. 3 tablespoons butter, melted";
+
+            var standardised = StandardiseRecipe(ingredients);
+            Console.WriteLine(standardised);
         }
 
-        static double PrintTeaspoonsToMl()
+        static string StandardiseRecipe(string recipe)
         {
-            var teaspoons = GetAmountFromConsole("teaspoons");
-            var mlOfTeaspoons = TeaspoonsToMl(teaspoons);
-            Print(teaspoons, "teaspoons", mlOfTeaspoons);
+            // Split(" ") - splits text by an empty space into words
+            // Words are stored into words array.
+            // array symbol is []
+            // string[] is an array of string
+            string[] words = recipe.Split(" ");
 
-            return mlOfTeaspoons;
+            // a for loop has:
+            // a beginning (int index= 0);
+            // an end (index < words.Length)
+            // a change (index = index + 1)
+            // repeatable code
+            for (int index = 0; index < words.Length; index = index + 1)
+            {
+                StandardiseCookingUnit(index, words);
+            }
+
+            // string.Join - combine parts of string into one string
+            return string.Join(" ", words);
         }
 
-        static double PrintTablespoonsToMl()
+        static void StandardiseCookingUnit(int index, string[] words)
         {
-            double tablespoons = GetAmountFromConsole("tablespoons");
-            double mlOfTablespoons = TableSpoonsToMl(tablespoons);
-            Print(tablespoons, "tablespoons", mlOfTablespoons);
+            var cookingUnit = words[index];
+            // then find the equivalent ml multiplier for that amount
+            var multiplier = FindMultiplier(cookingUnit);
+            if (multiplier == -1) return;
 
-            return mlOfTablespoons;
+            // if it is, go back 1 word to find the amount
+            var amountText = words[index - 1];
+
+            // multiply the amount from multiplier
+            // Culture invariant allows parsing numbers which has a "." as a number decimal places separator.
+            var amountMl = double.Parse(amountText, CultureInfo.InvariantCulture) * multiplier;
+            // replace the old amount with the new amount
+            words[index] = "ml";
+            // replace the old unit with the new unit
+            words[index - 1] = amountMl.ToString();
         }
 
-        static void PrintHowMany100MlBottles(double ml)
+        static double FindMultiplier(string cookingUnit)
         {
-            // 1 / 0 = error
-            // 1 / 2 = 0
-            // int / int = int
-            // 1.0 / 2 = 0.5
-            // double / int = double
-            // 1.0 + 1 = 2.0
-            // double + int = double
-            // We have bottles of 100 ml.
-            // How many bottles can we fill after the conversion?
-            // int is a whole number
-            int bottlesCount = (int)(ml / 100) + 1;
-            Console.WriteLine($"{ml:F2} can fill {bottlesCount} bottles of 100ml");
-        }
+            for (int index = 0; index < units.Length; index++)
+            {
+                // || - or
+                // When you want to compare whether the strings are equal
+                // ignoring their casing
+                // use .Equals with StringComparison.OrdinalIgnoreCase.
+                if (units[index].Equals(cookingUnit, StringComparison.OrdinalIgnoreCase) || 
+                    (units[index]+"s").Equals(cookingUnit, StringComparison.OrdinalIgnoreCase))
+                {
+                    return multipliers[index];
+                }
+            }
 
-        // GetTeaspoonsFromConsole is a lower level function.
-        // Because it implement HOW we can read a number from a console.
-        static double GetAmountFromConsole(string unit)
-        {
-            Console.WriteLine($"Please enter {unit} amount: ");
-            // variable
-            // holds data
-            // type, name, value
-            var amountText = Console.ReadLine();
-            // Floating point number with double precision.
-            double amount = double.Parse(amountText);
-
-            return amount;
-        }
-
-        static double TeaspoonsToMl(double teaspoons)
-        {
-            // 4.93m is a decimal - use it for money- for absolute accuracy- use decimal.
-            // 4.93 is double
-            // 4.93f is a float- use it when you don't plan to use math.
-            double ml = teaspoons * 4.93;
-
-            return ml;
-        }
-
-        static double TableSpoonsToMl(double teaspoons)
-        {
-            double tablespoons = teaspoons * 14.79;
-
-            return tablespoons;
-        }
-
-        static void Print(double cookingUnitAmount, string cookingUnit, double ml)
-        {
-            // string convertedDescription = teaspoonsText + " teaspoons = " + ml + " ml";
-            // $- string interpolation
-            // F2- 2 digits after decimal point.
-            string convertedDescription = $"{cookingUnitAmount} {cookingUnit} = {ml:F2} ml";
-            Console.WriteLine(convertedDescription);
+            return -1;
         }
     }
 }
