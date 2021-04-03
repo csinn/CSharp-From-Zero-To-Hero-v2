@@ -1,15 +1,177 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{97C2C66B-7A7A-4549-BC48-643938A17678}"
-EndProject
-Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7B4CEAD3-9259-48FC-8FE9-D1106B5A8C3E}
-	EndGlobalSection
-EndGlobal
+using System;
+
+namespace Homework2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] numbers = new int[] { 10, 5, 9, 87, 56 };
+            //SortArray(numbers);
+            //AddElementAtStart(numbers, 12);
+            // AddElementAtEnd(numbers,35);
+            // AddElementAtAnyPosition(numbers, 33, 4);
+            //RemoveElementAtStart(numbers);
+            //RemoveElementAtEnd(numbers);
+            // RemoveElementAtPositon(numbers, 3);
+            LoginInfo("KIN", "21lome");
+
+
+        }
+
+        private static void SortArray(int[] numbers)
+        {
+            int temp = 0;
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                for (int j = i + 1; j < numbers.Length; j++)
+                {
+                    if (numbers[i] > numbers[j])
+                    {
+                        temp = numbers[i];
+                        numbers[i] = numbers[j];
+                        numbers[j] = temp;
+                    }
+                }
+            }
+            Console.WriteLine("Sorted array");
+            foreach (int number in numbers)
+            {
+
+                Console.Write(number + " ");
+            }
+        }
+        private static void AddElementAtEnd(int[] numbers, int newNumber)
+        {
+            int[] newNumbers = new int[numbers.Length + 1];
+            int index = numbers.Length;
+            for (int i = 0; i < numbers.Length + 1; i++)
+            {
+                if (i == index)
+                {
+                    newNumbers[i] = newNumber;
+                }
+                else
+                {
+                    newNumbers[i] = numbers[i];
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("Add element at the end of array");
+            for (int i = 0; i < numbers.Length + 1; i++)
+            {
+                Console.Write(newNumbers[i] + " ");
+            }
+        }
+
+        private static void AddElementAtStart(int[] numbers, int newNumber)
+        {
+            int[] newNumbers = new int[numbers.Length + 1];
+            int index = 0;
+            for (int i = 0; i < numbers.Length + 1; i++)
+            {
+                if (i == index)
+                {
+                    newNumbers[i] = newNumber;
+                }
+                else
+                {
+                    newNumbers[i] = numbers[i - 1];
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("Add element at the beginning of array");
+            for (int i = 0; i < numbers.Length + 1; i++)
+            {
+                Console.Write(newNumbers[i] + " ");
+            }
+        }
+
+        private static void AddElementAtAnyPosition(int[] numbers, int newNumber, int position)
+        {
+            int[] newNumbers = new int[numbers.Length + 1];
+            for (int i = 0; i < numbers.Length + 1; i++)
+            {
+                if (i == position)
+                {
+                    newNumbers[i] = newNumber;
+                }
+                else if (i < position)
+                {
+                    newNumbers[i] = numbers[i];
+                }
+                else
+                {
+                    newNumbers[i] = numbers[i - 1];
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("Add element at the the position you want in the array");
+            for (int i = 0; i < numbers.Length + 1; i++)
+            {
+                Console.Write(newNumbers[i] + " ");
+            }
+        }
+        private static void RemoveElementAtStart(int[] numbers)
+        {
+            int[] newArray = new int[numbers.Length - 1];
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                newArray[i] = numbers[i + 1];
+            }
+            Console.WriteLine();
+            Console.WriteLine("Remove first element in array");
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                Console.Write(newArray[i] + " ");
+            }
+        }
+
+        private static void RemoveElementAtEnd(int[] numbers)
+        {
+            int[] newArray = new int[numbers.Length - 1];
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                newArray[i] = numbers[i];
+            }
+            Console.WriteLine();
+            Console.WriteLine("Remove last element in array");
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                Console.Write(newArray[i] + " ");
+            }
+        }
+        private static void RemoveElementAtPositon(int[] numbers, int index)
+        {
+            int[] newArray = new int[numbers.Length - 1];
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                if (i < index)
+                {
+                    newArray[i] = numbers[i];
+                }
+                if (i >= index)
+                {
+                    newArray[i] = numbers[i + 1];
+                }
+
+            }
+            Console.WriteLine();
+            Console.WriteLine("Remove element at any posiion in array");
+            for (int i = 0; i < numbers.Length - 1; i++)
+            {
+                Console.Write(newArray[i] + " ");
+            }
+        }
+        static void LoginInfo(string name, string password)
+        {
+            string myName = "Kin";
+            string pwd = "21Lome";
+            if (myName.Equals(name, StringComparison.OrdinalIgnoreCase) && pwd.Equals(password, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Loggin in!");
+            }
+        }
+    }
+}
