@@ -3,11 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CredentialsTests", "CredentialsTests\CredentialsTests.csproj", "{0EE3B483-9010-49F3-B69A-1E6308266ACE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Credentials", "Credentials\Credentials.csproj", "{EB44058B-5913-4B98-9D54-BFFDFFB5202A}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B4CEAD3-9259-48FC-8FE9-D1106B5A8C3E}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB44058B-5913-4B98-9D54-BFFDFFB5202A}.Any|Any CPU.ActiveCfg = Any|Any CPU
+		{EB44058B-5913-4B98-9D54-BFFDFFB5202A}.Any|Any CPU.Build.0 = Any|Any CPU
+		{0EE3B483-9010-49F3-B69A-1E6308266ACE}.Any|Any CPU.ActiveCfg = Any|Any CPU
+		{0EE3B483-9010-49F3-B69A-1E6308266ACE}.Any|Any CPU.Build.0 = Any|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Any|Any CPU = Any|Any CPU
 	EndGlobalSection
 EndGlobal
