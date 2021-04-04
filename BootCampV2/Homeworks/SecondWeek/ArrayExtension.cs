@@ -27,24 +27,6 @@ namespace BootCampV2
             return array;
         }
 
-
-        /// <summary>
-        /// Swap two elements with each other
-        /// <para> return: modified Array </para> 
-        /// </summary>
-        public static int[] SwapElements(int[] array, int firstIndex, int secondIndex)
-        {
-            if (firstIndex >= array.Length || firstIndex < 0 ||
-                secondIndex >= array.Length || secondIndex < 0)
-                throw new ArgumentOutOfRangeException();
-
-            int temp = array[firstIndex];
-            array[firstIndex] = array[secondIndex];
-            array[secondIndex] = temp;
-
-            return array;
-        }
-
         /// <summary>
         /// Insert an element at the start of the array
         /// <para> return: modified Array </para> 
@@ -52,14 +34,32 @@ namespace BootCampV2
 
         public static T[] AppendToStart<T>(T[] array, T element)
         {
-            T[] expandedArray = new T[array.Length + 1];
+            T[] modifiedArray = InsertAt<T>(array, element, 0);
 
-            for (int i = 0; i < array.Length; i++)
-                expandedArray[i + 1] = array[i];
+            return modifiedArray;
+        }
 
-            expandedArray[0] = element;
+        /// <summary>
+        /// Remove the first element of the array
+        /// <para> return: modified Array </para> 
+        /// </summary>
 
-            return expandedArray;
+        public static T[] RemoveFirst<T>(T[] array)
+        {
+            T[] modifiedArray = RemoveAt<T>(array, 0);
+
+            return modifiedArray;
+        }
+
+        /// <summary>
+        /// Remove the last element of the array
+        /// <para>´return: modified Array </para> 
+        /// </summary>
+        public static T[] RemoveLast<T>(T[] array)
+        {
+            T[] modifiedArray = RemoveAt<T>(array, array.Length - 1);
+
+            return modifiedArray;
         }
 
         /// <summary>
@@ -73,54 +73,19 @@ namespace BootCampV2
                 throw new ArgumentOutOfRangeException();
 
 
-            T[] expandedArray = new T[array.Length + 1];
+            T[] modifiedArray = new T[array.Length + 1];
 
             for (int i = 0; i < array.Length; i++)
             {
                 if (i < index)
-                    expandedArray[i] = array[i];
+                    modifiedArray[i] = array[i];
                 else
-                    expandedArray[i + 1] = array[i];
+                    modifiedArray[i + 1] = array[i];
             }
 
-            expandedArray[index] = element;
+            modifiedArray[index] = element;
 
-            return expandedArray;
-        }
-
-        /// <summary>
-        /// Remove the first element of the array
-        /// <para> return: modified Array </para> 
-        /// </summary>
-
-        public static T[] RemoveFirst<T>(T[] array)
-        {
-            if (array.Length < 1)
-                throw new ArgumentException("The length of the array has to be greater than 0");
-
-            T[] expandedArray = new T[array.Length - 1];
-
-            for (int i = 1; i < array.Length; i++)
-                expandedArray[i - 1] = array[i];
-
-            return expandedArray;
-        }
-
-        /// <summary>
-        /// Remove the last element of the array
-        /// <para>´return: modified Array </para> 
-        /// </summary>
-        public static T[] RemoveLast<T>(T[] array)
-        {
-            if (array.Length < 1)
-                throw new ArgumentException("The length of the array has to be greater than 0");
-
-            T[] expandedArray = new T[array.Length - 1];
-
-            for (int i = 1; i < array.Length - 1; i++)
-                expandedArray[i] = array[i];
-
-            return expandedArray;
+            return modifiedArray;
         }
 
         /// <summary>
@@ -130,20 +95,29 @@ namespace BootCampV2
 
         public static T[] RemoveAt<T>(T[] array, int index)
         {
-            if (index >= array.Length || index < 0)
+            if (index >= array.Length || index < 0 || array == null)
                 throw new ArgumentOutOfRangeException();
 
-            T[] expandedArray = new T[array.Length - 1];
+            T[] modifiedArray = new T[array.Length - 1];
 
             for (int i = 0; i < array.Length; i++)
             {
                 if (i < index)
-                    expandedArray[i] = array[i];
+                    modifiedArray[i] = array[i];
                 else if (i > index)
-                    expandedArray[i - 1] = array[i];
+                    modifiedArray[i - 1] = array[i];
             }
 
-            return expandedArray;
+            return modifiedArray;
+        }
+
+        private static int[] SwapElements(int[] array, int firstIndex, int secondIndex)
+        {
+            int temp = array[firstIndex];
+            array[firstIndex] = array[secondIndex];
+            array[secondIndex] = temp;
+
+            return array;
         }
     }
 }
