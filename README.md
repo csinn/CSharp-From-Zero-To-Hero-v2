@@ -22,13 +22,22 @@ Live lessons start at **6PM UTC, Sunday**: 2h live-coding and then 1h consultati
 There is a helpful community with thousands of members to help you learn and answer your questions. 
 Join us and find answers to questions that bother you: [C# Inn on Discord](https://discord.gg/rCMKcUU)
 
+### Wiki
+
+Lesson theory can be found in the [boot camp wiki](https://github.com/csinn/CSharp-From-Zero-To-Hero-v2/wiki).
+
+#### Homework & Questions
+
+Every lesson wiki ends with a homework and questions section.
+
 ### Checklist
 
 Before you start, make sure you have the following:
-[Visual Studio Community Edition]( https://visualstudio.microsoft.com/vs/community/) with the configuration from below (numbers are for each month features. F stands for future- as in maybe we will use it).
-Also git: https://git-scm.com/downloads
-And account on GitHub: https://github.com/
+- [Visual Studio Community Edition]( https://visualstudio.microsoft.com/vs/community/) with the configuration from below (numbers are for each month features. F stands for future- as in maybe we will use it).
+- Git: https://git-scm.com/downloads
+- Account on GitHub: https://github.com/
 
 ![Required Setup](res/Required-Setup.png)
 ___
+Never stop fighting, trying. Fail, rise and succeed.
 ![Boot Camp Banner](res/kaisi_banner.png)
