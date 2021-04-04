@@ -19,22 +19,22 @@ namespace ControlFlowArraysAndStrings
             Print(fruits);
 
             // Sort method.
-            Console.WriteLine("\nTesting the Sort method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the Sort method:");
             string[] sortedFruits = Sort(fruits);
             Print(sortedFruits);
 
             // AddElementToStart method.
-            Console.WriteLine("\nTesting the AddElementToStart method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the AddElementToStart method:");
             string[] addWatermelon = AddElementToStart(fruits, "watermelon");
             Print(addWatermelon);
 
             // AddElementToEnd method.
-            Console.WriteLine("\nTesting the AddElementToEnd method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the AddElementToEnd method:");
             string[] addKiwi = AddElementToEnd(fruits, "kiwi");
             Print(addKiwi);
 
             // AddElementAnywhere method.
-            Console.WriteLine("\nTesting the AddElementAnywhere method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the AddElementAnywhere method:");
             string[] addLime = AddElementAnywhere(fruits, 3, "lime");
             Print(addLime);
 
@@ -45,17 +45,17 @@ namespace ControlFlowArraysAndStrings
             Print(addLime3);
 
             // RemoveElementFromStart method.
-            Console.WriteLine("\nTesting the RemoveElementFromStart method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the RemoveElementFromStart method:");
             string[] removeBanana = RemoveElementFromStart(fruits);
             Print(removeBanana);
 
             // RemoveElementFromEnd method.
-            Console.WriteLine("\nTesting the RemoveElementFromEnd method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the RemoveElementFromEnd method:");
             string[] removeApricot = RemoveElementFromEnd(fruits);
             Print(removeApricot);
 
             // RemoveElementFromAnywhere method.
-            Console.WriteLine("\nTesting the RemoveElementFromAnywhere method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the RemoveElementFromAnywhere method:");
             string[] removePineapple = RemoveElementFromAnywhere(fruits, 3);
             Print(removePineapple);
 
@@ -66,7 +66,7 @@ namespace ControlFlowArraysAndStrings
             Print(removeEnd);
 
             // Login method.
-            Console.WriteLine("\nTesting the Login method:");
+            Console.WriteLine($"{Environment.NewLine}Testing the Login method:");
             Login();
         }
 
@@ -84,7 +84,7 @@ namespace ControlFlowArraysAndStrings
                 for (int j = 0; j < sorted.Length - i - 1; j++)
                 {
                     // Check if CompareTo() returns 1, if it does, swap positions.
-                    if (sorted[j].CompareTo(sorted[j + 1]) == 1)
+                    if (sorted[j].CompareTo(sorted[j + 1]) < 0)
                     {
                         string shiftedValue = sorted[j];
                         sorted[j] = sorted[j + 1];
@@ -100,7 +100,7 @@ namespace ControlFlowArraysAndStrings
         /// Copies the specified array and returns a new array.
         /// </summary>
         /// <param name="array">The array to be copied.</param>
-        /// <returns>A copy of the specified array.</returns>
+        /// <returns>A copy of the array.</returns>
         public static string[] Copy(string[] array)
         {
             string[] newArray = new string[array.Length];
@@ -127,7 +127,7 @@ namespace ControlFlowArraysAndStrings
                 }
                 else
                 {
-                    Console.Write($"{array[i]}\n");
+                    Console.Write($"{array[i]}{Environment.NewLine}");
                 }
             }
         }
@@ -141,16 +141,7 @@ namespace ControlFlowArraysAndStrings
         /// <returns>A new array with a value added to the first index.</returns>
         public static string[] AddElementToStart(string[] array, string value)
         {
-            string[] newArray = new string[array.Length + 1];
-
-            newArray[0] = value;
-
-            for (int i = 1; i < newArray.Length; i++)
-            {
-                newArray[i] = array[i - 1];
-            }
-
-            return newArray;
+            return AddElementAnywhere(array, 0, value);
         }
 
         /// <summary>
@@ -162,16 +153,7 @@ namespace ControlFlowArraysAndStrings
         /// <returns>The new array with a value added to the last index.</returns>
         public static string[] AddElementToEnd(string[] array, string value)
         {
-            string[] newArray = new string[array.Length + 1];
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                newArray[i] = array[i];
-            }
-
-            newArray[newArray.Length - 1] = value;
-
-            return newArray;
+            return AddElementAnywhere(array, array.Length, value);
         }
 
         /// <summary>
@@ -213,14 +195,7 @@ namespace ControlFlowArraysAndStrings
         /// <returns>A new array with a value removed from the start.</returns>
         public static string[] RemoveElementFromStart(string[] array)
         {
-            string[] newArray = new string[array.Length - 1];
-
-            for (int i = 1; i < array.Length; i++)
-            {
-                newArray[i - 1] = array[i];
-            }
-
-            return newArray;
+            return RemoveElementFromAnywhere(array, 0);
         }
 
         /// <summary>
@@ -230,21 +205,14 @@ namespace ControlFlowArraysAndStrings
         /// <returns>A new array with a value removed from the end.</returns>
         public static string[] RemoveElementFromEnd(string[] array)
         {
-            string[] newArray = new string[array.Length - 1];
-
-            for (int i = 0; i < newArray.Length; i++)
-            {
-                newArray[i] = array[i];
-            }
-
-            return newArray;
+            return RemoveElementFromAnywhere(array, array.Length - 1);
         }
 
         /// <summary>
         /// Removes the value at the specified index from the specified array.
         /// </summary>
         /// <param name="array">The array to be changed.</param>
-        /// <param name="index">The index to be removed.</param>
+        /// <param name="index">The index of the value to be removed.</param>
         /// <returns>A new array with a value removed.</returns>
         public static string[] RemoveElementFromAnywhere(string[] array, int index)
         {
@@ -331,7 +299,7 @@ namespace ControlFlowArraysAndStrings
                                             StringComparison.OrdinalIgnoreCase);
             }
 
-            if (credentialType.Equals("password", StringComparison.OrdinalIgnoreCase))
+            if (credentialType.Equals("password"))
             {
                 string hiddenPassword = "Password123";
                 isValid = credential.Equals(hiddenPassword);
