@@ -1,5 +1,6 @@
 ﻿using HW3.Exceptions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace HW3
@@ -34,13 +35,15 @@ namespace HW3
 
         private static void ConsoleRegisterAccount()
         {
+            Dictionary<string, string> users;
             try
             {
-                var users = IO.Read.UserCredentials(usersFile);
+                users = IO.Read.UserCredentials(usersFile);
             }
-            catch (Exception)
+            catch (UsersNotFoundException ex)
             {
-                throw;
+                Console.WriteLine($"Couldn't load user credentials. Please contact @Kaisinel: {ex.Message}");
+                return;
             }
 
             do
@@ -54,11 +57,14 @@ namespace HW3
                     try
                     {
                         IO.Write.AppendCredentials(usersFile, username, password);
+                        Console.WriteLine("Useraccount created! You may login now.");
                     }
                     catch (FileNotFoundException e)
                     {
                         throw new UsersNotFoundException(e.Message, usersFile);
                     }
+
+                    return;
                 }
 
                 Console.WriteLine("Username already exists! Please try again.");
@@ -103,20 +109,14 @@ namespace HW3
                         Console.WriteLine($"{keyPressed} is not an option. Try again!");
                         break;
                 };
-            } while (loggedIn);
+            } while (!loggedIn);
         }
 
         private static bool VerifyCredentials(string username, string password)
         {
-            try
-            {
+
                 var users = IO.Read.UserCredentials(usersFile);
                 return users.ContainsKey(username) && users[username].Equals(password);
-            }
-            catch (FileNotFoundException e)
-            {
-                throw new UsersNotFoundException(e.Message, usersFile);
-            }
         }
     }
 }

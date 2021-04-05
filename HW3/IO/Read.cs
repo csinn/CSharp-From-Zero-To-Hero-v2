@@ -14,22 +14,33 @@ namespace HW3.IO
         {
             Dictionary<string, string> users = new Dictionary<string, string>();
 
-            using (var fs = new FileStream(filename, FileMode.Open))
+            try
             {
-                using (var sr = new StreamReader(fs))
+                using (var fs = new FileStream(filename, FileMode.Open))
                 {
-                    while (!sr.EndOfStream)
+                    using (var sr = new StreamReader(fs))
                     {
-                        string[] splittedline = sr.ReadLine().Split("\t");
-
-                        if (users.ContainsKey(splittedline[0]))
+                        while (!sr.EndOfStream)
                         {
-                            throw new DuplicateUserCredentialsException("Error: Duplicate userentry detected!");
-                        }
+                            string line = sr.ReadLine();
 
-                        users.Add(splittedline[0], splittedline[1]);
+                            if (string.IsNullOrWhiteSpace(line)) continue;
+
+                            string[] splittedline = line.Split("\t");
+
+                            if (users.ContainsKey(splittedline[0]))
+                            {
+                                throw new DuplicateUserCredentialsException("Error: Duplicate userentry detected!");
+                            }
+
+                            users.Add(splittedline[0], splittedline[1]);
+                        }
                     }
                 }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new UsersNotFoundException(ex.Message, filename);
             }
 
             return users;
