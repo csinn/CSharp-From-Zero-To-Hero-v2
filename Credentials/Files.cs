@@ -28,5 +28,20 @@ namespace Credentials
         writer.Write(data);
       }
     }
+
+    public static void WriteAllLines(string file, string[] data)
+    {
+      if (data.Length == 0) WriteAllText(file, string.Empty);
+
+      foreach (var line in data) WriteLine(file, line, true);
+    }
+
+    public static void WriteLine(string file, string data, bool append = false)
+    {
+      using (var writer = new StreamWriter(file, append))
+      {
+        writer.WriteLine(data);
+      }
+    }
   }
 }
