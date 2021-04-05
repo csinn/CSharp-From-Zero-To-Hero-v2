@@ -85,7 +85,7 @@ namespace Array_Manipulation
 
         static void RemoveFromStart(int[] arr)
         {
-            int newLength = arr.Length - 1;
+            int newLength = arr.Length - 1;     
             int[] arrFinal = new int[newLength];
 
             for (int i = arrFinal.Length - 1; i <= 0; i--)
