@@ -9,14 +9,24 @@ namespace Credentials
     {
       using (var reader = new StreamReader(file))
       {
-        return reader.ReadToEnd().Trim();
+        var content = reader.ReadToEnd().Trim();
+        return content;
       }
     }
 
     public static string[] ReadAllLines(string file)
     {
       var content = ReadAllText(file);
-      return content.Split($"{Environment.NewLine}");
+      var lines = content.Split($"{Environment.NewLine}");
+      return lines;
+    }
+
+    public static void WriteAllText(string file, string data)
+    {
+      using (var writer = new StreamWriter(file))
+      {
+        writer.Write(data);
+      }
     }
   }
 }
