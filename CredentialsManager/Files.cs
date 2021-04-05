@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Credentials
+namespace CredentialsManager
 {
   public static class Files
   {

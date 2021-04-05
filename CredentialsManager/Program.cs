@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Credentials
+namespace CredentialsManager
 {
   internal class Program
   {

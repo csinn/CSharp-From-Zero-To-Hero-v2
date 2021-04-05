@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Credentials
+namespace CredentialsManager
 {
   public class DuplicateUserCredentialsException : Exception
   {

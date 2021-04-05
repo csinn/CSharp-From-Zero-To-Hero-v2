@@ -1,6 +1,6 @@
 using System.IO;
 using System.Linq;
-using Credentials;
+using CredentialsManager;
 using FluentAssertions;
 using Xunit;
 

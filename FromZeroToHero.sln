@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CredentialsTests", "CredentialsTests\CredentialsTests.csproj", "{0EE3B483-9010-49F3-B69A-1E6308266ACE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Credentials", "Credentials\Credentials.csproj", "{EB44058B-5913-4B98-9D54-BFFDFFB5202A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CredentialsManager", "CredentialsManager\CredentialsManager.csproj", "{EB44058B-5913-4B98-9D54-BFFDFFB5202A}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
