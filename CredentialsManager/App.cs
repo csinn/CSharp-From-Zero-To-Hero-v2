@@ -11,6 +11,7 @@ namespace CredentialsManager
 
     private const string Header = "Credentials Manager";
     private const string LoginMessage = "Welcome";
+    private const string FailedLoginMessage = "Invalid credentials!";
     
     private static bool _isExitCalled;
 
@@ -115,10 +116,9 @@ namespace CredentialsManager
       var userPassword = PromptString("Password: ");
 
       var isLoginSuccessful = Credentials.Login(userName, userPassword);
-      if (isLoginSuccessful)
-      {
-        Console.WriteLine(LoginMessage);
-      }
+      var statusMessage = isLoginSuccessful ? LoginMessage : FailedLoginMessage;
+
+      Console.WriteLine(statusMessage);
     }
 
     private static void Register()
