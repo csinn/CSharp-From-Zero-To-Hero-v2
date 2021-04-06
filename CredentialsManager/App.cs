@@ -11,6 +11,8 @@ namespace CredentialsManager
 
     private const string Header = "Credentials Manager";
     private const string LoginMessage = "Welcome";
+    
+    private static bool _isExitCalled;
 
     static App()
     {
@@ -21,7 +23,7 @@ namespace CredentialsManager
 
     public static void Run()
     {
-      while (true)
+      while (!_isExitCalled)
       {
         try
         {
@@ -34,16 +36,16 @@ namespace CredentialsManager
           Console.WriteLine(ex.Message);
           break;
         }
-        catch (UserNameIsTakenException ex)
-        {
-          Console.WriteLine(ex.Message);
-          Pause("Press ENTER to continue...");
-        }
         catch (DuplicateUserCredentialsException ex)
         {
           Console.WriteLine(ex.Message);
           Pause("Press ENTER to exit...");
           break;
+        }
+        catch (UserNameIsTakenException ex)
+        {
+          Console.WriteLine(ex.Message);
+          Pause();
         }
       }
     }
@@ -92,13 +94,13 @@ namespace CredentialsManager
         var keyToIndex = Array.IndexOf(MenuKeys, pressedKey);
 
         var isValidKey = keyToIndex >= 0 && keyToIndex < MenuActions.Length;
-        if (isValidKey)
-        {
-          ConsoleInit(MenuItems[keyToIndex]);
-          Invoke(MenuActions[keyToIndex]);
-          Pause();
-          break;
-        }
+        if (!isValidKey) continue;
+        
+        ConsoleInit(MenuItems[keyToIndex]);
+        Invoke(MenuActions[keyToIndex]);
+        
+        Pause();
+        break;
       } while (pressedKey != MenuKeys[exitKeyIndex]);
     }
     
@@ -129,7 +131,7 @@ namespace CredentialsManager
 
     private static void Exit()
     {
-      Environment.Exit(0);
+      _isExitCalled = true;
     }
 
     private static string PromptString(string message, bool isKeyVisible = false)

@@ -12,9 +12,10 @@ namespace CredentialsManager
     public static void Initialize()
     {
       _credentials = GetCredentials();
+      
       Array.Sort(_credentials, (currentCredential, nextCredential)
         => string.CompareOrdinal(currentCredential[0], nextCredential[0]));
-
+      
       CheckForDuplicates();
     }
 
@@ -25,7 +26,7 @@ namespace CredentialsManager
 
       for (var index = 0; index < credentials.Length; index++)
       {
-        credentials[index] = ConvertToCredential(content[index]);
+        credentials[index] = CreateCredential(content[index]);
       }
 
       return credentials;
@@ -45,17 +46,38 @@ namespace CredentialsManager
       }
     }
 
+    public static bool Login(string userName, string userPassword)
+    {
+      UpdateCredentials();
+
+      var credential = CreateCredential(userName, userPassword);
+      foreach (var storedCredential in _credentials)
+      {
+        if (IsCredentialEqual(storedCredential, credential))
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     public static void Register(string userName, string userPassword)
     {
-      _credentials = GetCredentials();
+      UpdateCredentials();
 
-      var credential = new[] { userName, userPassword };
+      var credential = CreateCredential(userName, userPassword);
       if (IsUserNameTaken(credential))
       {
         throw new UserNameIsTakenException("User name is taken!");
       }
 
-      Files.WriteLine(CredentialsFile, ConvertToString(credential), true);
+      Files.WriteLine(CredentialsFile, CreateString(credential), true);
+    }
+
+    private static void UpdateCredentials()
+    {
+      _credentials = GetCredentials();
     }
 
     private static bool IsUserNameEqual(string[] left, string[] right)
@@ -76,35 +98,26 @@ namespace CredentialsManager
       return false;
     }
 
-    private static string ConvertToString(string[] credential)
+    private static string CreateString(string[] credential)
     {
       return string.Join(FieldDelimiter, credential);
     }
 
-    private static string[] ConvertToCredential(string input)
+    private static string[] CreateCredential(string input)
     {
       return input.Split(FieldDelimiter);
     }
 
-    public static bool Login(string userName, string userPassword)
+    private static string[] CreateCredential(string userName, string userPassword)
     {
-      _credentials = GetCredentials();
-
-      var credential = new[] { userName, userPassword };
-      foreach (var storedCredential in _credentials)
-      {
-        if (IsCredentialEqual(storedCredential, credential))
-        {
-          return true;
-        }
-      }
-
-      return false;
+      return new[] {userName, userPassword};
     }
 
     private static bool IsCredentialEqual(string[] left, string[] right)
     {
-      return left[0].Equals(right[0]) && left[1].Equals(right[1]);
+      var isPasswordEqual = left[1].Equals(right[1]);
+      
+      return IsUserNameEqual(left, right) && isPasswordEqual;
     }
   }
 }
