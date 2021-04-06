@@ -7,13 +7,15 @@ namespace CredentialsManager
 {
   public static class Files
   {
+    private static readonly string[] Delimiters = {"\r\n", "\n"};
+    
     public static string ReadAllText(string file)
     {
       try
       {
         using (var reader = new StreamReader(file))
         {
-          return reader.ReadToEnd().Trim();
+          return reader.ReadToEnd();
         }
       }
       catch (Exception ex) when (ex is ArgumentException
@@ -29,7 +31,7 @@ namespace CredentialsManager
     public static string[] ReadAllLines(string file)
     {
       var content = ReadAllText(file);
-      return content.Split($"{Environment.NewLine}");
+      return content.Split(Delimiters, StringSplitOptions.None);
     }
 
     public static void WriteAllText(string file, string data)

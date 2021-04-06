@@ -21,10 +21,10 @@ namespace CredentialsTests
     }
     
     [Theory]
-    [InlineData(@"Files/Input/read1.txt", "Test\r\nLine2")]
-    [InlineData(@"Files/Input/read2.txt", "Test\nLine2")]
+    [InlineData(@"Files/Input/read1-CRLF.txt", "Test\r\nLine2")]
+    [InlineData(@"Files/Input/read2-LF.txt", "Test\nLine2")]
     [InlineData(@"Files/Input/empty.txt", "")]
-    [InlineData(@"Files/Input/emptylines.txt", "")]
+    [InlineData(@"Files/Input/empty-lines.txt", "\r\n\r\n\r\n\r\n")]
     public void ReadAllText_Should_Return_Expected_Output(string file, string expected)
     {
       var actual = Files.ReadAllText(file);
@@ -33,9 +33,10 @@ namespace CredentialsTests
     }
 
     [Theory]
-    [InlineData(@"Files/Input/read1.txt", new[] { "Test", "Line2" })]
+    [InlineData(@"Files/Input/read1-CRLF.txt", new[] { "Test", "Line2" })]
+    [InlineData(@"Files/Input/read2-LF.txt", new[] { "Test", "Line2" })]
     [InlineData(@"Files/Input/empty.txt", new[] { "" })]
-    [InlineData(@"Files/Input/emptylines.txt", new[] { "" })]
+    [InlineData(@"Files/Input/empty-lines.txt", new[] { "", "", "", "", "" })]
     public void ReadAllLines_Should_Return_Expected_Output(string file, string[] expected)
     {
       var actual = Files.ReadAllLines(file);
@@ -56,8 +57,8 @@ namespace CredentialsTests
     [Theory]
     [InlineData(@"Files/Output/expected1.txt", "Test.w\r\nLine2.w")]
     [InlineData(@"Files/Output/expected_empty.txt", "")]
-    [InlineData(@"Files/Output/expected_empty2.txt", "\r\n\r\n\r\n")]
-    [InlineData(@"Files/Output/expected_empty_3.txt", "\n\n\n")]
+    [InlineData(@"Files/Output/expected_empty-CRLF.txt", "\r\n\r\n\r\n")]
+    [InlineData(@"Files/Output/expected_empty-LF.txt", "\n\n\n")]
     public void WriteAllText_Should_Create_Expected_Output(string file, string expected)
     {
       File.Delete(file);
