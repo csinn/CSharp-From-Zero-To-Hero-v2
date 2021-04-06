@@ -51,7 +51,7 @@ namespace CredentialsManager
       var credential = new[] { userName, userPassword };
       if (IsUserNameTaken(credential))
       {
-        throw new DuplicateUserCredentialsException("User name is taken!");
+        throw new UserNameIsTakenException("User name is taken!");
       }
 
       Files.WriteLine(CredentialsFile, ConvertToString(credential), true);
