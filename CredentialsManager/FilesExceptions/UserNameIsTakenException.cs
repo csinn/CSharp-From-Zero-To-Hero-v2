@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CredentialsManager
+namespace CredentialsManager.FilesExceptions
 {
 #pragma warning disable RCS1194 // Implement exception constructors.
 

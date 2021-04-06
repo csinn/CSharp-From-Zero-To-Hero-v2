@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace CredentialsTests
 {
@@ -7,6 +8,7 @@ namespace CredentialsTests
     [Fact]
     public void Test2()
     {
+      throw new NotImplementedException();
     }
   }
 }

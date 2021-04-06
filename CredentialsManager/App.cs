@@ -1,21 +1,22 @@
 ﻿using System;
+using CredentialsManager.FilesExceptions;
 
 namespace CredentialsManager
 {
   public static class App
   {
-    private static readonly string[] _menuItems;
-    private static readonly Action[] _menuActions;
-    private static readonly ConsoleKey[] _menuKeys;
+    private static readonly string[] MenuItems;
+    private static readonly Action[] MenuActions;
+    private static readonly ConsoleKey[] MenuKeys;
 
     private const string Header = "Credentials Manager";
     private const string LoginMessage = "Welcome";
 
     static App()
     {
-      _menuItems = GetMenuItems();
-      _menuActions = GetMenuActions();
-      _menuKeys = GetMenuKeys();
+      MenuItems = GetMenuItems();
+      MenuActions = GetMenuActions();
+      MenuKeys = GetMenuKeys();
     }
 
     public static void Run()
@@ -27,6 +28,11 @@ namespace CredentialsManager
           Credentials.Initialize();
           PrintMenu();
           GetUserInput();
+        }
+        catch (MyFileNotFoundException ex)
+        {
+          Console.WriteLine(ex.Message);
+          break;
         }
         catch (UserNameIsTakenException ex)
         {
@@ -54,7 +60,7 @@ namespace CredentialsManager
 
     private static ConsoleKey[] GetMenuKeys()
     {
-      return new ConsoleKey[] { ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3 };
+      return new[] { ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3 };
     }
 
     private static void ConsoleInit(string header)
@@ -69,9 +75,9 @@ namespace CredentialsManager
     {
       ConsoleInit(Header);
 
-      for (var index = 0; index < _menuItems.Length; index++)
+      for (var index = 0; index < MenuItems.Length; index++)
       {
-        var item = $"{index + 1}. {_menuItems[index]}";
+        var item = $"{index + 1}. {MenuItems[index]}";
         Console.WriteLine(item);
       }
     }
@@ -79,23 +85,28 @@ namespace CredentialsManager
     private static void GetUserInput()
     {
       ConsoleKey pressedKey;
-      var exitKeyIndex = Array.IndexOf(_menuItems, "Exit");
+      var exitKeyIndex = Array.IndexOf(MenuItems, "Exit");
       do
       {
         pressedKey = Console.ReadKey(true).Key;
-        var keyToIndex = Array.IndexOf(_menuKeys, pressedKey);
+        var keyToIndex = Array.IndexOf(MenuKeys, pressedKey);
 
-        var isValidKey = keyToIndex >= 0 && keyToIndex < _menuActions.Length;
+        var isValidKey = keyToIndex >= 0 && keyToIndex < MenuActions.Length;
         if (isValidKey)
         {
-          ConsoleInit(_menuItems[keyToIndex]);
-          Invoke(_menuActions[keyToIndex]);
+          ConsoleInit(MenuItems[keyToIndex]);
+          Invoke(MenuActions[keyToIndex]);
           Pause();
+          break;
         }
-        return;
-      } while (pressedKey != _menuKeys[exitKeyIndex]);
+      } while (pressedKey != MenuKeys[exitKeyIndex]);
     }
-
+    
+    private static void Invoke(Action action)
+    {
+      action();
+    }
+    
     private static void Login()
     {
       var userName = PromptString("Username: ", true);
@@ -119,11 +130,6 @@ namespace CredentialsManager
     private static void Exit()
     {
       Environment.Exit(0);
-    }
-
-    private static void Invoke(Action action)
-    {
-      action();
     }
 
     private static string PromptString(string message, bool isKeyVisible = false)
