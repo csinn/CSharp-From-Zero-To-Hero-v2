@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Security;
+using CredentialsManager.FilesExceptions;
 
 namespace CredentialsManager
 {
@@ -7,9 +9,20 @@ namespace CredentialsManager
   {
     public static string ReadAllText(string file)
     {
-      using (var reader = new StreamReader(file))
+      try
       {
-        return reader.ReadToEnd().Trim();
+        using (var reader = new StreamReader(file))
+        {
+          return reader.ReadToEnd().Trim();
+        }
+      }
+      catch (Exception ex) when (ex is ArgumentException
+                              || ex is ArgumentNullException
+                              || ex is FileNotFoundException
+                              || ex is DirectoryNotFoundException
+                              || ex is IOException)
+      {
+        throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
       }
     }
 
@@ -21,9 +34,22 @@ namespace CredentialsManager
 
     public static void WriteAllText(string file, string data)
     {
-      using (var writer = new StreamWriter(file))
+      try
       {
-        writer.Write(data);
+        using (var writer = new StreamWriter(file))
+        {
+          writer.Write(data);
+        }
+      }
+      catch (Exception ex) when (ex is UnauthorizedAccessException 
+                              || ex is ArgumentException 
+                              || ex is ArgumentNullException
+                              || ex is DirectoryNotFoundException
+                              || ex is PathTooLongException
+                              || ex is IOException
+                              || ex is SecurityException) 
+      {
+        throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
       }
     }
 
@@ -42,9 +68,22 @@ namespace CredentialsManager
 
     public static void WriteLine(string file, string data, bool append = false)
     {
-      using (var writer = new StreamWriter(file, append))
+      try
       {
-        writer.WriteLine(data);
+        using (var writer = new StreamWriter(file, append))
+        {
+          writer.WriteLine(data);
+        }
+      }
+      catch (Exception ex) when (ex is UnauthorizedAccessException 
+                              || ex is ArgumentException 
+                              || ex is ArgumentNullException
+                              || ex is DirectoryNotFoundException
+                              || ex is PathTooLongException
+                              || ex is IOException
+                              || ex is SecurityException) 
+      {
+        throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
       }
     }
   }

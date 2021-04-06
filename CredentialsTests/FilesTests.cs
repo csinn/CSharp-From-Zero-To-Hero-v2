@@ -1,13 +1,25 @@
+using System;
 using CredentialsManager;
 using FluentAssertions;
 using System.IO;
 using System.Linq;
+using CredentialsManager.FilesExceptions;
 using Xunit;
 
 namespace CredentialsTests
 {
   public class FilesTests
   {
+    [Fact]
+    public void ReadAllText_Should_Throw_MyFileNotFoundException_When_Path_Is_Not_Present_Or_Not_Able_To_Open()
+    {
+      const string file = "File123213.txt";
+
+      Action actual = () => Files.ReadAllText(file);
+      
+      actual.Should().ThrowExactly<MyFileNotFoundException>(file);
+    }
+    
     [Theory]
     [InlineData(@"Files/Input/read1.txt", "Test\r\nLine2")]
     [InlineData(@"Files/Input/read2.txt", "Test\nLine2")]
@@ -31,6 +43,16 @@ namespace CredentialsTests
       actual.Should().Equal(expected);
     }
 
+    [Fact]
+    public void WriteAllText_Should_Throw_MyFileNotFoundException_When_Path_Is_Not_Present_Or_Not_Able_To_Open()
+    {
+      const string file = @"GG/File45789.txt";
+
+      Action actual = () => Files.WriteAllText(file, string.Empty);
+
+      actual.Should().ThrowExactly<MyFileNotFoundException>();
+    }
+    
     [Theory]
     [InlineData(@"Files/Output/expected1.txt", "Test.w\r\nLine2.w")]
     [InlineData(@"Files/Output/expected_empty.txt", "")]
@@ -60,6 +82,19 @@ namespace CredentialsTests
       actual.Should().Equal(expected);
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void WriteLine_Should_Throw_MyFileNotFoundException_When_Path_Is_Not_Present_Or_Not_Able_To_Open(bool append)
+    {
+      const string file = @"GG/File9874.txt";
+
+      Action actual = () => Files.WriteLine(file, string.Empty, append);
+
+      actual.Should().ThrowExactly<MyFileNotFoundException>(file);
+
+    }
+    
     [Theory]
     [InlineData(@"Files/Output/expected_single_line.txt", "AllTheSingleLines")]
     [InlineData(@"Files/Output/expected_multi_line.txt", "Line1", true)]
