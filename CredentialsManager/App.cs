@@ -28,6 +28,11 @@ namespace CredentialsManager
           PrintMenu();
           GetUserInput();
         }
+        catch (UserNameIsTakenException ex)
+        {
+          Console.WriteLine(ex.Message);
+          Pause("Press ENTER to continue...");
+        }
         catch (DuplicateUserCredentialsException ex)
         {
           Console.WriteLine(ex.Message);
