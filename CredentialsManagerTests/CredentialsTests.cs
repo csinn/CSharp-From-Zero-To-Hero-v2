@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace CredentialsTests
+namespace CredentialsManagerTests
 
 {
   // TODO: implement 'Credentials' tests

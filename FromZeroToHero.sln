@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CredentialsTests", "CredentialsTests\CredentialsTests.csproj", "{0EE3B483-9010-49F3-B69A-1E6308266ACE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CredentialsManagerTests", "CredentialsManagerTests\CredentialsManagerTests.csproj", "{0EE3B483-9010-49F3-B69A-1E6308266ACE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CredentialsManager", "CredentialsManager\CredentialsManager.csproj", "{EB44058B-5913-4B98-9D54-BFFDFFB5202A}"
 EndProject

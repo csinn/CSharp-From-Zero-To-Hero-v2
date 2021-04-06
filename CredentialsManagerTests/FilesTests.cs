@@ -6,7 +6,7 @@ using System.Linq;
 using CredentialsManager.FilesExceptions;
 using Xunit;
 
-namespace CredentialsTests
+namespace CredentialsManagerTests
 {
   public class FilesTests
   {
