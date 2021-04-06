@@ -31,7 +31,7 @@ namespace CredentialsManager
     public static string[] ReadAllLines(string file)
     {
       var content = ReadAllText(file);
-      return content.Split(Delimiters, StringSplitOptions.None);
+      return content.Split(Delimiters, StringSplitOptions.RemoveEmptyEntries);
     }
 
     public static void WriteAllText(string file, string data)
@@ -60,6 +60,7 @@ namespace CredentialsManager
       if (data.Length == 0)
       {
         WriteAllText(file, string.Empty);
+        return;
       }
 
       foreach (var line in data)

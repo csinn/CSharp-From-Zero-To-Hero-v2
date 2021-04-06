@@ -25,7 +25,7 @@ namespace CredentialsTests
     [InlineData(@"Files/Input/read2-LF.txt", "Test\nLine2")]
     [InlineData(@"Files/Input/empty.txt", "")]
     [InlineData(@"Files/Input/empty-lines.txt", "\r\n\r\n\r\n\r\n")]
-    public void ReadAllText_Should_Return_Expected_Output(string file, string expected)
+    public void ReadAllText_Should_Return_Expected_String(string file, string expected)
     {
       var actual = Files.ReadAllText(file);
 
@@ -35,9 +35,9 @@ namespace CredentialsTests
     [Theory]
     [InlineData(@"Files/Input/read1-CRLF.txt", new[] { "Test", "Line2" })]
     [InlineData(@"Files/Input/read2-LF.txt", new[] { "Test", "Line2" })]
-    [InlineData(@"Files/Input/empty.txt", new[] { "" })]
-    [InlineData(@"Files/Input/empty-lines.txt", new[] { "", "", "", "", "" })]
-    public void ReadAllLines_Should_Return_Expected_Output(string file, string[] expected)
+    [InlineData(@"Files/Input/empty.txt", new string[] { })]
+    [InlineData(@"Files/Input/empty-lines.txt", new string[] { })]
+    public void ReadAllLines_Should_Return_Expected_Collection(string file, string[] expected)
     {
       var actual = Files.ReadAllLines(file);
 
@@ -71,7 +71,7 @@ namespace CredentialsTests
 
     [Theory]
     [InlineData(@"Files/Output/expected_lines1.txt", new[] { "Test.l", "Line2.l" })]
-    [InlineData(@"Files/Output/expected_lines_empty.txt", new string[0])]
+    [InlineData(@"Files/Output/expected_lines_empty.txt", new string[] {})]
     [InlineData(@"Files/Output/expected_lines_empty2.txt", new[] { "", "", "" })]
     public void WriteAllLines_Should_Create_Expected_Output(string file, string[] expected)
     {
@@ -97,9 +97,9 @@ namespace CredentialsTests
     }
     
     [Theory]
-    [InlineData(@"Files/Output/expected_single_line.txt", "AllTheSingleLines")]
+    [InlineData(@"Files/Output/expected_single_line.txt", "AllTheSingleLines", false)]
     [InlineData(@"Files/Output/expected_multi_line.txt", "Line1", true)]
-    public void WriteLine_Should_Create_Expected_Output(string file, string expected, bool append = false)
+    public void WriteLine_Should_Create_Expected_Output(string file, string expected, bool append)
     {
       File.Delete(file);
       Files.WriteLine(file, expected, append);
