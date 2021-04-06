@@ -88,11 +88,11 @@ namespace CredentialsTests
     [InlineData(false)]
     public void WriteLine_Should_Throw_MyFileNotFoundException_When_Path_Is_Not_Present_Or_Not_Able_To_Open(bool append)
     {
-      const string file = @"GG/File9874.txt";
+      const string nonexistentFile = @"GG/File9874.txt";
 
-      Action actual = () => Files.WriteLine(file, string.Empty, append);
+      Action actual = () => Files.WriteLine(nonexistentFile, string.Empty, append);
 
-      actual.Should().ThrowExactly<MyFileNotFoundException>(file);
+      actual.Should().ThrowExactly<MyFileNotFoundException>(nonexistentFile);
 
     }
     
