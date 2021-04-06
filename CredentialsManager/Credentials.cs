@@ -6,14 +6,13 @@ namespace CredentialsManager
   {
     private const char FieldDelimiter = ',';
     private const string CredentialsFile = "Users.txt";
-    private static string[][] _credentials;
+    private static string[][] _credentials = Array.Empty<string[]>();
 
-    static Credentials()
+    public static void Initialize()
     {
       _credentials = GetCredentials();
-
-      Array.Sort(_credentials,
-        (x, y) => string.CompareOrdinal(x[0], y[0]));
+      Array.Sort(_credentials, (currentCredential, nextCredential)
+        => string.CompareOrdinal(currentCredential[0], nextCredential[0]));
 
       CheckForDuplicates();
     }
@@ -23,7 +22,10 @@ namespace CredentialsManager
       var content = Files.ReadAllLines(CredentialsFile);
       var credentials = new string[content.Length][];
 
-      for (var index = 0; index < credentials.Length; index++) credentials[index] = ConvertToCredential(content[index]);
+      for (var index = 0; index < credentials.Length; index++)
+      {
+        credentials[index] = ConvertToCredential(content[index]);
+      }
 
       return credentials;
     }
@@ -36,14 +38,21 @@ namespace CredentialsManager
         var nextCredential = _credentials[index + 1];
 
         if (IsUserNameEqual(currentCredential, nextCredential))
+        {
           throw new DuplicateUserCredentialsException("Duplicate users found!");
+        }
       }
     }
 
     public static void Register(string userName, string userPassword)
     {
-      var credential = new[] {userName, userPassword};
-      if (IsUserNameTaken(credential)) throw new DuplicateUserCredentialsException("User name is taken!");
+      _credentials = GetCredentials();
+
+      var credential = new[] { userName, userPassword };
+      if (IsUserNameTaken(credential))
+      {
+        throw new DuplicateUserCredentialsException("User name is taken!");
+      }
 
       Files.WriteLine(CredentialsFile, ConvertToString(credential), true);
     }
@@ -55,10 +64,13 @@ namespace CredentialsManager
 
     private static bool IsUserNameTaken(string[] credential)
     {
-      _credentials = GetCredentials();
       foreach (var storedCredential in _credentials)
+      {
         if (IsUserNameEqual(credential, storedCredential))
+        {
           return true;
+        }
+      }
 
       return false;
     }
@@ -77,10 +89,14 @@ namespace CredentialsManager
     {
       _credentials = GetCredentials();
 
-      var credential = new[] {userName, userPassword};
+      var credential = new[] { userName, userPassword };
       foreach (var storedCredential in _credentials)
+      {
         if (IsCredentialEqual(storedCredential, credential))
+        {
           return true;
+        }
+      }
 
       return false;
     }
