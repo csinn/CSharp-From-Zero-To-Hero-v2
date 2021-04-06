@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CredentialsManager
+﻿namespace CredentialsManager
 {
   internal static class Program
   {

@@ -9,16 +9,14 @@ namespace CredentialsManager
     {
       using (var reader = new StreamReader(file))
       {
-        var content = reader.ReadToEnd().Trim();
-        return content;
+        return reader.ReadToEnd().Trim();
       }
     }
 
     public static string[] ReadAllLines(string file)
     {
       var content = ReadAllText(file);
-      var lines = content.Split($"{Environment.NewLine}");
-      return lines;
+      return content.Split($"{Environment.NewLine}");
     }
 
     public static void WriteAllText(string file, string data)
@@ -31,9 +29,15 @@ namespace CredentialsManager
 
     public static void WriteAllLines(string file, string[] data)
     {
-      if (data.Length == 0) WriteAllText(file, string.Empty);
+      if (data.Length == 0)
+      {
+        WriteAllText(file, string.Empty);
+      }
 
-      foreach (var line in data) WriteLine(file, line, true);
+      foreach (var line in data)
+      {
+        WriteLine(file, line, true);
+      }
     }
 
     public static void WriteLine(string file, string data, bool append = false)

@@ -1,7 +1,7 @@
-using System.IO;
-using System.Linq;
 using CredentialsManager;
 using FluentAssertions;
+using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace CredentialsTests
@@ -21,9 +21,9 @@ namespace CredentialsTests
     }
 
     [Theory]
-    [InlineData(@"Files/Input/read1.txt", new[] {"Test", "Line2"})]
-    [InlineData(@"Files/Input/empty.txt", new[] {""})]
-    [InlineData(@"Files/Input/emptylines.txt", new[] {""})]
+    [InlineData(@"Files/Input/read1.txt", new[] { "Test", "Line2" })]
+    [InlineData(@"Files/Input/empty.txt", new[] { "" })]
+    [InlineData(@"Files/Input/emptylines.txt", new[] { "" })]
     public void ReadAllLines_Should_Return_Expected_Output(string file, string[] expected)
     {
       var actual = Files.ReadAllLines(file);
@@ -47,9 +47,9 @@ namespace CredentialsTests
     }
 
     [Theory]
-    [InlineData(@"Files/Output/expected_lines1.txt", new[] {"Test.l", "Line2.l"})]
+    [InlineData(@"Files/Output/expected_lines1.txt", new[] { "Test.l", "Line2.l" })]
     [InlineData(@"Files/Output/expected_lines_empty.txt", new string[0])]
-    [InlineData(@"Files/Output/expected_lines_empty2.txt", new[] {"", "", ""})]
+    [InlineData(@"Files/Output/expected_lines_empty2.txt", new[] { "", "", "" })]
     public void WriteAllLines_Should_Create_Expected_Output(string file, string[] expected)
     {
       File.Delete(file);
