@@ -13,7 +13,7 @@ namespace CredentialsManager
     private const string LoginMessage = "Welcome";
     private const string FailedLoginMessage = "Invalid credentials!";
     
-    private static bool _isExitCalled;
+    private static bool _isExitInvoked;
 
     static App()
     {
@@ -24,7 +24,7 @@ namespace CredentialsManager
 
     public static void Run()
     {
-      while (!_isExitCalled)
+      while (!_isExitInvoked)
       {
         try
         {
@@ -131,7 +131,7 @@ namespace CredentialsManager
 
     private static void Exit()
     {
-      _isExitCalled = true;
+      _isExitInvoked = true;
     }
 
     private static string PromptString(string message, bool isKeyVisible = false)
