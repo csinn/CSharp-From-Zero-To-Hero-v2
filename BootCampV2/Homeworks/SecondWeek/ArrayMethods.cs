@@ -1,6 +1,6 @@
 using System;
 
-namespace BootCampV2
+namespace BootCampV2.Homeworks.SecondWeek
 {
     public class ArrayMethods
     {

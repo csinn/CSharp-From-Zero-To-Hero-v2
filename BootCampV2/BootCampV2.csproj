@@ -5,4 +5,23 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Core.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="User.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Core.cs" />
+    <Resource Include="User.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Core\User.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
