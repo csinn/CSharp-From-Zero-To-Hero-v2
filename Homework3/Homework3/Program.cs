@@ -139,7 +139,7 @@ namespace Homework3
         {
             string userName;
             string password;
-            bool isDuplicate = false;
+            bool isDuplicate;
 
             do
             {
@@ -148,12 +148,11 @@ namespace Homework3
 
                 try
                 {
-                    isDuplicate = CheckIfDuplicate(filePath, userName);
-                    
+                    isDuplicate = CheckIfDuplicate(filePath, userName); 
                 }
                 catch (DuplicateUserCredentialsException)
                 {
-                    Console.WriteLine(isDuplicate);
+                    isDuplicate = true;
                     Console.WriteLine($"User already exists.{Environment.NewLine}");
                 }
 
@@ -199,13 +198,16 @@ namespace Homework3
 
                 if (isDuplicate)
                 {
-                    reader.Close();
                     break;
-                    throw new DuplicateUserCredentialsException();
                 }
             }
 
             reader.Close();
+
+            if (isDuplicate)
+            {
+                throw new DuplicateUserCredentialsException();
+            }
 
             return isDuplicate;
         }
