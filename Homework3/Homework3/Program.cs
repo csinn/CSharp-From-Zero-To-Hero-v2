@@ -84,7 +84,7 @@ namespace Homework3
         /// Attempts to log the user in using their user name and password. 
         /// Prints a message to the console if successful or unsuccessful.
         /// </summary>
-        /// <param name="filePath">The file of login credentials.</param>
+        /// <param name="filePath">The file of user data.</param>
         static void LoginUser(string filePath)
         {
             string userName = PromptUserForInput("user name");
