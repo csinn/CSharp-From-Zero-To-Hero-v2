@@ -50,11 +50,11 @@ namespace CredentialsManager.Models
 
       foreach (var item in MenuItems)
       {
-        sb.Append(item.ToString());
+        sb.Append(item);
         sb.AppendLine();
       }
 
-      sb.Append(ExitItem.ToString());
+      sb.Append(ExitItem);
 
       return sb.ToString();
     }
