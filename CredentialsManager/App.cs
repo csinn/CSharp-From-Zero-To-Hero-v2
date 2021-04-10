@@ -45,7 +45,7 @@ namespace CredentialsManager
       }
     }
 
-    private static IList<MenuItem> CreateMenuItems()
+    private static IList<MenuItem> GetMenuItems()
     {
       return new List<MenuItem>
       {
@@ -59,7 +59,7 @@ namespace CredentialsManager
       return new Menu
       {
         Header = "Credentials Manager",
-        MenuItems = CreateMenuItems(),
+        MenuItems = GetMenuItems(),
         ExitItem = new MenuItem { ItemId = 3, Label = "Exit", Action = Exit, ConsoleKey = ConsoleKey.D3 }
       };
     }
