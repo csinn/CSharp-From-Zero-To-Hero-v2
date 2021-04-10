@@ -9,7 +9,7 @@ namespace CredentialsManager
   {
     private const string FieldDelimiter = ",";
     private const string CredentialsFile = "Users.txt";
-    private static IList<Credential> _credentials = new List<Credential>();
+    private static IList<Credentials> _credentials = new List<Credentials>();
 
     public static void Initialize()
     {
@@ -18,14 +18,14 @@ namespace CredentialsManager
       CheckForDuplicates();
     }
 
-    private static IList<Credential> GetCredentials()
+    private static IList<Credentials> GetCredentials()
     {
       var content = Files.ReadAllLines(CredentialsFile);
-      var credentials = new List<Credential>();
+      var credentials = new List<Credentials>();
 
       foreach (var row in content)
       {
-        var isValidCredential = Credential.TryParse(row, FieldDelimiter, out var credential);
+        var isValidCredential = Credentials.TryParse(row, FieldDelimiter, out var credential);
         if (isValidCredential)
         {
           credentials.Add(credential);
@@ -49,26 +49,26 @@ namespace CredentialsManager
       }
     }
 
-    public static bool Login(Credential credential)
+    public static bool Login(Credentials credentials)
     {
-      return _credentials.Contains(credential);
+      return _credentials.Contains(credentials);
     }
 
-    public static void Register(Credential credential)
+    public static void Register(Credentials credentials)
     {
-      if (IsUserNameTaken(credential))
+      if (IsUserNameTaken(credentials))
       {
         throw new UserNameIsTakenException("User name is taken!");
       }
 
-      Files.WriteLine(CredentialsFile, CreateString(credential), true);
+      Files.WriteLine(CredentialsFile, CreateString(credentials), true);
     }
 
-    private static bool IsUserNameTaken(Credential credential)
+    private static bool IsUserNameTaken(Credentials credentials)
     {
       foreach (var storedCredential in _credentials)
       {
-        if (storedCredential.UserName.Equals(credential.UserName))
+        if (storedCredential.UserName.Equals(credentials.UserName))
         {
           return true;
         }
@@ -77,9 +77,9 @@ namespace CredentialsManager
       return false;
     }
 
-    private static string CreateString(Credential credential)
+    private static string CreateString(Credentials credentials)
     {
-      return $"{credential.UserName}{FieldDelimiter}{credential.UserPassword}";
+      return $"{credentials.UserName}{FieldDelimiter}{credentials.UserPassword}";
     }
   }
 }

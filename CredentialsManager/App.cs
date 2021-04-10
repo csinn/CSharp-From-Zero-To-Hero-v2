@@ -99,7 +99,7 @@ namespace CredentialsManager
       var userName = PromptString("Username: ");
       var userPassword = PromptString("Password: ", false);
 
-      var isLoginSuccessful = Manager.Login(new Credential(userName, userPassword));
+      var isLoginSuccessful = Manager.Login(new Credentials(userName, userPassword));
       var statusMessage = isLoginSuccessful ? LoginMessage : FailedLoginMessage;
 
       Console.WriteLine(statusMessage);
@@ -110,7 +110,7 @@ namespace CredentialsManager
       var userName = PromptString("Username: ");
       var userPassword = PromptString("Password: ", false);
 
-      Manager.Register(new Credential(userName, userPassword));
+      Manager.Register(new Credentials(userName, userPassword));
       Console.WriteLine(RegistrationSuccessfulMessage);
     }
 

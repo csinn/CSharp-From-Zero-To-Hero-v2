@@ -2,12 +2,12 @@
 
 namespace CredentialsManager.Models
 {
-  public class Credential : IEquatable<Credential>
+  public class Credentials : IEquatable<Credentials>
   {
     public string UserName { get; }
     public string UserPassword { get; }
 
-    public Credential(string userName, string userPassword)
+    public Credentials(string userName, string userPassword)
     {
       if (string.IsNullOrWhiteSpace(userName))
       {
@@ -23,9 +23,9 @@ namespace CredentialsManager.Models
       UserPassword = userPassword;
     }
 
-    public static bool TryParse(string line, string delimiter, out Credential credential)
+    public static bool TryParse(string line, string delimiter, out Credentials credentials)
     {
-      credential = default;
+      credentials = default;
       const int validRowLength = 2;
 
       if (string.IsNullOrWhiteSpace(line)) return false;
@@ -33,15 +33,15 @@ namespace CredentialsManager.Models
       var row = line.Split(delimiter);
       if (row.Length != validRowLength) return false;
 
-      var userName = row[0];
-      var userPassword = row[1];
+      var userName = row[0].Trim();
+      var userPassword = row[1].Trim();
 
       if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(userPassword))
       {
         return false;
       }
 
-      credential = new Credential(userName, userPassword);
+      credentials = new Credentials(userName, userPassword);
 
       return true;
     }
@@ -51,7 +51,7 @@ namespace CredentialsManager.Models
       return $"{UserName},{UserPassword}";
     }
 
-    public bool Equals(Credential? other)
+    public bool Equals(Credentials? other)
     {
       if (other is null) return false;
       if (ReferenceEquals(this, other)) return true;
@@ -65,7 +65,7 @@ namespace CredentialsManager.Models
       if (obj is null) return false;
       if (ReferenceEquals(this, obj)) return true;
 
-      return obj.GetType() == GetType() && Equals((Credential)obj);
+      return obj.GetType() == GetType() && Equals((Credentials)obj);
     }
 
     public override int GetHashCode()
@@ -73,12 +73,12 @@ namespace CredentialsManager.Models
       return HashCode.Combine(UserName.ToLowerInvariant(), UserPassword);
     }
 
-    public static bool operator ==(Credential? left, Credential? right)
+    public static bool operator ==(Credentials? left, Credentials? right)
     {
       return Equals(left, right);
     }
 
-    public static bool operator !=(Credential? left, Credential? right)
+    public static bool operator !=(Credentials? left, Credentials? right)
     {
       return !Equals(left, right);
     }
