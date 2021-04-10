@@ -16,25 +16,38 @@ namespace Homework3
         static void ShowMenu()
         {
             string filePath = @"Users.txt";
-            string command;
 
             while(true)
             {
-                Console.WriteLine($"[ Type a Command: ]");
-                Console.WriteLine("      Login      ");
-                Console.WriteLine("      Register      ");
-                Console.WriteLine($"      Exit      ");
+                Console.WriteLine($"Type a Command:{Environment.NewLine}" 
+                                 + $"Login{Environment.NewLine}"
+                                 + $"Register{Environment.NewLine}"
+                                 + $"Exit{ Environment.NewLine}");
 
-                command = PromptUserForInput($"command");
+                string command = PromptUserForInput("command");
 
                 if (command.Equals("login", StringComparison.OrdinalIgnoreCase))
                 {
-                    LoginUser(filePath);
+                    try
+                    {
+                        LoginUser(filePath);
+                    }
+                    catch (UsersNotFoundException)
+                    {
+                        Console.WriteLine("Users.txt not found.");
+                    }
                 }
 
                 if (command.Equals("register", StringComparison.OrdinalIgnoreCase))
                 {
-                    RegisterUser(filePath);
+                    try
+                    {
+                        RegisterUser(filePath);
+                    }
+                    catch (UsersNotFoundException)
+                    {
+                        Console.WriteLine("Users.txt not found.");
+                    }
                 }
 
                 if (command.Equals("exit", StringComparison.OrdinalIgnoreCase))
@@ -59,7 +72,7 @@ namespace Homework3
             }
             else
             {
-                Console.WriteLine($"Invalid credentials.");
+                Console.WriteLine("Invalid credentials.");
             }
         }
 
@@ -86,21 +99,35 @@ namespace Homework3
         /// </returns>
         static bool CheckIfCredentialsAreValid(string filePath, string userName, string password)
         {
-            StreamReader reader = new StreamReader(filePath);
+            StreamReader reader;
 
-            bool isDuplicate = false;
+            try
+            {
+                reader = new StreamReader(filePath);
+            }
+            catch (FileNotFoundException)
+            {
+                throw new UsersNotFoundException();
+            }
+
+            bool isValid = false;
 
             while (reader.Peek() >= 0)
             {
                 string line = reader.ReadLine();
                 string[] words = line.Split(",");
 
-                isDuplicate = words[0].Equals(userName) && words[1].Equals(password);
+                isValid = words[0].Equals(userName) && words[1].Equals(password);
+
+                if (isValid)
+                {
+                    break;
+                }
             }
 
             reader.Close();
 
-            return isDuplicate;
+            return isValid;
         }
 
         /// <summary>
@@ -112,6 +139,7 @@ namespace Homework3
         {
             string userName;
             string password;
+            bool isDuplicate = false;
 
             do
             {
@@ -120,16 +148,22 @@ namespace Homework3
 
                 try
                 {
-                    CheckIfDuplicate(filePath, userName);
+                    isDuplicate = CheckIfDuplicate(filePath, userName);
+                    
                 }
-                catch (Exception)
+                catch (DuplicateUserCredentialsException)
                 {
-                    Console.WriteLine("User already exists.");
+                    Console.WriteLine(isDuplicate);
+                    Console.WriteLine($"User already exists.{Environment.NewLine}");
+                }
+
+                if (!isDuplicate)
+                {
+                    WriteToDataFile(filePath, userName, password);
+                    break;
                 }
             } 
-            while (CheckIfDuplicate(filePath, userName));
-
-            WriteToDataFile(filePath, userName, password);
+            while (isDuplicate);
         }
 
         /// <summary>
@@ -143,15 +177,31 @@ namespace Homework3
         /// </returns>
         static bool CheckIfDuplicate(string filePath, string userName)
         {
-            StreamReader reader = new StreamReader(filePath);
+            StreamReader reader;
+
+            try
+            {
+                reader = new StreamReader(filePath);
+            }
+            catch (FileNotFoundException)
+            {
+                throw new UsersNotFoundException();
+            }
 
             bool isDuplicate = false;
 
             while (reader.Peek() >= 0)
             {
-                if (reader.ReadLine().Contains(userName))
+                string line = reader.ReadLine();
+                string[] words = line.Split(",");
+
+                isDuplicate = words[0].Equals(userName);
+
+                if (isDuplicate)
                 {
-                    throw new Exception();
+                    reader.Close();
+                    break;
+                    throw new DuplicateUserCredentialsException();
                 }
             }
 
