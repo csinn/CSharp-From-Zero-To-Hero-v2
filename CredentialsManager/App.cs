@@ -12,12 +12,9 @@ namespace CredentialsManager
     private const string Header = "Credentials Manager";
     private const string LoginMessage = "Welcome";
     private const string FailedLoginMessage = "Invalid credentials!";
+    private const string RegistrationSuccessfulMessage = "Registration successful!";
 
     private static bool _isExitInvoked;
-
-    static App()
-    {
-    }
 
     public static void Run()
     {
@@ -114,6 +111,7 @@ namespace CredentialsManager
       var userPassword = PromptString("Password: ", false);
 
       Manager.Register(new Credential(userName, userPassword));
+      Console.WriteLine(RegistrationSuccessfulMessage);
     }
 
     private static void Exit()
@@ -127,7 +125,7 @@ namespace CredentialsManager
       do
       {
         Console.Write(message);
-        userInput = Console.ReadLine();
+        userInput = Console.ReadLine() ?? string.Empty;
       } while (string.IsNullOrWhiteSpace(userInput));
 
       return userInput;
