@@ -9,11 +9,11 @@ namespace CredentialsManager
   {
     private const string FieldDelimiter = ",";
     private const string CredentialsFile = "Users.txt";
-    private static IList<Credential> Credentials = new List<Credential>();
+    private static IList<Credential> _credentials = new List<Credential>();
 
     public static void Initialize()
     {
-      Credentials = GetCredentials();
+      _credentials = GetCredentials();
 
       CheckForDuplicates();
     }
@@ -37,10 +37,10 @@ namespace CredentialsManager
 
     private static void CheckForDuplicates()
     {
-      for (var index = 0; index + 1 < Credentials.Count; index++)
+      for (var index = 0; index + 1 < _credentials.Count; index++)
       {
-        var currentCredential = Credentials[index];
-        var nextCredential = Credentials[index + 1];
+        var currentCredential = _credentials[index];
+        var nextCredential = _credentials[index + 1];
 
         if (currentCredential.Equals(nextCredential))
         {
@@ -51,7 +51,7 @@ namespace CredentialsManager
 
     public static bool Login(Credential credential)
     {
-      return Credentials.Contains(credential);
+      return _credentials.Contains(credential);
     }
 
     public static void Register(Credential credential)
@@ -66,7 +66,7 @@ namespace CredentialsManager
 
     private static bool IsUserNameTaken(Credential credential)
     {
-      foreach (var storedCredential in Credentials)
+      foreach (var storedCredential in _credentials)
       {
         if (storedCredential.UserName.Equals(credential.UserName))
         {
