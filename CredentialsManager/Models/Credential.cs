@@ -9,6 +9,16 @@ namespace CredentialsManager.Models
 
     public Credential(string userName, string userPassword)
     {
+      if (string.IsNullOrWhiteSpace(userName))
+      {
+        throw new ArgumentException("Value can not be null or empty", nameof(userName));
+      }
+
+      if (string.IsNullOrWhiteSpace(userPassword))
+      {
+        throw new ArgumentException("Value can not be null or empty", nameof(userName));
+      }
+      
       UserName = userName;
       UserPassword = userPassword;
     }

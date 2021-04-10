@@ -13,6 +13,17 @@ namespace CredentialsManager.Models
 
     public MenuItem ExitItem { get; set; }
 
+    public Menu()
+    {
+    }
+
+    public Menu(string header, IList<MenuItem> menuItems, MenuItem exitItem)
+    {
+      Header = header ?? throw new ArgumentNullException(nameof(header));
+      MenuItems = menuItems ?? throw new ArgumentNullException(nameof(menuItems));
+      ExitItem = exitItem ?? throw new ArgumentNullException(nameof(exitItem));
+    }
+
     public bool IsValidKey(ConsoleKey consoleKey)
     {
       foreach (var item in MenuItems)
