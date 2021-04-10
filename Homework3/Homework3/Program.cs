@@ -3,20 +3,57 @@ using System.IO;
 
 namespace Homework3
 {
+    /// <summary>
+    /// Program allows users to log in or register new login credentials.
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
         {
-            ShowMenu();
+            string filePath = @"Users.txt";
+
+            // This checks the User.txt file to see if the path is valid.
+            // If does not exist, the program ends.
+            try
+            {
+                CheckIfFileExists(filePath);
+            }
+            catch (UsersNotFoundException)
+            {
+                Console.WriteLine("Users.txt not found.");
+                Environment.Exit(0);
+            }
+
+            ShowMenu(filePath);
+        }
+
+        /// <summary>
+        /// Checks that the file exists at the specified path.
+        /// </summary>
+        /// <param name="filePath">The file we are checking.</param>
+        /// <returns>True if the path is valid, or false if invalid.</returns>
+        static void CheckIfFileExists(string filePath)
+        {
+            StreamReader reader;
+
+            try
+            {
+                reader = new StreamReader(filePath);
+            }
+            catch (FileNotFoundException)
+            {
+                throw new UsersNotFoundException();
+            }
+
+            reader.Close();
         }
 
         /// <summary>
         /// Shows a menu of commands.
         /// </summary>
-        static void ShowMenu()
+        /// <param name="filePath">The file with user data.</param>
+        static void ShowMenu(string filePath)
         {
-            string filePath = @"Users.txt";
-
             while(true)
             {
                 Console.WriteLine($"Type a Command:{Environment.NewLine}" 
@@ -28,26 +65,12 @@ namespace Homework3
 
                 if (command.Equals("login", StringComparison.OrdinalIgnoreCase))
                 {
-                    try
-                    {
-                        LoginUser(filePath);
-                    }
-                    catch (UsersNotFoundException)
-                    {
-                        Console.WriteLine("Users.txt not found.");
-                    }
+                    LoginUser(filePath);
                 }
 
                 if (command.Equals("register", StringComparison.OrdinalIgnoreCase))
                 {
-                    try
-                    {
-                        RegisterUser(filePath);
-                    }
-                    catch (UsersNotFoundException)
-                    {
-                        Console.WriteLine("Users.txt not found.");
-                    }
+                    RegisterUser(filePath);
                 }
 
                 if (command.Equals("exit", StringComparison.OrdinalIgnoreCase))
@@ -58,7 +81,8 @@ namespace Homework3
         }
 
         /// <summary>
-        /// Logs the user in.
+        /// Attempts to log the user in using their user name and password. 
+        /// Prints a message to the console if successful or unsuccessful.
         /// </summary>
         /// <param name="filePath">The file of login credentials.</param>
         static void LoginUser(string filePath)
@@ -68,11 +92,11 @@ namespace Homework3
 
             if (CheckIfCredentialsAreValid(filePath, userName, password))
             {
-                Console.WriteLine("Hello!");
+                Console.WriteLine($"Hello!{Environment.NewLine}");
             }
             else
             {
-                Console.WriteLine("Invalid credentials.");
+                Console.WriteLine($"Invalid credentials.{Environment.NewLine}");
             }
         }
 
@@ -99,16 +123,7 @@ namespace Homework3
         /// </returns>
         static bool CheckIfCredentialsAreValid(string filePath, string userName, string password)
         {
-            StreamReader reader;
-
-            try
-            {
-                reader = new StreamReader(filePath);
-            }
-            catch (FileNotFoundException)
-            {
-                throw new UsersNotFoundException();
-            }
+            StreamReader reader = new StreamReader(filePath);
 
             bool isValid = false;
 
@@ -159,6 +174,7 @@ namespace Homework3
                 if (!isDuplicate)
                 {
                     WriteToDataFile(filePath, userName, password);
+                    Console.WriteLine($"Credentials added.{Environment.NewLine}");
                     break;
                 }
             } 
@@ -176,16 +192,7 @@ namespace Homework3
         /// </returns>
         static bool CheckIfDuplicate(string filePath, string userName)
         {
-            StreamReader reader;
-
-            try
-            {
-                reader = new StreamReader(filePath);
-            }
-            catch (FileNotFoundException)
-            {
-                throw new UsersNotFoundException();
-            }
+            StreamReader reader = new StreamReader(filePath);
 
             bool isDuplicate = false;
 
