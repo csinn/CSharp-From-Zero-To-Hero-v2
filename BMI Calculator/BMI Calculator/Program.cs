@@ -7,11 +7,11 @@ namespace BMI_Calculator
     {
         static void Main(string[] args)
         {
-            UserInfo();
-            UserInfo();
+            PromptUserInfo();
+            PromptUserInfo();
         }
 
-        static void CalBMI(double weight, double height, string fName, string lName)
+        static void CalculateBmi(double weight, double height, string fName, string lName)
         {
             double bmi = (weight / (height * height)) * 10000;
             Console.WriteLine("{0} {1}, your BMI is: {2:F2}", fName, lName, bmi);
@@ -22,10 +22,10 @@ namespace BMI_Calculator
             string userInfo = $"{fName} {lName} is {age} years old, his weight is {weight} kg and his height is {height} cm";
             Console.WriteLine(userInfo);
 
-            CalBMI(weight, height, fName, lName);
+            CalculateBmi(weight, height, fName, lName);
         }
 
-        static void UserInfo()
+        static void PromptUserInfo()
         {
             Console.WriteLine("Enter Your Name: ");
             string fName = Console.ReadLine();
