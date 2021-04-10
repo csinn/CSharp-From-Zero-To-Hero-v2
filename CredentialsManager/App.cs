@@ -1,25 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using CredentialsManager.FilesExceptions;
+using CredentialsManager.Models;
 
 namespace CredentialsManager
 {
   public static class App
   {
-    private static readonly string[] MenuItems;
-    private static readonly Action[] MenuActions;
-    private static readonly ConsoleKey[] MenuKeys;
+    private static readonly Menu MainMenu = CreateMenu();
 
     private const string Header = "Credentials Manager";
     private const string LoginMessage = "Welcome";
     private const string FailedLoginMessage = "Invalid credentials!";
-    
+
     private static bool _isExitInvoked;
 
     static App()
     {
-      MenuItems = GetMenuItems();
-      MenuActions = GetMenuActions();
-      MenuKeys = GetMenuKeys();
     }
 
     public static void Run()
@@ -28,7 +25,7 @@ namespace CredentialsManager
       {
         try
         {
-          Credentials.Initialize();
+          Manager.Initialize();
           PrintMenu();
           GetUserInput();
         }
@@ -40,7 +37,7 @@ namespace CredentialsManager
         catch (DuplicateUserCredentialsException ex)
         {
           Console.WriteLine(ex.Message);
-          Pause("Press ENTER to exit...");
+          Pause("Press ENTER to exit..");
           break;
         }
         catch (UserNameIsTakenException ex)
@@ -51,19 +48,23 @@ namespace CredentialsManager
       }
     }
 
-    private static string[] GetMenuItems()
+    private static IList<MenuItem> CreateMenuItems()
     {
-      return new[] { "Login", "Register", "Exit" };
+      return new List<MenuItem>
+      {
+        new MenuItem { ItemId = 1, Label = "Login", Action = Login, ConsoleKey = ConsoleKey.D1 },
+        new MenuItem { ItemId = 2, Label = "Register", Action = Register, ConsoleKey = ConsoleKey.D2 }
+      };
     }
 
-    private static Action[] GetMenuActions()
+    private static Menu CreateMenu()
     {
-      return new Action[] { Login, Register, Exit };
-    }
-
-    private static ConsoleKey[] GetMenuKeys()
-    {
-      return new[] { ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3 };
+      return new Menu
+      {
+        Header = "Credentials Manager",
+        MenuItems = CreateMenuItems(),
+        ExitItem = new MenuItem { ItemId = 3, Label = "Exit", Action = Exit, ConsoleKey = ConsoleKey.D3 }
+      };
     }
 
     private static void ConsoleInit(string header)
@@ -78,44 +79,30 @@ namespace CredentialsManager
     {
       ConsoleInit(Header);
 
-      for (var index = 0; index < MenuItems.Length; index++)
-      {
-        var item = $"{index + 1}. {MenuItems[index]}";
-        Console.WriteLine(item);
-      }
+      Console.WriteLine(MainMenu.ToString());
     }
 
     private static void GetUserInput()
     {
       ConsoleKey pressedKey;
-      var exitKeyIndex = Array.IndexOf(MenuItems, "Exit");
       do
       {
         pressedKey = Console.ReadKey(true).Key;
-        var keyToIndex = Array.IndexOf(MenuKeys, pressedKey);
+        if (!MainMenu.IsValidKey(pressedKey)) continue;
 
-        var isValidKey = keyToIndex >= 0 && keyToIndex < MenuActions.Length;
-        if (!isValidKey) continue;
-        
-        ConsoleInit(MenuItems[keyToIndex]);
-        Invoke(MenuActions[keyToIndex]);
-        
+        ConsoleInit(MainMenu[pressedKey].Label);
+        MainMenu[pressedKey].Action();
         Pause();
         break;
-      } while (pressedKey != MenuKeys[exitKeyIndex]);
+      } while (pressedKey != MainMenu.ExitItem.ConsoleKey);
     }
-    
-    private static void Invoke(Action action)
-    {
-      action();
-    }
-    
+
     private static void Login()
     {
-      var userName = PromptString("Username: ", true);
-      var userPassword = PromptString("Password: ");
+      var userName = PromptString("Username: ");
+      var userPassword = PromptString("Password: ", false);
 
-      var isLoginSuccessful = Credentials.Login(userName, userPassword);
+      var isLoginSuccessful = Manager.Login(new Credential(userName, userPassword));
       var statusMessage = isLoginSuccessful ? LoginMessage : FailedLoginMessage;
 
       Console.WriteLine(statusMessage);
@@ -123,10 +110,10 @@ namespace CredentialsManager
 
     private static void Register()
     {
-      var userName = PromptString("Username: ", true);
-      var userPassword = PromptString("Password: ");
+      var userName = PromptString("Username: ");
+      var userPassword = PromptString("Password: ", false);
 
-      Credentials.Register(userName, userPassword);
+      Manager.Register(new Credential(userName, userPassword));
     }
 
     private static void Exit()
@@ -134,7 +121,19 @@ namespace CredentialsManager
       _isExitInvoked = true;
     }
 
-    private static string PromptString(string message, bool isKeyVisible = false)
+    private static string PromptString(string message)
+    {
+      string userInput;
+      do
+      {
+        Console.Write(message);
+        userInput = Console.ReadLine();
+      } while (string.IsNullOrWhiteSpace(userInput));
+
+      return userInput;
+    }
+
+    private static string PromptString(string message, bool isKeyVisible)
     {
       Console.Write(message);
 
