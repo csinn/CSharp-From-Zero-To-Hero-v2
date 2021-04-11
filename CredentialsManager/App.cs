@@ -123,7 +123,7 @@ namespace CredentialsManager
       do
       {
         Console.Write(message);
-        userInput = Console.ReadLine() ?? string.Empty;
+        userInput = Console.ReadLine();
       } while (string.IsNullOrWhiteSpace(userInput));
 
       return userInput;
