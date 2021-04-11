@@ -14,6 +14,7 @@ namespace CredentialsManager
     private const string FailedLoginMessage = "Invalid credentials!";
     private const string RegisterMessage = "Registration succesfful!";
     private const string FailedRegisterMessage = "User name is taken!";
+    private const string InvalidOptionMessage = "Not a valid option!";
 
     private static bool _isExitInvoked;
 
@@ -25,7 +26,7 @@ namespace CredentialsManager
         {
           Manager.Initialize();
           PrintMenu();
-          GetUserInput();
+          ExecuteUserRequest();
         }
         catch (MyFileNotFoundException ex)
         {
@@ -76,18 +77,23 @@ namespace CredentialsManager
       Console.WriteLine(MainMenu.ToString());
     }
 
-    private static void GetUserInput()
+    private static void ExecuteUserRequest()
     {
       ConsoleKey pressedKey;
       do
       {
         pressedKey = Console.ReadKey(true).Key;
-        if (!MainMenu.IsValidKey(pressedKey)) continue;
+        if (!MainMenu.IsValidKey(pressedKey))
+        {
+          Console.WriteLine(InvalidOptionMessage);
+          Pause();
+          return;
+        }
 
         ConsoleInit(MainMenu[pressedKey].Label);
         MainMenu[pressedKey].Action?.Invoke();
         Pause();
-        break;
+        return;
       } while (pressedKey != MainMenu.ExitItem.ConsoleKey);
     }
 
@@ -96,8 +102,9 @@ namespace CredentialsManager
       var userName = PromptString("Username: ");
       var userPassword = PromptString("Password: ");
 
-      var isLoginSuccessful = Manager.Login(new Credentials(userName, userPassword));
-      var statusMessage = isLoginSuccessful ? LoginMessage : FailedLoginMessage;
+      var credentials = new Credentials(userName, userPassword);
+      var isLoginSuccessful = Manager.Login(credentials);
+      var statusMessage = isLoginSuccessful ? $"{LoginMessage} {credentials.UserName}!" : FailedLoginMessage;
 
       Console.WriteLine(statusMessage);
     }
