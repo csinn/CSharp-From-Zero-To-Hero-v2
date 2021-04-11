@@ -94,7 +94,7 @@ namespace CredentialsManager
     private static void Login()
     {
       var userName = PromptString("Username: ");
-      var userPassword = PromptString("Password: ", false);
+      var userPassword = PromptString("Password: ");
 
       var isLoginSuccessful = Manager.Login(new Credentials(userName, userPassword));
       var statusMessage = isLoginSuccessful ? LoginMessage : FailedLoginMessage;
@@ -105,7 +105,7 @@ namespace CredentialsManager
     private static void Register()
     {
       var userName = PromptString("Username: ");
-      var userPassword = PromptString("Password: ", false);
+      var userPassword = PromptString("Password: ");
 
       var isRegisterSuccessful = Manager.Register(new Credentials(userName, userPassword));
       var statusMessage = isRegisterSuccessful ? RegisterMessage : FailedRegisterMessage;
@@ -119,7 +119,7 @@ namespace CredentialsManager
 
     private static string PromptString(string message)
     {
-      string userInput;
+      string? userInput;
       do
       {
         Console.Write(message);
@@ -127,27 +127,6 @@ namespace CredentialsManager
       } while (string.IsNullOrWhiteSpace(userInput));
 
       return userInput;
-    }
-
-    private static string PromptString(string message, bool isKeyVisible)
-    {
-      Console.Write(message);
-
-      var output = "";
-      while (true)
-      {
-        var pressedKey = Console.ReadKey(!isKeyVisible);
-        if (pressedKey.Key == ConsoleKey.Enter)
-        {
-          break;
-        }
-
-        output += pressedKey.KeyChar;
-      }
-
-      Console.WriteLine();
-
-      return output;
     }
 
     private static void Pause(string message = "Press ENTER to continue...")
