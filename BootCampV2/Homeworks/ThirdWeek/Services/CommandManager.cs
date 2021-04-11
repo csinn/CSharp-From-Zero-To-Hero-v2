@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace BootCampV2.Homeworks.ThirdWeek
 {
     public class CommandManager

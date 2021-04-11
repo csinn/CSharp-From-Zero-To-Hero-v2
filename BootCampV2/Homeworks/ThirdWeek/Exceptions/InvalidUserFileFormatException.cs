@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
+
 namespace BootCampV2.Homeworks.ThirdWeek.Exceptions
 {
     class InvalidUserFileFormatException : Exception

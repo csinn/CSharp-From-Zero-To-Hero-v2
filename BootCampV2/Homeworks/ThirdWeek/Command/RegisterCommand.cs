@@ -2,13 +2,41 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace BootCampV2.Homeworks.ThirdWeek.Command
 {
     public class RegisterCommand : ICommand
     {
         private readonly UserFileManager _userFileManager;
-        public string Prefix { get; } = "-r";
-        public string Description { get; } = "-r (Username) (Password) (Confirmed Password)";
+
+        private string _prefix = "-r";
+
+        public string Prefix
+        {
+            get
+            {
+                return _prefix;
+            }
+
+            set
+            {
+                _prefix = value;
+            }
+        }
+
+        private string _description = "-r (Username) (Password)";
+
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                _description = value;
+            }
+        }
 
         public RegisterCommand(UserFileManager userFileManager)
         {
