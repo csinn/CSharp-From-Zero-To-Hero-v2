@@ -14,6 +14,7 @@ namespace CredentialsManager
     public static void Initialize()
     {
       _credentials = GetCredentials();
+      
 
       CheckForDuplicates();
     }
@@ -37,16 +38,15 @@ namespace CredentialsManager
 
     private static void CheckForDuplicates()
     {
-      for (var index = 0; index + 1 < _credentials.Count; index++)
+      var hashset = new HashSet<Credentials>();
+      foreach (var credential in _credentials)
       {
-        var currentCredential = _credentials[index];
-        var nextCredential = _credentials[index + 1];
-
-        if (currentCredential.Equals(nextCredential))
+        if (!hashset.Add(credential))
         {
-          throw new DuplicateUserCredentialsException("Duplicate users found!");
+          throw new DuplicateUserCredentialsException("Duplicate user names found!");
         }
       }
+      
     }
 
     public static bool Login(Credentials credentials)
