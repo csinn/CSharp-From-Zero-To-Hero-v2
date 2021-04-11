@@ -20,7 +20,7 @@ namespace CredentialsManager
 
     public static void Run()
     {
-      while (!_isExitInvoked)
+      while (_isExitInvoked)
       {
         try
         {
@@ -39,11 +39,6 @@ namespace CredentialsManager
           Console.WriteLine(ex.Message);
           Pause("Press ENTER to exit..");
           break;
-        }
-        catch (UserNameIsTakenException ex)
-        {
-          Console.WriteLine(ex.Message);
-          Pause();
         }
       }
     }
