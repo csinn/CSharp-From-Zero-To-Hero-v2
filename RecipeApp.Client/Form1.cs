@@ -48,17 +48,7 @@ namespace RecipeApp.Client
         {
             var isConvertToSiUnits = SiUnitsRadioButton.Checked;
             var input = SourceRichTextBox.Text;
-            string converted;
-            if (isConvertToSiUnits)
-            {
-                converted = RecipeConverter.ConvertToSiUnits(input);
-            }
-            else
-            {
-                converted = RecipeConverter.ConvertToCookingUnits(input);
-            }
-            
-            ResultRichTextBox.Text = converted;
+            ResultRichTextBox.Text = RecipeConverter.ConvertRecipe(input, isConvertToSiUnits);
         }
     }
 }
