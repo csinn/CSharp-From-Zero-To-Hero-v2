@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CredentialsManager.FilesExceptions;
 using CredentialsManager.Models;
 
@@ -9,17 +8,17 @@ namespace CredentialsManager
   {
     private const string FieldDelimiter = ",";
     private const string CredentialsFile = "Users.txt";
-    private static IList<Credentials> _credentials = new List<Credentials>();
+    private static List<Credentials> _credentials = new();
 
     public static void Initialize()
     {
       _credentials = GetCredentials();
-      
-
+      _credentials.Sort();
+  
       CheckForDuplicates();
     }
 
-    private static IList<Credentials> GetCredentials()
+    private static List<Credentials> GetCredentials()
     {
       var content = Files.ReadAllLines(CredentialsFile);
       var credentials = new List<Credentials>();
@@ -38,10 +37,12 @@ namespace CredentialsManager
 
     private static void CheckForDuplicates()
     {
-      var hashset = new HashSet<Credentials>();
-      foreach (var credential in _credentials)
+      for (var index = 0; index + 1 < _credentials.Count; index++)
       {
-        if (!hashset.Add(credential))
+        var currentCredential = _credentials[index];
+        var nextCredential = _credentials[index + 1];
+
+        if (currentCredential.UserName.Equals(nextCredential.UserName))
         {
           throw new DuplicateUserCredentialsException("Duplicate user names found!");
         }
