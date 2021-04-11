@@ -47,7 +47,8 @@ namespace CredentialsManager.Models
 
     public bool Equals(Credentials other)
     {
-      return UserName.Equals( other.UserName) && UserPassword.Equals(other.UserPassword);
+      return UserName.Equals(other.UserName, StringComparison.OrdinalIgnoreCase) 
+             && UserPassword.Equals(other.UserPassword);
     }
 
     public override bool Equals(object? obj)
@@ -57,7 +58,10 @@ namespace CredentialsManager.Models
 
     public override int GetHashCode()
     {
-      return HashCode.Combine(UserName, UserPassword);
+      var hashCode = new HashCode();
+      hashCode.Add(UserName, StringComparer.OrdinalIgnoreCase);
+      hashCode.Add(UserPassword);
+      return hashCode.ToHashCode();
     }
 
     public static bool operator ==(Credentials left, Credentials right)
@@ -78,7 +82,9 @@ namespace CredentialsManager.Models
     public int CompareTo(object? obj)
     {
       if (ReferenceEquals(null, obj)) return 1;
-      return obj is Credentials other ? CompareTo(other) : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
+      return obj is Credentials other 
+        ? CompareTo(other) 
+        : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
     }
     
     public static bool operator <(Credentials left, Credentials right)
