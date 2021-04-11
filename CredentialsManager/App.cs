@@ -29,6 +29,7 @@ namespace CredentialsManager
         catch (MyFileNotFoundException ex)
         {
           Console.WriteLine(ex.Message);
+          Pause("Press ENTER to exit..");
           break;
         }
         catch (DuplicateUserCredentialsException ex)
