@@ -2,7 +2,7 @@
 
 namespace CredentialsManager.Models
 {
-  public class Credentials : IEquatable<Credentials>, IComparable<Credentials>, IComparable
+  public readonly struct Credentials : IEquatable<Credentials>, IComparable<Credentials>, IComparable
   {
     public string UserName { get; }
     public string UserPassword { get; }
@@ -45,52 +45,60 @@ namespace CredentialsManager.Models
       return $"{UserName},{UserPassword}";
     }
 
-    public bool Equals(Credentials? other)
+    public bool Equals(Credentials other)
     {
-      if (other is null) return false;
-      if (ReferenceEquals(this, other)) return true;
-
-      return UserName.Equals(other.UserName, StringComparison.OrdinalIgnoreCase)
-             && UserPassword.Equals(other.UserPassword, StringComparison.Ordinal);
+      return UserName.Equals( other.UserName) && UserPassword.Equals(other.UserPassword);
     }
 
     public override bool Equals(object? obj)
     {
-      if (obj is null) return false;
-      if (ReferenceEquals(this, obj)) return true;
-
-      return obj.GetType() == GetType() && Equals((Credentials)obj);
+      return obj is Credentials other && Equals(other);
     }
 
     public override int GetHashCode()
     {
-      return HashCode.Combine(UserName.ToLowerInvariant(), UserPassword);
+      return HashCode.Combine(UserName, UserPassword);
     }
 
-    public static bool operator ==(Credentials? left, Credentials? right)
+    public static bool operator ==(Credentials left, Credentials right)
     {
-      return Equals(left, right);
+      return left.Equals(right);
     }
 
-    public static bool operator !=(Credentials? left, Credentials? right)
+    public static bool operator !=(Credentials left, Credentials right)
     {
-      return !Equals(left, right);
+      return !left.Equals(right);
     }
-
-    public int CompareTo(Credentials? other)
+   
+    public int CompareTo(Credentials other)
     {
-      if (ReferenceEquals(this, other)) return 0;
-      if (ReferenceEquals(null, other)) return 1;
       return string.Compare(UserName, other.UserName, StringComparison.OrdinalIgnoreCase);
     }
-
+    
     public int CompareTo(object? obj)
     {
       if (ReferenceEquals(null, obj)) return 1;
-      if (ReferenceEquals(this, obj)) return 0;
-      return obj is Credentials other
-        ? CompareTo(other)
-        : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
+      return obj is Credentials other ? CompareTo(other) : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
+    }
+    
+    public static bool operator <(Credentials left, Credentials right)
+    {
+      return left.CompareTo(right) < 0;
+    }
+    
+    public static bool operator <=(Credentials left, Credentials right)
+    {
+      return left.CompareTo(right) <= 0;
+    }
+    
+    public static bool operator >(Credentials left, Credentials right)
+    {
+      return left.CompareTo(right) > 0;
+    }
+    
+    public static bool operator >=(Credentials left, Credentials right)
+    {
+      return left.CompareTo(right) >= 0;
     }
   }
 }
