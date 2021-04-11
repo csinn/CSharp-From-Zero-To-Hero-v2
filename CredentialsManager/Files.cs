@@ -24,7 +24,7 @@ namespace CredentialsManager
                               or DirectoryNotFoundException
                               or IOException)
       {
-        throw new MyFileNotFoundException($"{file} file not found or not able to open!");
+        throw new MyFileNotFoundException(file);
       }
     }
 
@@ -51,7 +51,7 @@ namespace CredentialsManager
                               or IOException
                               or SecurityException)
       {
-        throw new MyFileNotFoundException($"{file} file not found or not able to open!");
+        throw new MyFileNotFoundException(file);
       }
     }
 
@@ -86,7 +86,7 @@ namespace CredentialsManager
                               or IOException
                               or SecurityException)
       {
-        throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
+        throw new MyFileNotFoundException(file);
       }
     }
   }
