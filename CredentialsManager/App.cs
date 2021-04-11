@@ -12,7 +12,8 @@ namespace CredentialsManager
     private const string Header = "Credentials Manager";
     private const string LoginMessage = "Welcome";
     private const string FailedLoginMessage = "Invalid credentials!";
-    private const string RegistrationSuccessfulMessage = "Registration successful!";
+    private const string RegisterMessage = "Registration succesfful!";
+    private const string FailedRegisterMessage = "User name is taken!";
 
     private static bool _isExitInvoked;
 
@@ -106,8 +107,9 @@ namespace CredentialsManager
       var userName = PromptString("Username: ");
       var userPassword = PromptString("Password: ", false);
 
-      Manager.Register(new Credentials(userName, userPassword));
-      Console.WriteLine(RegistrationSuccessfulMessage);
+      var isRegisterSuccessful = Manager.Register(new Credentials(userName, userPassword));
+      var statusMessage = isRegisterSuccessful ? RegisterMessage : FailedRegisterMessage;
+      Console.WriteLine(statusMessage);
     }
 
     private static void Exit()

@@ -56,14 +56,15 @@ namespace CredentialsManager
       return _credentials.Contains(credentials);
     }
 
-    public static void Register(Credentials credentials)
+    public static bool Register(Credentials credentials)
     {
-      if (IsUserNameTaken(credentials))
+      if (!IsUserNameTaken(credentials))
       {
-        throw new UserNameIsTakenException("User name is taken!");
+        Files.WriteLine(CredentialsFile, CreateString(credentials), true);
+        return true;
       }
 
-      Files.WriteLine(CredentialsFile, CreateString(credentials), true);
+      return false;
     }
 
     private static bool IsUserNameTaken(Credentials credentials)
