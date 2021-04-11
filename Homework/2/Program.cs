@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
 
 namespace Homework2
 {
     class Program
     {
+
+        //HW2
+        //
         //Create a method for each operation:
         //Sort an array
         //Add element at the start of an array
@@ -15,26 +19,37 @@ namespace Homework2
         //Login: takes username and password.If they match a hidden username and password- a message "Logged in!" is printed.
         //Username capitalization does not matter, password capitalization must match.
 
+        //HW 3
+        //
+        //You have a file called Users.txt. It contains usernames and passwords. A user open your application and they have 3 options:
+        //Login- enter their username and password, which should match any one line in Users.txt. Successful login will result in "Hello!" printed.
+        //Register- enter their username and password, which should append their credentials at the end of the file. In case of a duplicate user- try again.
+        //Exit- close the application
+        //Users.txt file should be at the same directory as the application start .exe.
+        //
+        //Errors
+        //If there is no Users.txt file- the application should not throw "UsersNotFoundException.
+        //If a Users.text file contains duplicate users, throw a DuplicateUserCredentialsException.
+        //
+        //Restrictions
+        //Don't use File class static methods.
+
+
+
         //Variables
         private static bool loggedIn = false; // Variable to track if user is "logged in"
-        private static string[][] userArray = new string[5][]; // array of user arrays with login info which is string[username,password]; Would rather use List<>
-        
+        private static string[][] userArray = new string[0][]; // array of user arrays with login info which is string[username,password]; Would rather use List<>
+        private static string pathToFile = @"./users.txt"; // path to user file 
 
         static void Main(string[] args)
         {
-            //Adding a couple of users to array
-            userArray[0] = new string[] { "Admin", "slAptazodis" };
-            userArray[1] = new string[] { "user1", "pSwD" };
-            userArray[2] = new string[] { "LaIMONAS", "123" };
-            userArray[3] = new string[] { "Xavier", "Dust" };
-            userArray[4] = new string[] { "Blaber", "Lol" };
+            LoadUsersFromFile();
             MenuSelection();
         }
 
         //Main function which lists available options
         static void MenuSelection() {
             Console.Clear();
-
             if (loggedIn)
             {
                 Console.WriteLine("Logged in. \n\n");
@@ -49,12 +64,68 @@ namespace Homework2
                 Console.WriteLine("11 - Log out\n");
             }
             else {
-                Console.WriteLine("Select option:\n");
+                Console.WriteLine("Select option:\n\n");
                 Console.WriteLine("1 - Log in\n");
                 Console.WriteLine("2 - Register\n");
             }
 
+            Console.WriteLine("12 - Close console\n");
+
             OptionSelection(option: Console.ReadLine());
+        }
+
+        // Loading users from file to array - HW3  / User details should follow this format: username;password - in different line for each user.
+        // Things to consider: line validation - multiple ;, empty usernames/passwords // ; char should also be validated on user creation
+        static void LoadUsersFromFile() {
+            try
+            {
+                using (StreamReader reader = new StreamReader(pathToFile))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string[] userCredentials = reader.ReadLine().Split(';');
+                        if (CheckIfUserExists(userCredentials[0]))
+                        {
+                            throw new DuplicateUserCredentialsException(userCredentials[0]);
+                        }
+                        else
+                        {
+                            AddUserToArrayAtIndex(userCredentials, 0);
+                        }
+                    }
+                }
+            }
+            catch (FileNotFoundException fileEx)
+            {
+            }
+            catch (DuplicateUserCredentialsException usersEx)
+            {
+                throw;
+            }
+            catch (Exception defaultEx)
+            { 
+                throw;
+            }
+
+        }
+
+        // Function to write user info from userArray to users.txt file
+        static void WriteUsersToFile()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(pathToFile,false))
+                {
+                    for (int i = 0; i < userArray.Length; i++)
+                    {
+                        writer.WriteLine($"{userArray[i][0]};{userArray[i][1]}");
+                    }
+                }
+            }
+            catch (Exception defaultEx)
+            {
+                throw;
+            }
         }
 
         //Funtion that gets which option was selected and calls other needed functions via switch statement.
@@ -63,47 +134,41 @@ namespace Homework2
             switch (option)
             {
                 case "1":
-                    // Log in
-                    Login();
+                    LogIn();
                     break;
                 case "2":
-                    //Register / adding to end of list
                     PromptAddUserToArray();
                     break;
                 case "3":
-                    //Listing all users;
                     ListUsers();
                     break;
                 case "4":
-                    //Adding to start of list
                     PromptAddUserToArray(addToEnd: false, addToStart: true);
                     break;
                 case "5":
-                    //adding to end of list/ like register
                     PromptAddUserToArray();
                     break;
                 case "6":
-                    //Adding to n'th(index) position on list
                     PromptAddUserToArray(addToEnd: false, addToStart: false);
                     break;
                 case "7":
-                    //Remove from start of the array
                     PromptRemoveUser(removeFromEnd: false, removeFromStart: true);
                     break;
                 case "8":
-                    //Remove from end of the array
                     PromptRemoveUser(removeFromEnd: true, removeFromStart: false);
                     break;
                 case "9":
-                    //Prompt to get index of user to remove from array
                     PromptRemoveUser(removeFromEnd: false, removeFromStart: false);
                     break;
                 case "10":
-                    //Sorting array by usernames in ascending order
                     SortUsers();
                     break;
                 case "11":
                     LogOut();
+                    break;
+                case "12":
+                    WriteUsersToFile();
+                    Environment.Exit(0);
                     break;
                 default:
                     MenuSelection();
@@ -117,19 +182,17 @@ namespace Homework2
         }
 
         //Login function - gets username/password and checks against array
-        static void Login() {
+        static void LogIn() {
             Console.Clear();
             string username = PromptInput("Enter username:");
             string password = PromptInput("Enter password:");
 
             if (CheckIfUserExists(username))
             {
-                Console.WriteLine("userexists");
                 string[] userDetails = ReturnUserByUsername(username);
                 Console.WriteLine(userDetails[0] + " " + userDetails[1]);
                 if (userDetails[1] == password) {
                     loggedIn = true;
-                    
                     MenuSelection();
                     return;
                 }
@@ -137,7 +200,7 @@ namespace Homework2
 
             if (RetryConfirmation("Bad username or password."))
             {
-                Login();
+                LogIn();
             }
             else {
                 MenuSelection();
@@ -169,7 +232,6 @@ namespace Homework2
             {
                 if (userArray[i][0].ToLower() == username.ToLower())
                 {
-                    Console.WriteLine("Found");
                     return true;
                 }
             }
@@ -198,20 +260,13 @@ namespace Homework2
                 if (index == 0 && i == 0 )
                 {
                     newArray[i] = userDetails;
-                    continue;
-                }
-
-                if (i < index)
+                }else if(i < index)
                 {
                     newArray[i] = userArray[i];
-                }
-
-                if (i==index)
+                }else if (i == index)
                 {
                     newArray[i] = userDetails;
-                }
-
-                if (i > index)
+                }else if (i > index)
                 {
                     newArray[i] = userArray[i - 1];
                 }
@@ -240,38 +295,16 @@ namespace Homework2
 
             string username = PromptInput("Enter username:");
             string password = PromptInput("Enter password:");
-            
-            int index = userArray.Length;
 
-            if (addToStart)
-            {
-                index = 0;
-            }
 
-            if (!addToEnd && !addToStart)
-            {
-                string indexStr = PromptInput("Enter index to add user at:");
-                index = int.Parse(indexStr);
-            }
+            int index = GetIndex(addToEnd, addToStart);
 
-            if (index<0 || index > userArray.Length)
-            {
-                if (RetryConfirmation("Bad index."))
-                {
-                    PromptAddUserToArray(addToEnd,addToStart);
-                }
-                else
-                {
-                    MenuSelection();
-                }
-            }
-
-            if (!CheckIfUserExists(username) || !(password == ""))
+            if (!CheckIfUserExists(username) && !(password == "") && index != -1)
             {
                 string[] userDetails = new string[2] { username, password };
                 AddUserToArrayAtIndex(userDetails, index);
+                WriteUsersToFile();
                 ListUsers();
-                return;
             }
             else {
                 if (RetryConfirmation("Bad user details."))
@@ -288,35 +321,41 @@ namespace Homework2
         //Function to get index of where user should be removed
         static void PromptRemoveUser(bool removeFromEnd = true, bool removeFromStart = false) {
             Console.Clear();
-
-            int index = userArray.Length - 1;
-
-            if (removeFromStart)
+            int index = GetIndex(removeFromEnd, removeFromStart);
+            if (index!=-1)
             {
-                index = 0;
+                RemoveUser(index);
+                WriteUsersToFile();
             }
-
-            if (!removeFromEnd && !removeFromStart)
-            {
-                string indexStr = PromptInput("Enter index to remove user at:");
-                index = int.Parse(indexStr);
-            }
-
-            if (index < 0 || index >= userArray.Length)
-            {
-                if (RetryConfirmation("Bad index."))
-                {
-                    PromptRemoveUser(removeFromEnd, removeFromStart);
-                }
-                else
-                {
-                    MenuSelection();
-                }
-            }
-
-            RemoveUser(index);
             ListUsers();
         }
+
+        //returns or prompts index for array. Returns -1 if there are issues.
+        static int GetIndex(bool endOfArray = true, bool startOfArray = false) {
+            if (endOfArray)
+            {
+                return userArray.Length;
+            }
+            else if (startOfArray)
+            {
+                return 0;
+            }
+            else if (!endOfArray && !startOfArray)
+            {
+                string indexStr = PromptInput("Enter index:");
+                int.TryParse(indexStr, out int index);
+
+                if (index < 0 || index >= userArray.Length)
+                {
+                    return -1;
+                }
+                else {
+                    return index;
+                }
+            }
+            return -1;
+        }
+
 
         //Remove user from userArray at index.
         static void RemoveUser(int index) {
@@ -327,14 +366,10 @@ namespace Homework2
                 if (i <index)
                 {
                     newArray[i] = userArray[i];
-                }
-
-                if (i == index)
+                }else if (i == index)
                 {
                     newArray[i] = userArray[i + 1];
-                }
-
-                if (i > index)
+                }else if (i > index)
                 {
                     newArray[i] = userArray[i + 1];
                 }
@@ -346,6 +381,60 @@ namespace Homework2
         //Sorting users
         static void SortUsers() {
             Console.Clear();
+
+            bool ascendingOrder = ReturnSortingOrder();
+
+            if (ascendingOrder)
+            {
+                SortUserArrayInAscOrder();
+            }
+            else {
+                SortUserArrayInDesOrder();
+            }
+
+            WriteUsersToFile();
+            ListUsers();
+        }
+
+        // Function to swap values in userArray
+        static void UserArrayValueSwap(int x, int y) {
+            string[] temp;
+            temp = userArray[x];
+            userArray[x] = userArray[y];
+            userArray[y] = temp;
+        }
+
+        //Ascending order sorting function
+        static void SortUserArrayInAscOrder() {
+            for (int j = 0; j < userArray.Length; j++)
+            {
+                for (int i = 0; i < userArray.Length - 1; i++)
+                {
+                    if (userArray[i][0].CompareTo(userArray[i + 1][0]) > 0)
+                    {
+                        UserArrayValueSwap(i, i + 1);
+                    }
+                }
+            }
+        }
+
+        //Descending order sorting function
+        static void SortUserArrayInDesOrder() {
+            for (int j = 0; j < userArray.Length; j++)
+            {
+                for (int i = 0; i < userArray.Length - 1; i++)
+                {
+                    if (userArray[i][0].CompareTo(userArray[i + 1][0]) < 0)
+                    {
+                        UserArrayValueSwap(i, i + 1);
+                    }
+                }
+            }
+        }
+
+        //True for ascending/ false for descending
+        static bool ReturnSortingOrder()
+        {
             string order = PromptInput("Choose sort type:\n1 - asc\n2 - dec");
             if (order != "1" && order != "2")
             {
@@ -357,34 +446,25 @@ namespace Homework2
                 {
                     MenuSelection();
                 }
+                return false;
             }
-
-            string[] temp;
-            for (int j = 0; j < userArray.Length; j++)
+            else if (order == "1")
             {
-                for (int i = 0; i < userArray.Length - 1; i++)
-                {
-                    if (order == "1")
-                    {
-                        if (userArray[i][0].CompareTo(userArray[i + 1][0]) > 0)
-                        {
-                            temp = userArray[i];
-                            userArray[i] = userArray[i + 1];
-                            userArray[i + 1] = temp;
-                        }
-                    }
-                    else {
-                        if (userArray[i][0].CompareTo(userArray[i + 1][0]) < 0)
-                        {
-                            temp = userArray[i];
-                            userArray[i] = userArray[i + 1];
-                            userArray[i + 1] = temp;
-                        }
-                    }
-                   
-                }
+                return true;
             }
-            ListUsers();
+            else 
+            {
+                return false;
+            }
+        }
+    }
+
+    class DuplicateUserCredentialsException : Exception
+    {
+        public DuplicateUserCredentialsException(string name)
+         : base(String.Format("Duplicate users found: {0}", name))
+        {
+            
         }
     }
 }
