@@ -19,10 +19,10 @@ namespace CredentialsManager
         }
       }
       catch (Exception ex) when (ex is ArgumentException
-                              || ex is ArgumentNullException
-                              || ex is FileNotFoundException
-                              || ex is DirectoryNotFoundException
-                              || ex is IOException)
+                              or ArgumentNullException
+                              or FileNotFoundException
+                              or DirectoryNotFoundException
+                              or IOException)
       {
         throw new MyFileNotFoundException($"{file} file not found or not able to open!");
       }
@@ -44,12 +44,12 @@ namespace CredentialsManager
         }
       }
       catch (Exception ex) when (ex is UnauthorizedAccessException
-                              || ex is ArgumentException
-                              || ex is ArgumentNullException
-                              || ex is DirectoryNotFoundException
-                              || ex is PathTooLongException
-                              || ex is IOException
-                              || ex is SecurityException)
+                              or ArgumentException
+                              or ArgumentNullException
+                              or DirectoryNotFoundException
+                              or PathTooLongException
+                              or IOException
+                              or SecurityException)
       {
         throw new MyFileNotFoundException($"{file} file not found or not able to open!");
       }
@@ -79,12 +79,12 @@ namespace CredentialsManager
         }
       }
       catch (Exception ex) when (ex is UnauthorizedAccessException
-                              || ex is ArgumentException
-                              || ex is ArgumentNullException
-                              || ex is DirectoryNotFoundException
-                              || ex is PathTooLongException
-                              || ex is IOException
-                              || ex is SecurityException)
+                              or ArgumentException
+                              or ArgumentNullException
+                              or DirectoryNotFoundException
+                              or PathTooLongException
+                              or IOException
+                              or SecurityException)
       {
         throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
       }
