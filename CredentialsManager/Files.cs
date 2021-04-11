@@ -24,7 +24,7 @@ namespace CredentialsManager
                               or DirectoryNotFoundException
                               or IOException)
       {
-        throw new MyFileNotFoundException(file);
+        throw new MyFileNotFoundException(file, ex);
       }
     }
 
@@ -51,7 +51,7 @@ namespace CredentialsManager
                               or IOException
                               or SecurityException)
       {
-        throw new MyFileNotFoundException(file);
+        throw new MyFileNotFoundException(file, ex);
       }
     }
 
@@ -86,7 +86,7 @@ namespace CredentialsManager
                               or IOException
                               or SecurityException)
       {
-        throw new MyFileNotFoundException(file);
+        throw new MyFileNotFoundException(file, ex);
       }
     }
   }
