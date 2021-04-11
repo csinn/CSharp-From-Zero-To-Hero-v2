@@ -13,7 +13,6 @@ namespace CredentialsManager
     public static void Initialize()
     {
       _credentials = GetCredentials();
-      _credentials.Sort();
   
       CheckForDuplicates();
     }
@@ -37,6 +36,8 @@ namespace CredentialsManager
 
     private static void CheckForDuplicates()
     {
+      _credentials.Sort();
+
       for (var index = 0; index + 1 < _credentials.Count; index++)
       {
         var currentCredential = _credentials[index];
