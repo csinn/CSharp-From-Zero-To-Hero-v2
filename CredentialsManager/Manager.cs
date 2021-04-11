@@ -43,7 +43,7 @@ namespace CredentialsManager
         var currentCredential = _credentials[index];
         var nextCredential = _credentials[index + 1];
 
-        if (currentCredential.UserName.Equals(nextCredential.UserName))
+        if (currentCredential.CompareTo(nextCredential).Equals(0))
         {
           throw new DuplicateUserCredentialsException("Duplicate user names found!");
         }
