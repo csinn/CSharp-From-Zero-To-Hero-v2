@@ -9,18 +9,12 @@ namespace CredentialsManager.Models
 
     public Credentials(string userName, string userPassword)
     {
-      if (string.IsNullOrWhiteSpace(userName))
-      {
-        throw new ArgumentException("Value can not be null or empty", nameof(userName));
-      }
-
-      if (string.IsNullOrWhiteSpace(userPassword))
-      {
-        throw new ArgumentException("Value can not be null or empty", nameof(userName));
-      }
-      
-      UserName = userName;
-      UserPassword = userPassword;
+      UserName = string.IsNullOrWhiteSpace(userName)
+        ? throw new ArgumentException("Value can not be null or empty", nameof(userName))
+        : userName;
+      UserPassword = string.IsNullOrWhiteSpace(userName)
+        ? throw new ArgumentException("Value can not be null or empty", nameof(userPassword))
+        : userPassword;
     }
 
     public static bool TryParse(string line, string delimiter, out Credentials credentials)
@@ -94,7 +88,9 @@ namespace CredentialsManager.Models
     {
       if (ReferenceEquals(null, obj)) return 1;
       if (ReferenceEquals(this, obj)) return 0;
-      return obj is Credentials other ? CompareTo(other) : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
+      return obj is Credentials other
+        ? CompareTo(other)
+        : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
     }
   }
 }

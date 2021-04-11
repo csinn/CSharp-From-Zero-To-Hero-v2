@@ -49,22 +49,17 @@ namespace CredentialsManager
     {
       return new List<MenuItem>
       {
-        new MenuItem { ItemId = 1, Label = "Login", Action = Login, ConsoleKey = ConsoleKey.D1 },
-        new MenuItem { ItemId = 2, Label = "Register", Action = Register, ConsoleKey = ConsoleKey.D2 }
+        new MenuItem (1, "Login",ConsoleKey.D1, Login ),
+        new MenuItem (2, "Register",ConsoleKey.D2, Register ),
       };
     }
 
     private static Menu CreateMenu()
     {
-      return new Menu
-      {
-        Header = "Credentials Manager",
-        MenuItems = GetMenuItems(),
-        ExitItem = new MenuItem { ItemId = 3, Label = "Exit", Action = Exit, ConsoleKey = ConsoleKey.D3 }
-      };
+      return new Menu(Header, GetMenuItems(), new MenuItem(3, "Exit", ConsoleKey.D3, Exit));
     }
 
-    private static void ConsoleInit(string header)
+    private static void ConsoleInit(string? header)
     {
       Console.CursorVisible = false;
       Console.Clear();
@@ -88,7 +83,7 @@ namespace CredentialsManager
         if (!MainMenu.IsValidKey(pressedKey)) continue;
 
         ConsoleInit(MainMenu[pressedKey].Label);
-        MainMenu[pressedKey].Action();
+        MainMenu[pressedKey].Action?.Invoke();
         Pause();
         break;
       } while (pressedKey != MainMenu.ExitItem.ConsoleKey);

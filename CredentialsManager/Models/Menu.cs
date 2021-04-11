@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CredentialsManager.Models
 {
   public class Menu
   {
-    public string Header { get; set; }
-    public IList<MenuItem> MenuItems { get; set; }
-
-    public MenuItem ExitItem { get; set; }
-
-    public Menu()
-    {
-    }
+    public string Header { get; }
+    public IList<MenuItem> MenuItems { get; }
+    public MenuItem ExitItem { get; }
 
     public Menu(string header, IList<MenuItem> menuItems, MenuItem exitItem)
     {
-      Header = header ?? throw new ArgumentNullException(nameof(header));
+      Header = string.IsNullOrWhiteSpace(header)
+        ? throw new ArgumentException("Value can not be null or empty!", nameof(header))
+        : header;
       MenuItems = menuItems ?? throw new ArgumentNullException(nameof(menuItems));
       ExitItem = exitItem ?? throw new ArgumentNullException(nameof(exitItem));
     }
