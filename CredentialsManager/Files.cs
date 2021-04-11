@@ -7,8 +7,8 @@ namespace CredentialsManager
 {
   public static class Files
   {
-    private static readonly string[] Delimiters = {"\r\n", "\n"};
-    
+    private static readonly string[] Delimiters = { "\r\n", "\n" };
+
     public static string ReadAllText(string file)
     {
       try
@@ -43,13 +43,13 @@ namespace CredentialsManager
           writer.Write(data);
         }
       }
-      catch (Exception ex) when (ex is UnauthorizedAccessException 
-                              || ex is ArgumentException 
+      catch (Exception ex) when (ex is UnauthorizedAccessException
+                              || ex is ArgumentException
                               || ex is ArgumentNullException
                               || ex is DirectoryNotFoundException
                               || ex is PathTooLongException
                               || ex is IOException
-                              || ex is SecurityException) 
+                              || ex is SecurityException)
       {
         throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
       }
@@ -78,13 +78,13 @@ namespace CredentialsManager
           writer.WriteLine(data);
         }
       }
-      catch (Exception ex) when (ex is UnauthorizedAccessException 
-                              || ex is ArgumentException 
+      catch (Exception ex) when (ex is UnauthorizedAccessException
+                              || ex is ArgumentException
                               || ex is ArgumentNullException
                               || ex is DirectoryNotFoundException
                               || ex is PathTooLongException
                               || ex is IOException
-                              || ex is SecurityException) 
+                              || ex is SecurityException)
       {
         throw new MyFileNotFoundException($"{file} file not found ore not able to open!");
       }
