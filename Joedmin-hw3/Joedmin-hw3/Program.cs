@@ -19,81 +19,64 @@ namespace Joedmin_hw3
                 {
                     Process.GetCurrentProcess().Kill();
                 }
-         
+
                 // Login
                 else if (String.Equals(answer, "login", StringComparison.OrdinalIgnoreCase))
                 {
-                    try
+                    using (var stream = new StreamReader("Users.txt"))
                     {
-                        using (var stream = new StreamReader("Users.txt"))
+                        Dictionary<string, string> usersAndPasswords = GetCredentials("Users.txt");
+
+                        string[] credentials = GetCredencials();
+
+                        if (usersAndPasswords.ContainsKey(credentials[0]))
                         {
-                            Dictionary<string, string> usersAndPasswords = GetUsersAndPasswords("Users.txt");
-
-                            while (true)
+                            if (!(string.Equals(credentials[1], usersAndPasswords[credentials[0]])))
+                                Console.WriteLine("Invalid password.");
+                            else
                             {
-                                string[] credentials = GetCredencials();
-
-                                if (usersAndPasswords.ContainsKey(credentials[0]))
-                                {
-                                    if (!(string.Equals(credentials[1], usersAndPasswords[credentials[0]])))
-                                        Console.WriteLine("Invalid password. Please try again");
-                                    else
-                                    {
-                                        Console.WriteLine("Hello!");
-                                        break;
-                                    }
-                                }
-                                else
-                                    Console.WriteLine("Username is not registered");
+                                Console.WriteLine("Hello!");
                             }
                         }
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        throw new UsersNotFoundException("File Users.txt was not found. Make sure it is in the same directory as the .exe file.");
+                        else
+                            Console.WriteLine("Username is not registered.");
                     }
                 }
 
                 // Register
                 else if (String.Equals(answer, "register", StringComparison.OrdinalIgnoreCase))
                 {
-                    Dictionary<string, string> usersAndPasswords = GetUsersAndPasswords("Users.txt");
-                    try
+                    Dictionary<string, string> usersAndPasswords = GetCredentials("Users.txt");
+                    using (var stream = new StreamWriter("Users.txt", true))
                     {
-                        using (var stream = new StreamWriter("Users.txt", true))
-                        {
-                            while (true)
-                            {
-                                try
-                                {
-                                    string[] credentials = GetCredencials();
-
-                                    SaveToDictionary(usersAndPasswords, credentials);
-                                    stream.WriteLine($"{credentials[0]} {credentials[1]}");
-                                    Console.WriteLine("Hello!");
-                                    break;
-                                }
-                                catch (DuplicateUserCredentialsException ex)
-                                {
-                                    Console.WriteLine($"{ex.Message}\nPlease try again.");
-                                }
-                            }
-                        }
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        throw new UsersNotFoundException("File Users.txt was not found. Make sure it is in the same directory as the .exe file.");
+                        string[] credentials = GetCredencials();
+                        SaveToDictionary(usersAndPasswords, credentials);
+                        stream.WriteLine($"{credentials[0]} {credentials[1]}");
+                        Console.WriteLine("Hello!");
                     }
                 }
             }
-            catch (UsersNotFoundException ex)
+            catch (UserNotFoundException ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            catch (DuplicateUserCredentialsException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("File Users.txt was not found. Make sure it is in the same directory as the .exe file.");
+            }
+
+            Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
         }
 
-        // Get user's user name and password
+        /// <summary>
+        /// Get username and password
+        /// </summary>
+        /// <returns></returns>
         static string[] GetCredencials()
         {
             Console.Write("Enter your username: ");
@@ -105,49 +88,66 @@ namespace Joedmin_hw3
             return new string[] { username.Replace(" ", String.Empty), password.Replace(" ", String.Empty) };
         }
 
-        // Reading users.txt and saving it's whole content to a dictionary
-        static Dictionary<string, string> GetUsersAndPasswords(string path)
+        /// <summary>
+        /// Reading Users.txt and saving it's whole content to a dictionary
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        static Dictionary<string, string> GetCredentials(string path)
         {
-            try
+            using (var stream = new StreamReader(path))
             {
-                using (var stream = new StreamReader(path))
+                string[] fileContent = stream.ReadToEnd().Split(Environment.NewLine);
+
+                Dictionary<string, string> credentials = new Dictionary<string, string>();
+
+                foreach (var item in fileContent)
                 {
-                    string[] usersAndPasswords = stream.ReadToEnd().Split(Environment.NewLine);
-
-                    Dictionary<string, string> usersInfos = new Dictionary<string, string>();
-
-                    foreach (var item in usersAndPasswords)
+                    if (!String.IsNullOrEmpty(item) || !String.IsNullOrWhiteSpace(item))
                     {
                         string[] line = item.Split(' ');
-                        SaveToDictionary(usersInfos, line);
+                        SaveToDictionary(credentials, line);
                     }
-                    return usersInfos;
                 }
+                return credentials;
             }
-            catch (FileNotFoundException)
-            {
-                throw new UsersNotFoundException("File Users.txt was not found. Make sure it is in the same directory as the .exe file.");
-            }
-
         }
 
-        // Adding user's data from 1 line of a file to a dictionary with check of duplicated user names (keys)
-        static void SaveToDictionary(Dictionary<string, string> usersInfos, string[] line)
+        /// <summary>
+        /// Adding user's data from 1 line of a file to a dictionary
+        /// </summary>
+        /// <param name="usersInfos"></param>
+        /// <param name="userAndPassword"></param>
+        static void SaveToDictionary(Dictionary<string, string> usersInfos, string[] userAndPassword)
         {
-            foreach (var item in line)
-            {
-                if (String.IsNullOrEmpty(item) || String.IsNullOrWhiteSpace(item))
-                    return;
-            }
+            if (!ValidateCredentials(userAndPassword))
+                return;
 
-            if (!(usersInfos.ContainsKey(line[0])))
+            if (!(usersInfos.ContainsKey(userAndPassword[0])))
             {
-                usersInfos[line[0]] = line[1];
+                usersInfos[userAndPassword[0]] = userAndPassword[1];
             }
             else
             {
-                throw new DuplicateUserCredentialsException($"Users.txt contains duplicate user names! - ({line[0]})");
+                throw new DuplicateUserCredentialsException(userAndPassword[0]);
             }
+        }
+
+        /// <summary>
+        /// Checks if credentials aren't empty
+        /// </summary>
+        /// <param name="userAndPassword"></param>
+        /// <returns></returns>
+        static bool ValidateCredentials(string[] userAndPassword)
+        {
+            if (userAndPassword.Length != 2)
+                return false;
+            foreach (var item in userAndPassword)
+            {
+                if (String.IsNullOrEmpty(item) || String.IsNullOrWhiteSpace(item))
+                    return false;
+            }
+            return true;
         }
     }
 }

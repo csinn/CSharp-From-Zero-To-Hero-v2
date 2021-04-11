@@ -2,9 +2,9 @@
         
 namespace Joedmin_hw3
 {
-    public class UsersNotFoundException : Exception
+    public class UserNotFoundException : Exception
     {
-        public UsersNotFoundException(string message) : base(message)
+        public UserNotFoundException(string message) : base(message)
         { 
         
         }
