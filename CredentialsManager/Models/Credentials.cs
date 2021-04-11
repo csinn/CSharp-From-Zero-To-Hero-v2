@@ -2,7 +2,7 @@
 
 namespace CredentialsManager.Models
 {
-  public class Credentials : IEquatable<Credentials>
+  public class Credentials : IEquatable<Credentials>, IComparable<Credentials>, IComparable
   {
     public string UserName { get; }
     public string UserPassword { get; }
@@ -81,6 +81,20 @@ namespace CredentialsManager.Models
     public static bool operator !=(Credentials? left, Credentials? right)
     {
       return !Equals(left, right);
+    }
+
+    public int CompareTo(Credentials? other)
+    {
+      if (ReferenceEquals(this, other)) return 0;
+      if (ReferenceEquals(null, other)) return 1;
+      return string.Compare(UserName, other.UserName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public int CompareTo(object? obj)
+    {
+      if (ReferenceEquals(null, obj)) return 1;
+      if (ReferenceEquals(this, obj)) return 0;
+      return obj is Credentials other ? CompareTo(other) : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
     }
   }
 }
