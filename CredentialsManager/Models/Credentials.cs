@@ -42,7 +42,7 @@ namespace CredentialsManager.Models
 
     public bool Equals(Credentials other)
     {
-      return UserName.Equals(other.UserName, StringComparison.OrdinalIgnoreCase) 
+      return UserName.Equals(other.UserName, StringComparison.OrdinalIgnoreCase)
              && UserPassword.Equals(other.UserPassword);
     }
 
@@ -68,35 +68,35 @@ namespace CredentialsManager.Models
     {
       return !left.Equals(right);
     }
-   
+
     public int CompareTo(Credentials other)
     {
       return string.Compare(UserName, other.UserName, StringComparison.OrdinalIgnoreCase);
     }
-    
+
     public int CompareTo(object? obj)
     {
       if (ReferenceEquals(null, obj)) return 1;
-      return obj is Credentials other 
-        ? CompareTo(other) 
+      return obj is Credentials other
+        ? CompareTo(other)
         : throw new ArgumentException($"Object must be of type {nameof(Credentials)}");
     }
-    
+
     public static bool operator <(Credentials left, Credentials right)
     {
       return left.CompareTo(right) < 0;
     }
-    
+
     public static bool operator <=(Credentials left, Credentials right)
     {
       return left.CompareTo(right) <= 0;
     }
-    
+
     public static bool operator >(Credentials left, Credentials right)
     {
       return left.CompareTo(right) > 0;
     }
-    
+
     public static bool operator >=(Credentials left, Credentials right)
     {
       return left.CompareTo(right) >= 0;

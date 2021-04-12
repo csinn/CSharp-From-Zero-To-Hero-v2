@@ -10,7 +10,6 @@ namespace CredentialsManager.Models
     public Action? Action { get; }
     public IList<ConsoleKey> ConsoleKeys { get; }
 
-
     public MenuItem()
     {
     }
@@ -21,7 +20,6 @@ namespace CredentialsManager.Models
       Label = label;
       Action = action;
       ConsoleKeys = consoleKeys;
-
     }
 
     public override string ToString()

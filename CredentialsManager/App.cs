@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using CredentialsManager.FilesExceptions;
+﻿using CredentialsManager.FilesExceptions;
 using CredentialsManager.Models;
+using System;
+using System.Collections.Generic;
 
 namespace CredentialsManager
 {
@@ -45,7 +45,7 @@ namespace CredentialsManager
     {
       return new List<MenuItem>
       {
-        new MenuItem (1, "Login", Login, 
+        new MenuItem (1, "Login", Login,
           new List<ConsoleKey> {ConsoleKey.D1, ConsoleKey.NumPad1} ),
         new MenuItem (2, "Register", Register,
           new List<ConsoleKey> {ConsoleKey.D2, ConsoleKey.NumPad2} ),
@@ -55,7 +55,7 @@ namespace CredentialsManager
     private static Menu CreateMenu()
     {
       return new Menu(Header, GetMenuItems(), new MenuItem(3, "Exit", Exit,
-        new List<ConsoleKey> {ConsoleKey.D3, ConsoleKey.NumPad3}));
+        new List<ConsoleKey> { ConsoleKey.D3, ConsoleKey.NumPad3 }));
     }
 
     private static void ConsoleInit(string? header)

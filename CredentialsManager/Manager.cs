@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using CredentialsManager.FilesExceptions;
+﻿using CredentialsManager.FilesExceptions;
 using CredentialsManager.Models;
+using System.Collections.Generic;
 
 namespace CredentialsManager
 {
@@ -13,7 +13,7 @@ namespace CredentialsManager
     public static void Initialize()
     {
       _credentials = GetCredentials();
-  
+
       CheckForDuplicates();
     }
 
@@ -48,7 +48,6 @@ namespace CredentialsManager
           throw new DuplicateUserCredentialsException("Duplicate user names found!");
         }
       }
-      
     }
 
     public static bool Login(Credentials credentials)

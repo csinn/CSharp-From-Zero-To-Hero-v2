@@ -1,7 +1,7 @@
-﻿using System;
+﻿using CredentialsManager.FilesExceptions;
+using System;
 using System.IO;
 using System.Security;
-using CredentialsManager.FilesExceptions;
 
 namespace CredentialsManager
 {
