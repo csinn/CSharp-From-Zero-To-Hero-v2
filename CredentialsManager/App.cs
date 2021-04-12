@@ -16,11 +16,9 @@ namespace CredentialsManager
     private const string FailedRegisterMessage = "User name is taken!";
     private const string InvalidOptionMessage = "Not a valid option!";
 
-    private static bool _isExitInvoked;
-
     public static void Run()
     {
-      while (_isExitInvoked)
+      while (true)
       {
         try
         {
@@ -116,7 +114,7 @@ namespace CredentialsManager
 
     private static void Exit()
     {
-      _isExitInvoked = true;
+      Environment.Exit(0);
     }
 
     private static string PromptString(string message)
