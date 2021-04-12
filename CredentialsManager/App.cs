@@ -45,14 +45,17 @@ namespace CredentialsManager
     {
       return new List<MenuItem>
       {
-        new MenuItem (1, "Login",ConsoleKey.D1, Login ),
-        new MenuItem (2, "Register",ConsoleKey.D2, Register ),
+        new MenuItem (1, "Login", Login, 
+          new List<ConsoleKey> {ConsoleKey.D1, ConsoleKey.NumPad1} ),
+        new MenuItem (2, "Register", Register,
+          new List<ConsoleKey> {ConsoleKey.D2, ConsoleKey.NumPad2} ),
       };
     }
 
     private static Menu CreateMenu()
     {
-      return new Menu(Header, GetMenuItems(), new MenuItem(3, "Exit", ConsoleKey.D3, Exit));
+      return new Menu(Header, GetMenuItems(), new MenuItem(3, "Exit", Exit,
+        new List<ConsoleKey> {ConsoleKey.D3, ConsoleKey.NumPad3}));
     }
 
     private static void ConsoleInit(string? header)
@@ -87,7 +90,7 @@ namespace CredentialsManager
         MainMenu[pressedKey].Action?.Invoke();
         Pause();
         return;
-      } while (pressedKey != MainMenu.ExitItem.ConsoleKey);
+      } while (MainMenu.ExitItem.ConsoleKeys.Contains(pressedKey));
     }
 
     private static void Login()

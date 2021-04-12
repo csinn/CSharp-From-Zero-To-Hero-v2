@@ -12,24 +12,22 @@ namespace CredentialsManager.Models
 
     public Menu(string header, IList<MenuItem> menuItems, MenuItem exitItem)
     {
-      Header = string.IsNullOrWhiteSpace(header)
-        ? throw new ArgumentException("Value can not be null or empty!", nameof(header))
-        : header;
-      MenuItems = menuItems ?? throw new ArgumentNullException(nameof(menuItems));
-      ExitItem = exitItem ?? throw new ArgumentNullException(nameof(exitItem));
+      Header = header;
+      MenuItems = menuItems;
+      ExitItem = exitItem;
     }
 
     public bool IsValidKey(ConsoleKey consoleKey)
     {
       foreach (var item in MenuItems)
       {
-        if (item.ConsoleKey.Equals(consoleKey))
+        if (item.ConsoleKeys.Contains(consoleKey))
         {
           return true;
         }
       }
 
-      return consoleKey.Equals(ExitItem.ConsoleKey);
+      return ExitItem.ConsoleKeys.Contains(consoleKey);
     }
 
     public MenuItem this[ConsoleKey consoleKey]
@@ -38,13 +36,13 @@ namespace CredentialsManager.Models
       {
         foreach (var item in MenuItems)
         {
-          if (item.ConsoleKey.Equals(consoleKey))
+          if (item.ConsoleKeys.Contains(consoleKey))
           {
             return item;
           }
         }
 
-        if (consoleKey.Equals(ExitItem.ConsoleKey)) return ExitItem;
+        if (ExitItem.ConsoleKeys.Contains(consoleKey)) return ExitItem;
 
         return null;
       }

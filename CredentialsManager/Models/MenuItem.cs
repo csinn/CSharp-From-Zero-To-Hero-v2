@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CredentialsManager.Models
 {
@@ -6,21 +7,21 @@ namespace CredentialsManager.Models
   {
     public uint ItemId { get; }
     public string? Label { get; }
-    public ConsoleKey? ConsoleKey { get; }
     public Action? Action { get; }
+    public IList<ConsoleKey> ConsoleKeys { get; }
+
 
     public MenuItem()
     {
     }
 
-    public MenuItem(uint itemId, string label, ConsoleKey? consoleKey, Action action)
+    public MenuItem(uint itemId, string label, Action action, IList<ConsoleKey> consoleKeys)
     {
       ItemId = itemId;
-      Label = string.IsNullOrWhiteSpace(label)
-        ? throw new ArgumentException("Value can not be null or empty!", nameof(label))
-        : label;
-      ConsoleKey = consoleKey ?? throw new ArgumentNullException(nameof(label), "Value can not be null!");
-      Action = action ?? throw new ArgumentNullException(nameof(label), "Value can not be null!");
+      Label = label;
+      Action = action;
+      ConsoleKeys = consoleKeys;
+
     }
 
     public override string ToString()
