@@ -40,11 +40,6 @@ namespace CredentialsManager.Models
       return true;
     }
 
-    public override string ToString()
-    {
-      return $"{UserName},{UserPassword}";
-    }
-
     public bool Equals(Credentials other)
     {
       return UserName.Equals(other.UserName, StringComparison.OrdinalIgnoreCase) 
