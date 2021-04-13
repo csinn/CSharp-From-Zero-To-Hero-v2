@@ -4,6 +4,7 @@ using System.Linq;
 using CredentialsManager;
 using CredentialsManager.FilesExceptions;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Xunit;
 
 namespace CredentialsManagerTests
@@ -167,8 +168,11 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteAllText(file, expected);
 
-        // Assert
+        // Arrange
         var actual = File.ReadAllText(file);
+
+
+        // Assert
         actual.Should().Be(expected);
       }
 
@@ -183,8 +187,11 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteAllText(file, expected);
 
-        // Assert
+        // Arrange
         var actual = File.ReadAllText(file);
+
+
+        // Assert
         actual.Should().Be(expected);
       }
 
@@ -199,8 +206,11 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteAllText(file, expected);
 
-        // Assert
+        // Arrange
         var actual = File.ReadAllText(file);
+
+
+        // Assert
         actual.Should().Be(expected);
       }
 
@@ -215,8 +225,11 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteAllText(file, expected);
 
-        // Assert
+        // Arrange
         var actual = File.ReadAllText(file);
+
+
+        // Assert
         actual.Should().Be(expected);
       }
     }
@@ -234,8 +247,11 @@ namespace CredentialsManagerTests
         // Act
         File.WriteAllLines(file, output);
 
-        // Assert
+        // Arrange
         var actual = File.ReadLines(file);
+
+
+        // Assert
         actual.Should().Equal(output);
       }
 
@@ -250,8 +266,10 @@ namespace CredentialsManagerTests
         // Act
         File.WriteAllLines(file, output);
 
-        // Assert
+        // Arrange
         var actual = File.ReadLines(file);
+
+        // Assert
         actual.Should().Equal(output);
       }
 
@@ -266,8 +284,11 @@ namespace CredentialsManagerTests
         // Act
         File.WriteAllLines(file, output);
 
-        // Assert
+        // Arrange
         var actual = File.ReadLines(file);
+
+
+        // Assert
         actual.Should().Equal(output);
       }
     }
@@ -298,8 +319,11 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteLine(file, expected);
 
-        // Assert
+        // Arrange
         var actual = File.ReadLines(file);
+
+
+        // Assert
         actual.First().Should().Be(expected);
       }
 
@@ -314,10 +338,15 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteLine(file, expected, true);
 
-        // Assert
+        // Arrange
         var actual = File.ReadLines(file);
-        actual.Count().Should().Be(initialLinesCount + 1);
-        actual.Last().Should().Be(expected);
+
+        // Assert
+        using (new AssertionScope())
+        {
+          actual.Count().Should().Be(initialLinesCount + 1);
+          actual.Last().Should().Be(expected);
+        }
       }
 
       [Fact]
@@ -330,10 +359,16 @@ namespace CredentialsManagerTests
         // Act
         Files.WriteLine(file, expected);
 
-        // Assert
+        // Arrange
         var actual = File.ReadLines(file);
-        actual.Count().Should().Be(1);
-        actual.First().Should().Be(expected);
+
+
+        // Assert
+        using (new AssertionScope())
+        {
+          actual.Count().Should().Be(1);
+          actual.First().Should().Be(expected);
+        }
       }
     }
   }
