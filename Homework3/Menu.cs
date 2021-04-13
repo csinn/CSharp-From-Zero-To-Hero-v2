@@ -1,25 +1,34 @@
-﻿using System;
+﻿using Homework3;
+using System;
 
 namespace start
 {
-    public static class Menu
+    public class Menu
     {
-        public static void Run()
+        public readonly IUserInterface currentUI;
+
+        private const int login = 1;
+        private const int register = 2;
+        private const int quit = 3;
+
+        public Menu(IUserInterface userChoosenUI)
         {
-            Console.WriteLine("Please choose:");
-            Console.WriteLine("1. Login.");
-            Console.WriteLine("2. Register new user.");
-            Console.WriteLine("3. Exit program.");
+            currentUI = userChoosenUI;
+        }
+        
+        public void Run()
+        {
+            currentUI.PrintMenu();
 
             switch (ReturnValidUserInput())
             {
-                case 1:
+                case login:
                     Login();
                     break;
-                case 2:
+                case register:
                     Register();
                     break;
-                case 3:
+                case quit:
                     Quit();
                     break;
                 default:
@@ -27,43 +36,40 @@ namespace start
             }
         }
 
-        public static int ReturnValidUserInput()
+        public int ReturnValidUserInput()
         {
             int validInput;
 
             do
             {
-                char keyInput = Console.ReadKey(true).KeyChar;
+                validInput = currentUI.GetUserKeyInput();
 
-                int.TryParse(keyInput.ToString(), out validInput);
             } while (validInput < 1 || validInput > 3);
 
             return validInput;
         }
 
-        private static void Login()
+        private void Login()
         {
-            Console.Write("Please enter username: ");
-            string userName = Console.ReadLine();
+            string userName = currentUI.GetUserTextInput("Please enter username: ");
 
-            Console.Write("Please enter password: ");
-            string password = Console.ReadLine();
+            string password = currentUI.GetUserTextInput("Please enter password: ");
 
             User user = new User { Name = userName, Password = password };
 
             if (IsUserAuthorized(user))
             {
-                Console.WriteLine("Hello!");
+                currentUI.PrintTextToUI("Hello!");
             }
             else
             {
-                Console.WriteLine("Wrong username or password.");
+                currentUI.PrintTextToUI("Wrong username or password.");
             }
         }
 
-        private static bool IsUserAuthorized(User user)
+        private bool IsUserAuthorized(User user)
         {
-            if (DataAccess.GetUsers().Contains(user))
+            if (UserFileLogic.GetUsers().Contains(user))
             {
                 return true;
             }
@@ -73,43 +79,39 @@ namespace start
             }
         }
 
-        private static void Register()
+        private void Register()
         {
-            Console.Write("Enter username: ");
-            string userName = Console.ReadLine();
+            string userName = currentUI.GetUserTextInput("Enter username: ");
 
-            if (DataAccess.DoesUserExits(userName))
+            if (UserFileLogic.DoesUserExits(userName))
             {
-                throw new DuplicateUserCredentialsException("Username already taken. Please try again.", new Exception());
+                throw new DuplicateUserCredentialsException("Username already taken. Please try again.", new Exception(), this);
             }
             else
             {
-                Console.Write("Enter password: ");
-
-                string password = Console.ReadLine();
+                string password = currentUI.GetUserTextInput("Enter password: ");
 
                 User newUser = new User { Name = userName, Password = password };
-                DataAccess.AddUserToFile(newUser);
-                Console.WriteLine("User added.");
+                UserFileLogic.AddUserToFile(newUser);
+                currentUI.PrintTextToUI("User added.");
 
                 Console.WriteLine(Environment.NewLine);
-                Menu.Run();
+                Run();
             }
         }
 
-        private static void Quit()
+        private void Quit()
         {
-            Console.WriteLine("Exiting program. Goodbye!");
+            currentUI.PrintTextToUI("Exiting program. Goodbye!");
         }
     }
 
     internal class DuplicateUserCredentialsException : Exception
     {
-        public DuplicateUserCredentialsException(string message, Exception innerException) : base(message, innerException)
+        public DuplicateUserCredentialsException(string message, Exception innerException, Menu currentMenu) : base(message, innerException)
         {
-            Console.WriteLine(message);
-            Console.WriteLine(Environment.NewLine);
-            Menu.Run();
+            currentMenu.currentUI.PrintTextToUI("Exiting program. Goodbye!");
+            currentMenu.Run();
         }
     }
 }

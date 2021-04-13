@@ -4,30 +4,15 @@ using System.IO;
 
 namespace start
 {
-    public static class DataAccess
+    public static class UserFileLogic
     {
         private static readonly string fileName = $"Users.txt";
-
-        private static string GetStringsFromFile()
-        {
-            try
-            {
-                using (StreamReader reader = new StreamReader(fileName))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new UsersNotFoundException("File Users.txt does not exists.", ex);
-            }
-        }
 
         public static List<User> GetUsers()
         {
             List<User> validUsers = new List<User>();
 
-            string[] validUserStringArray = GetStringsFromFile().Split(Environment.NewLine);
+            string[] validUserStringArray = GetUserCredentialsFromFile().Split(Environment.NewLine);
 
             foreach (var userInfo in validUserStringArray)
             {
@@ -43,13 +28,28 @@ namespace start
             return validUsers;
         }
 
+        private static string GetUserCredentialsFromFile()
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new UsersNotFoundException("File Users.txt does not exists.", ex);
+            }
+        }
+
         public static void AddUserToFile(User user)
         {
             if (user != null)
             {
                 string userString = $"{user.Name},{user.Password}";
 
-                bool isNewLineLast = GetStringsFromFile().EndsWith(Environment.NewLine);
+                bool isNewLineLast = GetUserCredentialsFromFile().EndsWith(Environment.NewLine);
 
                 using (StreamWriter writer = new StreamWriter(fileName, true))
                 {
