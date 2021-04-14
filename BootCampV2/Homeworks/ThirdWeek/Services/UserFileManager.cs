@@ -2,6 +2,7 @@ using BootCampV2.Homeworks.ThirdWeek.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace BootCampV2.Homeworks.ThirdWeek
 {
@@ -75,32 +76,19 @@ namespace BootCampV2.Homeworks.ThirdWeek
             account = new List<Account>();
             exception = null;
 
+            bool fileEmpty = CheckUserFileStart();
+
+            if (fileEmpty)
+                return true;
+
             try
             {
-                account.AddRange(GetAccountsInUserfile(path));
+                account.AddRange(GetAccountsInUserfile(Path));
 
-                List<string> usernames = new List<string>();
-
-                foreach (var item in account)
-                {
-                    usernames.Add(item.Username);
-                }
-
-                if(CheckDistinct(usernames))
+                if (CheckUsernameDistinct(account))
                     throw new DuplicateUserCredentialsException();
-
-                if (string.IsNullOrWhiteSpace(ReadUserFile(Path)) || string.IsNullOrEmpty(ReadUserFile(Path)))
-                {
-                    string[] contentlines = {
-                        "#  # -> Command line\n",
-                        "# .U -> Username line\n",
-                        "# .P -> Password line\n",
-                        "#  - -> Start/End line"
-                        };
-                    
-                    WriteUserfile(contentlines);
-                }
             }
+
             catch (InvalidUserFileFormatException)
             {
                 exception = new InvalidUserFileFormatException();
@@ -127,7 +115,7 @@ namespace BootCampV2.Homeworks.ThirdWeek
 
         private string ReadUserFile(string path)
         {
-            var content = string.Empty;
+            StringBuilder sb = new StringBuilder();
 
             using (StreamReader reader = new StreamReader(path))
             {
@@ -136,12 +124,30 @@ namespace BootCampV2.Homeworks.ThirdWeek
                     var readLine = reader.ReadLine();
 
                     if (readLine.Length > 0 && !readLine[0].Equals("#"))
-                        content += $"{readLine}\n";
+                        sb.Append($"{readLine}\n");
                 }
-                return content;
+                return sb.ToString();
             }
         }
 
+        private bool CheckUserFileStart()
+        {
+            if (string.IsNullOrWhiteSpace(ReadUserFile(Path)) || string.IsNullOrEmpty(ReadUserFile(Path)))
+            {
+                string[] contentlines = {
+                        "#  # -> Command line\n",
+                        "# .U -> Username line\n",
+                        "# .P -> Password line\n",
+                        "#  - -> Start/End line"
+                        };
+
+                WriteUserfile(contentlines);
+                return false;
+            }
+
+            return true;
+        }
+        
         private void WriteUserfile(string[] lines)
         {
             using (StreamWriter writer = new StreamWriter(Path))
@@ -157,9 +163,6 @@ namespace BootCampV2.Homeworks.ThirdWeek
         private string[] ConvertToArray(string content)
         {
             string[] contentAsList = content.Split("\n");
-
-            for (int i = 0; i < contentAsList.Length; i++)
-                contentAsList[i] = contentAsList[i].Replace("\n", "");
 
             return contentAsList;
         }
@@ -225,6 +228,21 @@ namespace BootCampV2.Homeworks.ThirdWeek
             }
 
             Accounts = GetAccountsInUserfile(Path);
+        }
+
+        private bool CheckUsernameDistinct(List<Account> account)
+        {
+            List<string> usernames = new List<string>();
+
+            foreach (var item in account)
+            {
+                usernames.Add(item.Username);
+            }
+
+            if (CheckDistinct(usernames))
+                return false;
+
+            return true;
         }
 
         private static IEnumerable<Tuple<T, int>> Count<T>(IEnumerable<T> source)

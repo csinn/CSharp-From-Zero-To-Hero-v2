@@ -23,6 +23,9 @@ namespace BootCampV2.Homeworks.ThirdWeek
 
         public void ExecuteComamnd(string input)
         {
+            if (string.IsNullOrEmpty(input))
+                return;
+
             string[] inputParts = input.Split(" ");
 
             foreach (var item in _commands)

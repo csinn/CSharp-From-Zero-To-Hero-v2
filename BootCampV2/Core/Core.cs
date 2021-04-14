@@ -12,7 +12,19 @@ namespace BootCampV2
     {
         static public void Main(string[] args)
         {
-            string path = @".\User.txt";
+            string s = "a.s.d.e.";
+            string[] te = s.Split(".");
+
+            foreach (var item in te)
+            {
+                Console.WriteLine(item);
+            }
+
+        }       
+
+        private void Test()
+        {
+            string path = "User.txt";
 
             UserFileManager userFileManager = new UserFileManager(path);
 
@@ -22,13 +34,12 @@ namespace BootCampV2
                 new ExitCommand()
             };
 
-            CommandManager commandManager = new CommandManager(commands);
 
+            CommandManager commandManager = new CommandManager(commands);
             commandManager.DisplayComamnds();
 
             string command = Console.ReadLine();
-
             commandManager.ExecuteComamnd(command);
-        }       
+        }
     }
 }

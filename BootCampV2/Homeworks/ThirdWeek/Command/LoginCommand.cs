@@ -8,34 +8,9 @@ namespace BootCampV2.Homeworks.ThirdWeek.Command
     {
         private readonly UserFileManager _userFileManager;
 
-        private string _prefix = "-l";
+        public string Prefix { get; } = "-l";
 
-        public string Prefix
-        {
-            get
-            {
-                return _prefix;
-            }
-
-            set
-            {
-                _prefix = value;
-            }
-        }
-
-        private string _description = "-l (Username) (Password)";
-
-        public string Description
-        {
-            get
-            {
-                return _description;
-            }
-            set
-            {
-                _description = value;
-            }
-        }
+        public string Description { get; } = "-l (Username) (Password)";
 
         public LoginCommand(UserFileManager userFileManager)
         {
@@ -44,6 +19,9 @@ namespace BootCampV2.Homeworks.ThirdWeek.Command
 
         public void Execute(List<string> parameter)
         {
+            if (parameter.Count < 2)
+                throw new ArgumentException();
+
             LoginResult result = _userFileManager.Login(parameter[0], parameter[1], out Account account);
 
             switch (result)
