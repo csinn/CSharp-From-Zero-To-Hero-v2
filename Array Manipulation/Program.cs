@@ -6,21 +6,32 @@ namespace Array_Manipulation
     {
         static void Main(string[] args)
         {
-            int[] arr = {1, 2, 4, 5};
+            int[] arr = {1, 2, 3, 4, 5};
 
             PrintArray(arr);
-            Console.WriteLine();
 
-            InsertAtEnd(arr, 32);
-            Console.WriteLine();
+            Console.Write("Enter an integer to manipulate array: ");
+            string textInput = Console.ReadLine();
+            _ = int.TryParse(textInput, out int input);
 
-            InsertAtStart(arr, 32);
-            Console.WriteLine();
+            int[] arr1 = InsertAtEnd(arr, input);
+            PrintArray(arr1);
 
-            RemoveFromEnd(arr);
-            Console.WriteLine();
+            int[] arr2 = InsertAtStart(arr, input);
+            PrintArray(arr2);
 
-            RemoveFromStart(arr);
+            int[] arr3 = RemoveFromEnd(arr);
+            PrintArray(arr3);
+
+            int[] arr4 = RemoveFromStart(arr);
+            PrintArray(arr4);
+
+            Console.Write("Enter the place of the number you want to delete from the array: ");
+            textInput = Console.ReadLine();
+            _ = int.TryParse(textInput, out input);
+
+            int[] arr5 = RemoveAtIndex(arr, input);
+            PrintArray(arr5);
         }
 
         static void PrintArray(int[] arr)
@@ -30,6 +41,7 @@ namespace Array_Manipulation
             {
                 Console.Write($"{variable} ");
             }
+            Console.WriteLine();
         }
 
         static void ArraySort(int[] arr)
@@ -37,64 +49,79 @@ namespace Array_Manipulation
 
         }
 
-        static void InsertAtEnd(int[] arr, int value)
+        static int[] InsertAtEnd(int[] arr, int value)
         {
             int newLength = arr.Length + 1;
             int[] arrFinal = new int[newLength];
 
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arrFinal[i] = arr[i];
-            }
+            Array.Copy(arr, arrFinal, arr.Length);
 
             arrFinal[newLength - 1] = value;
 
             Console.Write("After Insertion At the End: ");
-            PrintArray(arrFinal);
+
+            return arrFinal;
         }
 
-        static void InsertAtStart(int[] arr, int value)
+        static int[] InsertAtStart(int[] arr, int value)
         {
             int newLength = arr.Length + 1;
             int[] arrFinal = new int[newLength];
 
-            for (int i = arr.Length; i > 0; i--)
-            {
-                arrFinal[i] = arr[i-1];
-            }
+            Array.Copy(arr, 0, arrFinal, 1, arr.Length );
 
             arrFinal[0] = value;
 
             Console.Write("After Insertion At the Start: ");
-            PrintArray(arrFinal);
+
+            return arrFinal;
         }
 
-        static void RemoveFromEnd(int[] arr)
+        static int[] RemoveFromEnd(int[] arr)
         {
             int newLength = arr.Length - 1;
             int[] arrFinal = new int[newLength];
 
-            for (int i = 0; i < arrFinal.Length; i++)
-            {
-                arrFinal[i] = arr[i];
-            }
+            Array.Copy(arr, arrFinal, newLength);
 
             Console.Write("After Removing From the End: ");
-            PrintArray(arrFinal);
+
+            return arrFinal;
         }
 
-        static void RemoveFromStart(int[] arr)
+        static int[] RemoveFromStart(int[] arr)
         {
             int newLength = arr.Length - 1;     
             int[] arrFinal = new int[newLength];
 
-            for (int i = arrFinal.Length - 1; i <= 0; i--)
-            {
-                arrFinal[i] = arr[i + 1];
-            }
+            Array.Copy(arr, 1, arrFinal, 0, newLength);
 
             Console.Write("After Removing From the Start: ");
-            PrintArray(arrFinal);
+
+            return arrFinal;
+        }
+
+        static int[] RemoveAtIndex(int[] arr, int place)
+        { 
+            //fail safe
+            while (place < 1 || place > arr.Length)
+            {
+                Console.WriteLine($"Invalid place, the value of place should be between 1 and {arr.Length}");
+                Console.Write("Enter the place again: ");
+                string temp = Console.ReadLine();
+                _ = int.TryParse(temp, out place);
+            }
+            
+            int newLength = arr.Length - 1;
+            int[] arrFinal = new int[newLength];
+            int index = place - 1;
+
+            Array.Copy(arr, 0, arrFinal, 0, index);
+            Array.Copy(arr, index + 1, arrFinal, index, newLength - index);
+
+            Console.Write($"After Removing the value at {place}th place: ");
+
+            return arrFinal;
         }
     }
 }
