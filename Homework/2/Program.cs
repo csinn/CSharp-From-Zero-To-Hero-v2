@@ -38,8 +38,8 @@ namespace Homework2
 
         //Variables
         private static bool loggedIn = false; // Variable to track if user is "logged in"
-        private static string[][] userArray = new string[0][]; // array of user arrays with login info which is string[username,password]; Would rather use List<>
-        private static string pathToFile = @"./users.txt"; // path to user file 
+        private static string[][] userArray = new string[0][]; // array of user arrays with login info which is string[username,password]
+        private static string pathToFile = $"{Environment.CurrentDirectory}\\users.txt"; // path to user file 
 
         static void Main(string[] args)
         {
@@ -79,24 +79,12 @@ namespace Homework2
         static void LoadUsersFromFile() {
             try
             {
-                using (StreamReader reader = new StreamReader(pathToFile))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        string[] userCredentials = reader.ReadLine().Split(';');
-                        if (CheckIfUserExists(userCredentials[0]))
-                        {
-                            throw new DuplicateUserCredentialsException(userCredentials[0]);
-                        }
-                        else
-                        {
-                            AddUserToArrayAtIndex(userCredentials, 0);
-                        }
-                    }
-                }
+                CheckIfUsersFileExists();
+                ReadUsersFileAndAddUsers();
             }
-            catch (FileNotFoundException fileEx)
+            catch (UsersNotFoundException fileEx)
             {
+                throw;
             }
             catch (DuplicateUserCredentialsException usersEx)
             {
@@ -106,7 +94,33 @@ namespace Homework2
             { 
                 throw;
             }
+        }
 
+        static void CheckIfUsersFileExists()
+        {
+            FileInfo file = new FileInfo(pathToFile);
+            if (!file.Exists)
+            {
+                throw new UsersNotFoundException();
+            }
+        }
+
+        static void ReadUsersFileAndAddUsers() {
+            using (StreamReader reader = new StreamReader(pathToFile))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string[] userCredentials = reader.ReadLine().Split(';');
+                    if (CheckIfUserExists(userCredentials[0]))
+                    {
+                        throw new DuplicateUserCredentialsException(userCredentials[0]);
+                    }
+                    else
+                    {
+                        AddUserToArrayAtIndex(userCredentials, userArray.Length);
+                    }
+                }
+            }
         }
 
         // Function to write user info from userArray to users.txt file
@@ -190,7 +204,6 @@ namespace Homework2
             if (CheckIfUserExists(username))
             {
                 string[] userDetails = ReturnUserByUsername(username);
-                Console.WriteLine(userDetails[0] + " " + userDetails[1]);
                 if (userDetails[1] == password) {
                     loggedIn = true;
                     MenuSelection();
@@ -227,28 +240,21 @@ namespace Homework2
 
 
         // Returns true if username is found
-        static bool CheckIfUserExists(string username) {
-            for (int i = 0; i < userArray.Length; i++)
-            {
-                if (userArray[i][0].ToLower() == username.ToLower())
-                {
-                    return true;
-                }
-            }
-            return false;
+        static bool CheckIfUserExists(string username)
+        {
+            return ReturnUserByUsername(username) != null;
         }
 
         // Look through user array for a username and return string array of username and password
         static string[] ReturnUserByUsername(string username) {
-            string[] array = new string[] {"",""};
             for (int i = 0; i < userArray.Length; i++)
             {
                 if (userArray[i][0].ToLower() == username.ToLower())
                 {
-                    array = userArray[i];
+                    return userArray[i];
                 }
             }
-            return array;
+            return null;
         }
 
         //Adding string[] - [username,password] - user details to userArray at selected index.
@@ -465,6 +471,14 @@ namespace Homework2
          : base(String.Format("Duplicate users found: {0}", name))
         {
             
+        }
+    }
+
+    class UsersNotFoundException : Exception {
+        public UsersNotFoundException()
+         : base(String.Format("File not found."))
+        {
+
         }
     }
 }
