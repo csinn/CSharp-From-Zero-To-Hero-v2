@@ -328,12 +328,19 @@ namespace Homework2
         static void PromptRemoveUser(bool removeFromEnd = true, bool removeFromStart = false) {
             Console.Clear();
             int index = GetIndex(removeFromEnd, removeFromStart);
-            if (index!=-1)
+            if (index != -1)
             {
                 RemoveUser(index);
                 WriteUsersToFile();
+                ListUsers();
             }
-            ListUsers();
+            else if (RetryConfirmation("Index error"))
+            {
+                PromptRemoveUser(removeFromEnd, removeFromStart);
+            }
+            else {
+                MenuSelection();
+            }
         }
 
         //returns or prompts index for array. Returns -1 if there are issues.
@@ -369,13 +376,10 @@ namespace Homework2
 
             for (int i = 0; i < newArray.Length; i++)
             {
-                if (i <index)
+                if (i < index)
                 {
                     newArray[i] = userArray[i];
-                }else if (i == index)
-                {
-                    newArray[i] = userArray[i + 1];
-                }else if (i > index)
+                }else
                 {
                     newArray[i] = userArray[i + 1];
                 }
@@ -387,17 +391,8 @@ namespace Homework2
         //Sorting users
         static void SortUsers() {
             Console.Clear();
-
-            bool ascendingOrder = ReturnSortingOrder();
-
-            if (ascendingOrder)
-            {
-                SortUserArrayInAscOrder();
-            }
-            else {
-                SortUserArrayInDesOrder();
-            }
-
+            bool order = ReturnSortingOrder();
+            SortUserArray(order);
             WriteUsersToFile();
             ListUsers();
         }
@@ -410,30 +405,35 @@ namespace Homework2
             userArray[y] = temp;
         }
 
-        //Ascending order sorting function
-        static void SortUserArrayInAscOrder() {
-            for (int j = 0; j < userArray.Length; j++)
+
+        //sorting function, if true is passed sorts in asc, if flase - in descending
+        static void SortUserArray(bool sortOrder) {
+            for (int j = userArray.Length; j >= 0 ; j--)
             {
+                bool sorted = true;
                 for (int i = 0; i < userArray.Length - 1; i++)
                 {
-                    if (userArray[i][0].CompareTo(userArray[i + 1][0]) > 0)
+                    if (sortOrder)
                     {
-                        UserArrayValueSwap(i, i + 1);
+                        if (userArray[i][0].CompareTo(userArray[i + 1][0]) > 0)
+                        {
+                            UserArrayValueSwap(i, i + 1);
+                            i++;
+                            sorted = false;
+                        }
+                    }
+                    else {
+                        if (userArray[i][0].CompareTo(userArray[i + 1][0]) < 0)
+                        {
+                            UserArrayValueSwap(i, i + 1);
+                            i++;
+                            sorted = false;
+                        }
                     }
                 }
-            }
-        }
-
-        //Descending order sorting function
-        static void SortUserArrayInDesOrder() {
-            for (int j = 0; j < userArray.Length; j++)
-            {
-                for (int i = 0; i < userArray.Length - 1; i++)
+                if (sorted)
                 {
-                    if (userArray[i][0].CompareTo(userArray[i + 1][0]) < 0)
-                    {
-                        UserArrayValueSwap(i, i + 1);
-                    }
+                    return;
                 }
             }
         }
