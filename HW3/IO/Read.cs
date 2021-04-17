@@ -26,14 +26,14 @@ namespace HW3.IO
 
                             if (string.IsNullOrWhiteSpace(line)) continue;
 
-                            string[] splittedline = line.Split("\t");
+                            string[] usernamePassword = line.Split("\t");
 
-                            if (users.ContainsKey(splittedline[0]))
+                            if (users.ContainsKey(usernamePassword[0]))
                             {
                                 throw new DuplicateUserCredentialsException();
                             }
 
-                            users.Add(splittedline[0], splittedline[1]);
+                            users.Add(usernamePassword[0], usernamePassword[1]);
                         }
                     }
                 }
