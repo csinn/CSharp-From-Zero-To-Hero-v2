@@ -9,6 +9,8 @@ namespace HW3
 
         private static bool Login()
         {
+            Console.WriteLine("Login:");
+
             string username = ReadLineWithPrompt("Username:\t");
 
             string password = ReadLineWithPrompt("Password:\t");
@@ -81,6 +83,8 @@ namespace HW3
         private static void RegisterAccount()
         {
             var users = IO.Read.UserCredentials(usersFile);
+
+            Console.WriteLine("Account registration:");
 
             do
             {
