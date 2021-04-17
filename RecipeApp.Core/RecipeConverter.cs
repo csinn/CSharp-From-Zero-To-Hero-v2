@@ -7,8 +7,8 @@ namespace RecipeApp
 {
     public class RecipeConverter
     {
-        static double[] multipliers = {240, 14.79, 4.93};
-        static string[] units = {"cup", "tablespoon", "teaspoon"};
+        static double[] mlMultipliers = {240, 14.79, 4.93, 3790, 470, 950, 29.57};
+        static string[] units = {"cup", "tablespoon", "teaspoon", "gallon", "pint", "quart", "fluid ounce" };
 
         public static string ConvertRecipe(string recipe, bool isSiUnit)
         {
@@ -25,7 +25,8 @@ namespace RecipeApp
         private static string ConvertToCookingUnits(string recipe)
         {
             string[] words = recipe.Split(' ', '\n');
-            for (int index = 0; index < words.Length; index = index + 1)
+
+            for (int index = 0; index < words.Length; index++)
             {
                 try
                 {
@@ -87,7 +88,7 @@ namespace RecipeApp
                 if (units[index].Equals(cookingUnit, StringComparison.OrdinalIgnoreCase) || 
                     (units[index]+"s").Equals(cookingUnit, StringComparison.OrdinalIgnoreCase))
                 {
-                    return multipliers[index];
+                    return mlMultipliers[index];
                 }
             }
 
@@ -101,7 +102,7 @@ namespace RecipeApp
 
             var cookingUnitIndex = GetClosestCookingUnitIndex(ml);
             var unit = units[cookingUnitIndex];
-            var multiplier = multipliers[cookingUnitIndex];
+            var multiplier = mlMultipliers[cookingUnitIndex];
             var convertedAmount = ml / multiplier;
 
             words[index - 1] = convertedAmount.ToString("F2", CultureInfo.InvariantCulture);
@@ -128,9 +129,9 @@ namespace RecipeApp
             var smallestDifference = double.MaxValue;
             // 2 is the smallest multiplier.
             var closestCookingUnitIndex = 2;
-            for (int i = 0; i < multipliers.Length; i++)
+            for (int i = 0; i < mlMultipliers.Length; i++)
             {
-                var multipler = multipliers[i];
+                var multipler = mlMultipliers[i];
                 if (multipler > ml) continue;
 
                 var difference = ml - multipler;
