@@ -1,6 +1,4 @@
-﻿using HW3.Exceptions;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 
 namespace HW3
@@ -9,60 +7,92 @@ namespace HW3
     {
         private const string usersFile = "Users.txt";
 
-        private static bool ConsoleLogin()
+        private static bool Login()
         {
+            string username = ReadLineWithPrompt("Username:\t");
+
+            string password = ReadLineWithPrompt("Password:\t");
+
+            if (VerifyCredentials(username, password))
+            {
+                Console.WriteLine("Login successful!");
+
+                return true;
+            }
+
+            Console.WriteLine("Login failed!");
+
+            return false;
+        }
+
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Hello!");
+
             try
             {
-                string username = ConsoleReadLineWithTextPrompt("Username:\t");
-
-                string password = ConsoleReadLineWithTextPrompt("Password:\t");
-
-                return VerifyCredentials(username, password);
+                MenuLoop();
             }
-            catch (UsersNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
-                Console.WriteLine($"Couldn't load user credentials. Please contact @Kaisinel: {ex.Message}");
-                return false;
+                Console.WriteLine($"{ex.Message}");
             }
         }
 
-        private static string ConsoleReadLineWithTextPrompt(string promptText)
+        private static void MenuLoop()
         {
-            Console.Write(promptText);
-            string username = Console.ReadLine();
-            return username;
-        }
-
-        private static void ConsoleRegisterAccount()
-        {
-            Dictionary<string, string> users;
-            try
-            {
-                users = IO.Read.UserCredentials(usersFile);
-            }
-            catch (UsersNotFoundException ex)
-            {
-                Console.WriteLine($"Couldn't load user credentials. Please contact @Kaisinel: {ex.Message}");
-                return;
-            }
+            bool loggedIn = false;
 
             do
             {
-                string username = ConsoleReadLineWithTextPrompt("Username:\t");
+                Console.WriteLine("Please select an option:");
 
-                string password = ConsoleReadLineWithTextPrompt("Password:\t");
+                Console.WriteLine("[L]ogin - [R]egister - [E]xit");
+
+                var keyPressed = Console.ReadKey(true).Key;
+
+                switch (keyPressed)
+                {
+                    case ConsoleKey.L:
+                        Login();
+                        break;
+
+                    case ConsoleKey.R:
+                        RegisterAccount();
+                        break;
+
+                    case ConsoleKey.E:
+                        return;
+
+                    default:
+                        Console.WriteLine($"{keyPressed} is not a valid option.");
+                        break;
+                };
+            } while (!loggedIn);
+        }
+
+        private static string ReadLineWithPrompt(string promptText)
+        {
+            Console.Write(promptText);
+
+            return Console.ReadLine();
+        }
+
+        private static void RegisterAccount()
+        {
+            var users = IO.Read.UserCredentials(usersFile);
+
+            do
+            {
+                string username = ReadLineWithPrompt("Username:\t");
+
+                string password = ReadLineWithPrompt("Password:\t");
 
                 if (!users.ContainsKey(username))
                 {
-                    try
-                    {
-                        IO.Write.AppendCredentials(usersFile, username, password);
-                        Console.WriteLine("Useraccount created! You may login now.");
-                    }
-                    catch (FileNotFoundException ex)
-                    {
-                        throw new UsersNotFoundException(ex);
-                    }
+                    IO.Write.AppendCredentials(usersFile, username, password);
+
+                    Console.WriteLine("Useraccount created! You may login now.");
 
                     return;
                 }
@@ -71,50 +101,10 @@ namespace HW3
             } while (true);
         }
 
-        private static void Main(string[] args)
-        {
-            bool loggedIn = false;
-
-            Console.WriteLine("Hello!");
-
-            do
-            {
-                Console.WriteLine("Please select an option:");
-                Console.WriteLine("[L]ogin - [R]egister - [E]xit");
-
-                var keyPressed = Console.ReadKey(true).Key;
-
-                switch (keyPressed)
-                {
-                    case ConsoleKey.L:
-                        if (ConsoleLogin())
-                        {
-                            loggedIn = true;
-                            Console.WriteLine("Hello!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Oh no. Something went wrong!");
-                        }
-                        break;
-
-                    case ConsoleKey.R:
-                        ConsoleRegisterAccount();
-                        break;
-
-                    case ConsoleKey.E:
-                        return;
-
-                    default:
-                        Console.WriteLine($"{keyPressed} is not an option. Try again!");
-                        break;
-                };
-            } while (!loggedIn);
-        }
-
         private static bool VerifyCredentials(string username, string password)
         {
             var users = IO.Read.UserCredentials(usersFile);
+
             return users.ContainsKey(username) && users[username].Equals(password);
         }
     }
