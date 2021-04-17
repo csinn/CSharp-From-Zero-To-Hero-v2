@@ -28,6 +28,8 @@ namespace RecipeApp.Client
             // Prepare for browsing files
             using (var dialog = new OpenFileDialog())
             {
+                dialog.Filter = "Recipes (*.recipe)|*.recipe";
+
                 // Browse files... if file was confirmed
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {

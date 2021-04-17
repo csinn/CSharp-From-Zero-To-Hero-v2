@@ -33,7 +33,7 @@ A recipe might miss an amount. For example "Pour 5 spoons of sugar and tablespoo
 Some recipes are inconsistent in the way they define cooking units (after all, we're all people and not machines, right?). For example, if you have `3 teaspoons`, there should be an option to convert it to `1 tablespoon`. Similar to `100 ml` being converted to `0.1 l`, we should pick the largest appropriate unit of cooking as well.
 
 ### File extension
-Recipe files should end with `.recipe`. Any file that does not should be rejected.
+~~Recipe files should end with `.recipe`. Any file that does not should be rejected.~~
 
 ### No non-recipe files
 If a file has no cooking or other units of volume then it should be rejected. This includes an empty file.
