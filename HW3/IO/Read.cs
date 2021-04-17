@@ -30,7 +30,7 @@ namespace HW3.IO
 
                             if (users.ContainsKey(splittedline[0]))
                             {
-                                throw new DuplicateUserCredentialsException("Error: Duplicate userentry detected!");
+                                throw new DuplicateUserCredentialsException();
                             }
 
                             users.Add(splittedline[0], splittedline[1]);
@@ -38,9 +38,9 @@ namespace HW3.IO
                     }
                 }
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                throw new UsersNotFoundException(ex.Message, filename);
+                throw new UsersNotFoundException(filename);
             }
 
             return users;

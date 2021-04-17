@@ -59,9 +59,9 @@ namespace HW3
                         IO.Write.AppendCredentials(usersFile, username, password);
                         Console.WriteLine("Useraccount created! You may login now.");
                     }
-                    catch (FileNotFoundException e)
+                    catch (FileNotFoundException)
                     {
-                        throw new UsersNotFoundException(e.Message, usersFile);
+                        throw new UsersNotFoundException(usersFile);
                     }
 
                     return;
@@ -114,9 +114,8 @@ namespace HW3
 
         private static bool VerifyCredentials(string username, string password)
         {
-
-                var users = IO.Read.UserCredentials(usersFile);
-                return users.ContainsKey(username) && users[username].Equals(password);
+            var users = IO.Read.UserCredentials(usersFile);
+            return users.ContainsKey(username) && users[username].Equals(password);
         }
     }
 }
