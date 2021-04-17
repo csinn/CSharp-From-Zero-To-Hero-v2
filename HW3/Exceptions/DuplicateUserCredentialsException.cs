@@ -2,7 +2,7 @@
 
 namespace HW3.Exceptions
 {
-    internal class DuplicateUserCredentialsException : Exception
+    public class DuplicateUserCredentialsException : Exception
     {
         public DuplicateUserCredentialsException() : base("Error: Username is already taken!")
         {

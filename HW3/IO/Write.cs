@@ -7,31 +7,31 @@ namespace HW3.IO
     {
         public static void AppendCredentials(string filename, string username, string password)
         {
-            CheckForNewLine(filename);
+            bool newLineReq = !EndsWithNewLine(filename);
 
             using (var fs = new FileStream(filename, FileMode.Append))
             {
                 using (var sw = new StreamWriter(fs))
                 {
+                    if (newLineReq)
+                    {
+                        sw.Write(Environment.NewLine);
+                    }
+
                     sw.WriteLine($"{username}\t{password}");
                 }
             }
         }
 
-        private static void CheckForNewLine(string filename)
+        private static bool EndsWithNewLine(string filename)
         {
-            string contents;
-
             using (var fs = new FileStream(filename, FileMode.Open))
             {
-                var sr = new StreamReader(fs);
-                contents = sr.ReadToEnd();
-
-                if (!contents.EndsWith(Environment.NewLine))
+                using (var sr = new StreamReader(fs))
                 {
-                    var sw = new StreamWriter(fs);
-                    sw.Write(Environment.NewLine);
-                    sw.Flush();
+                    var contents = sr.ReadToEnd();
+
+                    return contents.EndsWith(Environment.NewLine);
                 }
             }
         }
