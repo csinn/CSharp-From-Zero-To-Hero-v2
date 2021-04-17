@@ -7,27 +7,7 @@ namespace HW3
     {
         private const string usersFile = "Users.txt";
 
-        private static bool Login()
-        {
-            Console.WriteLine("Login:");
-
-            string username = ReadLineWithPrompt("Username:\t");
-
-            string password = ReadLineWithPrompt("Password:\t");
-
-            if (VerifyCredentials(username, password))
-            {
-                Console.WriteLine("Login successful!");
-
-                return true;
-            }
-
-            Console.WriteLine("Login failed!");
-
-            return false;
-        }
-
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Hello!");
 
@@ -39,6 +19,26 @@ namespace HW3
             {
                 Console.WriteLine($"{ex.Message}");
             }
+        }
+
+        private static bool Login()
+        {
+            Console.WriteLine("Login:");
+
+            string username = ReadLineWithPrompt("Username:\t");
+
+            string password = ReadLineWithPrompt("Password:\t");
+
+            if (VerifyCredentials(username, password))
+            {
+                Console.WriteLine("Hello!");
+
+                return true;
+            }
+
+            Console.WriteLine("Login failed!");
+
+            return false;
         }
 
         private static void MenuLoop()
