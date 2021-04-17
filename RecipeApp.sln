@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0E7A358-EE40-48B2-A5D2-707B2299D551}"
 	ProjectSection(SolutionItems) = preProject
 		Assignment.md = Assignment.md
+		Recipe.recipe = Recipe.recipe
 	EndProjectSection
 EndProject
 Global

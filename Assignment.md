@@ -18,7 +18,7 @@ Quart|0.95 l
 Tablespoon|14.79 ml
 Teaspoon|4.93 ml
 
-Based on this table, every cooking unit should be converted to an SI unit equivalent.
+~~Based on this table, every cooking unit should be converted to an SI unit equivalent.~~
 
 ### No 100s
 If the cooking unit is more than `100` of any SI unit, it should be converted to the next grade of it. For example, `100 ml` should be `0.1 l` instead. However, `10 ml` is fine by itself.
