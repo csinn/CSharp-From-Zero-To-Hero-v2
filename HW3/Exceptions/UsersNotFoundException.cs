@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace HW3.Exceptions
 {
-    public class UsersNotFoundException : FileNotFoundException
+    public class UsersNotFoundException : Exception
     {
-        public UsersNotFoundException(string? filename) : base("Users file not found!", filename)
+        public UsersNotFoundException(FileNotFoundException inner) : base("'Users' file containing login credentials not found!", inner)
         {
         }
     }

@@ -59,9 +59,9 @@ namespace HW3
                         IO.Write.AppendCredentials(usersFile, username, password);
                         Console.WriteLine("Useraccount created! You may login now.");
                     }
-                    catch (FileNotFoundException)
+                    catch (FileNotFoundException ex)
                     {
-                        throw new UsersNotFoundException(usersFile);
+                        throw new UsersNotFoundException(ex);
                     }
 
                     return;

@@ -1,10 +1,6 @@
 ﻿using HW3.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HW3.IO
 {
@@ -35,12 +31,12 @@ namespace HW3.IO
 
                             users.Add(usernamePassword[0], usernamePassword[1]);
                         }
-                    }
+                    }   
                 }
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                throw new UsersNotFoundException(filename);
+                throw new UsersNotFoundException(ex);
             }
 
             return users;
