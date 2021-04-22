@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RecipeApp
+namespace RecipeApp.Core.Exceptions
 {
     public class InvalidRecipeException : Exception
     {

@@ -12,5 +12,7 @@ namespace RecipeApp.Core
         {
             return Path.GetExtension(filename)?.Equals(".recipe") ?? false;
         }
+
+
     }
 }
