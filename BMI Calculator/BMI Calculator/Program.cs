@@ -8,10 +8,12 @@ namespace BMI_Calculator
         static void Main(string[] args)
         {
             double bmi = GetUserInfo();
-            Console.WriteLine(bmi);
+            Console.WriteLine("Your BMI is {0}", bmi);
+
+            Console.WriteLine();
 
             bmi = GetUserInfo();
-            Console.WriteLine(bmi);
+            Console.WriteLine("Your BMI is {0}", bmi);
         }
 
         static double CalculateBmi(double weight, double height, string fName, string lName)
@@ -33,23 +35,30 @@ namespace BMI_Calculator
 
         static double GetUserInfo()
         {
-            Console.WriteLine("Enter Your Name: ");
-            string fName = Console.ReadLine();
-            Console.WriteLine("Enter Your Surname: ");
-            string lName = Console.ReadLine();
-            Console.WriteLine("Enter Your Age: ");
-            string ageText = Console.ReadLine();
+            string firstName = PromptConsoleFor("First Name");
+            
+            string lastName = PromptConsoleFor("Last Name");
+
+            string ageText = PromptConsoleFor("Age");
             double.TryParse(ageText, out double age);
-            Console.WriteLine("Enter Your Weight in kg: ");
-            string weightText = Console.ReadLine();
+            
+            string weightText = PromptConsoleFor("Weight in Kg");
             double.TryParse(weightText, out double weight);
-            Console.WriteLine("Enter Your Height in cms: ");
-            string heightText = Console.ReadLine();
+            
+            string heightText = PromptConsoleFor("Height in cm");
             double.TryParse(heightText, out double height);
 
-            double bmi = PrintUserInfo(fName, lName, age, weight, height);
+            double bmi = PrintUserInfo(firstName, lastName, age, weight, height);
 
             return bmi;
+        }
+
+        static string PromptConsoleFor(string text)
+        {
+            Console.WriteLine("Enter Your {0}", text);
+            string textResult = Console.ReadLine();
+
+            return textResult;
         }
     }
 }
