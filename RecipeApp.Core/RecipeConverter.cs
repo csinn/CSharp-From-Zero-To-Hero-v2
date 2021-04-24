@@ -1,4 +1,5 @@
 ﻿using RecipeApp.Core.Exceptions;
+using RecipeApp.Core.Units;
 using System;
 using System.Globalization;
 
@@ -6,9 +7,6 @@ namespace RecipeApp
 {
     public class RecipeConverter
     {
-        private static string[] cookingUnits = { "cup", "tablespoon", "teaspoon", "gallon", "pint", "quart", "fluid ounce" };
-        private static double[] mlMultipliers = { 240, 14.79, 4.93, 3790, 470, 950, 29.57 };
-
         public static string ConvertRecipe(string recipe, bool isSiUnit)
         {
             if (isSiUnit)
@@ -40,7 +38,21 @@ namespace RecipeApp
             return string.Join(" ", words);
         }
 
-        public static bool ParseDouble(string amountText, out double amount)
+        internal static double FindSiMultiplier(string cookingUnit)
+        {
+            foreach (var unit in Conversion.CookingUnits)
+            {
+                if (unit.Key.Equals(cookingUnit, StringComparison.OrdinalIgnoreCase) ||
+                    (unit.Key + "s").Equals(cookingUnit, StringComparison.OrdinalIgnoreCase))
+                {
+                    return unit.Value;
+                }
+            }
+
+            return -1;
+        }
+
+        internal static bool ParseDouble(string amountText, out double amount)
         {
             var isNumber = double.TryParse(
                 amountText,
@@ -53,16 +65,15 @@ namespace RecipeApp
 
         private static void ConvertToCookingUnit(int index, string[] words)
         {
-            var ml = GetMl(index, words);
+            var ml = GetSiUnit(index, words);
             if (ml == -1) return;
 
-            var cookingUnitIndex = GetClosestCookingUnitIndex(ml);
-            var unit = cookingUnits[cookingUnitIndex];
-            var multiplier = mlMultipliers[cookingUnitIndex];
+            var cookingUnit = GetClosestCookingUnit(ml);
+            var multiplier = Conversion.CookingUnits[cookingUnit];
             var convertedAmount = ml / multiplier;
 
             words[index - 1] = convertedAmount.ToString("F2", CultureInfo.InvariantCulture);
-            words[index] = unit;
+            words[index] = cookingUnit;
         }
 
         private static string ConvertToCookingUnits(string recipe)
@@ -84,49 +95,37 @@ namespace RecipeApp
             return string.Join(" ", words);
         }
 
-        private static double FindMultiplier(string cookingUnit)
+        private static string GetClosestCookingUnit(double ml)
         {
-            for (int index = 0; index < cookingUnits.Length; index++)
-            {
-                if (cookingUnits[index].Equals(cookingUnit, StringComparison.OrdinalIgnoreCase) ||
-                    (cookingUnits[index] + "s").Equals(cookingUnit, StringComparison.OrdinalIgnoreCase))
-                {
-                    return mlMultipliers[index];
-                }
-            }
-
-            return -1;
-        }
-
-        private static int GetClosestCookingUnitIndex(double ml)
-        {
-            var smallestDifference = double.MaxValue;
+            var smallestConversion = double.MaxValue;
             // 2 is the smallest multiplier.
-            var closestCookingUnitIndex = 2;
-            for (int i = 0; i < mlMultipliers.Length; i++)
-            {
-                var multipler = mlMultipliers[i];
-                if (multipler > ml) continue;
+            var closestCookingUnit = "cup";
 
-                var difference = ml - multipler;
-                if (difference < smallestDifference)
+            foreach (var unit in Conversion.CookingUnits)
+            {
+                var coefficient = unit.Value;
+
+                if (coefficient > ml) continue;
+
+                var conversion = ml / coefficient;
+                if (conversion < smallestConversion)
                 {
-                    smallestDifference = difference;
-                    closestCookingUnitIndex = i;
+                    smallestConversion = conversion;
+                    closestCookingUnit = unit.Key;
                 }
             }
 
-            return closestCookingUnitIndex;
+            return closestCookingUnit;
         }
 
-        private static double GetMl(int index, string[] words)
+        private static double GetSiUnit(int index, string[] words)
         {
-            if (words[index] == "ml")
+            if (words[index] == "ml" || words[index] == "l")
             {
-                var isNumber = ParseDouble(words[index - 1], out var ml);
+                var isNumber = ParseDouble(words[index - 1], out var siAmount);
                 if (!isNumber) return -1;
 
-                return ml;
+                return siAmount;
             }
             else
             {
@@ -137,7 +136,7 @@ namespace RecipeApp
         private static void StandardiseCookingUnit(int index, string[] words)
         {
             var cookingUnit = words[index];
-            var multiplier = FindMultiplier(cookingUnit);
+            var multiplier = FindSiMultiplier(cookingUnit);
             if (multiplier == -1) return;
 
             var amountText = words[index - 1].Trim();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RecipeApp.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +21,12 @@ namespace RecipeApp.Client
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            SourceRichTextBox.Text = ReadContentsFromFileBrowser();
+            string recipe = ReadContentsFromFileBrowser();
+
+            if (string.IsNullOrWhiteSpace(recipe)) recipe = "Recipe must contain something.";
+            if (!RecipeValidator.ValidateUnitsHaveAmounts(recipe)) recipe = "Recipe must contain same number of units and amounts.";
+
+            SourceRichTextBox.Text = recipe;
         }
 
         private static string ReadContentsFromFileBrowser()

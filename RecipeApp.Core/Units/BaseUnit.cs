@@ -4,7 +4,7 @@
     {
         public double Amount { get; set; }
         public abstract string Name { get; }
-        protected virtual double _toMl => Conversion.ToMl[Name];
+        protected virtual double _toMl => Conversion.CookingUnits[Name];
 
         public virtual BaseUnit ConvertTo<T>() where T : BaseUnit, new()
         {
