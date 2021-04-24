@@ -1,13 +1,23 @@
 ﻿namespace RecipeApp.Core.Units
 {
-    public abstract class BaseUnit
+    public abstract class BaseUnit : IConvertable
     {
-        public abstract string UnitName { get; }
+        public double Amount { get; set; }
+        public abstract string Name { get; }
+        protected virtual double _toMl => Conversion.ToMl[Name];
 
-        public abstract double ConvertToMl(double amount);
+        public virtual BaseUnit ConvertTo<T>() where T : BaseUnit, new()
+        {
+            var output = new T();
+            var coefficient = _toMl / output._toMl;
+            output.Amount = Amount * coefficient;
 
-        public abstract double ConvertToNextBiggerUnit(double amount);
+            return output;
+        }
 
-        public abstract double ConvertToNextSmallerUnit(double amount);
+        public override string ToString()
+        {
+            return $"{Amount:F2} {Name}";
+        }
     }
 }

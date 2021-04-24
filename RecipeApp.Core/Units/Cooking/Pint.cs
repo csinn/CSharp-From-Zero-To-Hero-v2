@@ -4,7 +4,8 @@ using System.Text;
 
 namespace RecipeApp.Core.Units.Cooking
 {
-    class Pint
+    public class Pint : BaseUnit
     {
+        public override string Name => "pint";
     }
 }
