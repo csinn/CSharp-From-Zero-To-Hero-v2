@@ -10,7 +10,7 @@ namespace ShoppingListApi.Controllers
     [ApiController]
     // Discoverable endpoint: api/ShoppingList
     [Route("api/[controller]")]
-    // : ControllerBase is called inhertiance.
+    // : ControllerBase is called inheritance.
     // We take methods and state from ControllerBase
     // and now we are able to use them.
     public class ShoppingListController : ControllerBase
