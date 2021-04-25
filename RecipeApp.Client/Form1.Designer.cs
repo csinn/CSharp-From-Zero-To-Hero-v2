@@ -38,6 +38,7 @@ namespace RecipeApp.Client
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.CookingUnitsRadioButton = new System.Windows.Forms.RadioButton();
             this.SiUnitsRadioButton = new System.Windows.Forms.RadioButton();
+            this.prettyButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,7 +79,7 @@ namespace RecipeApp.Client
             // ConvertButton
             // 
             this.ConvertButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConvertButton.Location = new System.Drawing.Point(258, 141);
+            this.ConvertButton.Location = new System.Drawing.Point(258, 132);
             this.ConvertButton.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.ConvertButton.Name = "ConvertButton";
             this.ConvertButton.Size = new System.Drawing.Size(149, 23);
@@ -145,6 +146,18 @@ namespace RecipeApp.Client
             this.SiUnitsRadioButton.Text = "SI Units";
             this.SiUnitsRadioButton.UseVisualStyleBackColor = true;
             // 
+            // prettyButton
+            // 
+            this.prettyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.prettyButton.Location = new System.Drawing.Point(258, 157);
+            this.prettyButton.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.prettyButton.Name = "prettyButton";
+            this.prettyButton.Size = new System.Drawing.Size(149, 23);
+            this.prettyButton.TabIndex = 3;
+            this.prettyButton.Text = "Make pretty";
+            this.prettyButton.UseVisualStyleBackColor = true;
+            this.prettyButton.Click += new System.EventHandler(this.PrettyButton_Click);
+            // 
             // RecipeApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -153,6 +166,7 @@ namespace RecipeApp.Client
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.prettyButton);
             this.Controls.Add(this.ConvertButton);
             this.Controls.Add(this.LoadButton);
             this.Controls.Add(this.ResultRichTextBox);
@@ -180,6 +194,7 @@ namespace RecipeApp.Client
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton CookingUnitsRadioButton;
         private System.Windows.Forms.RadioButton SiUnitsRadioButton;
+        private System.Windows.Forms.Button prettyButton;
     }
 }
 

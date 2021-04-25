@@ -1,13 +1,6 @@
 ﻿using RecipeApp.Core;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RecipeApp.Client
@@ -17,16 +10,6 @@ namespace RecipeApp.Client
         public RecipeApp()
         {
             InitializeComponent();
-        }
-
-        private void LoadButton_Click(object sender, EventArgs e)
-        {
-            string recipe = ReadContentsFromFileBrowser();
-
-            if (string.IsNullOrWhiteSpace(recipe)) recipe = "Recipe must contain something.";
-            if (!RecipeValidator.ValidateUnitsHaveAmounts(recipe)) recipe = "Recipe must contain same number of units and amounts.";
-
-            SourceRichTextBox.Text = recipe;
         }
 
         private static string ReadContentsFromFileBrowser()
@@ -57,6 +40,22 @@ namespace RecipeApp.Client
             var isConvertToSiUnits = SiUnitsRadioButton.Checked;
             var input = SourceRichTextBox.Text;
             ResultRichTextBox.Text = RecipeConverter.ConvertRecipe(input, isConvertToSiUnits);
+        }
+
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            string recipe = ReadContentsFromFileBrowser();
+
+            if (string.IsNullOrWhiteSpace(recipe)) recipe = "Recipe must contain something.";
+            if (!RecipeValidator.ValidateUnitsHaveAmounts(recipe)) recipe = "Recipe must contain same number of units and amounts.";
+
+            SourceRichTextBox.Text = recipe;
+        }
+
+        private void PrettyButton_Click(object sender, EventArgs e)
+        {
+            var input = SourceRichTextBox.Text;
+            ResultRichTextBox.Text = RecipeConverter.MakeUnitsPretty(input);
         }
     }
 }
