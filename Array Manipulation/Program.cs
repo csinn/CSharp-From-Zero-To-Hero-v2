@@ -6,10 +6,12 @@ namespace Array_Manipulation
     {
         static void Main(string[] args)
         {
-            int[] arr = {1, 2, 3, 4, 5};
+            int[] arr = {55, 2, 1, 4, 0};
 
             PrintArray(arr);
 
+            int[] arr6 = SelectionSort(arr);
+            PrintArray(arr6);
             Console.Write("Enter an integer to manipulate array: ");
             string textInput = Console.ReadLine();
             _ = int.TryParse(textInput, out int input);
@@ -44,9 +46,27 @@ namespace Array_Manipulation
             Console.WriteLine();
         }
 
-        static void ArraySort(int[] arr)
+        static int[] SelectionSort(int[] arr)
         {
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                int iMin = i;
 
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if (arr[iMin] > arr[j])
+                    {
+                        iMin = j;
+                    }
+                }
+
+                int temp = arr[i];
+                arr[i] = arr[iMin];
+                arr[iMin] = temp;
+            }
+            Console.Write("Array after Sorting: ");
+
+            return arr;
         }
 
         static int[] InsertAtEnd(int[] arr, int value)
