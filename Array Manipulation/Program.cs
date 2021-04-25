@@ -12,8 +12,8 @@ namespace Array_Manipulation
 
             int[] arr6 = SelectionSort(arr);
             PrintArray(arr6);
-            Console.Write("Enter an integer to manipulate array: ");
-            string textInput = Console.ReadLine();
+
+            string textInput = PromptConsoleFor("a Number: ");
             _ = int.TryParse(textInput, out int input);
 
             int[] arr1 = InsertAtEnd(arr, input);
@@ -28,12 +28,20 @@ namespace Array_Manipulation
             int[] arr4 = RemoveFromStart(arr);
             PrintArray(arr4);
 
-            Console.Write("Enter the place of the number you want to delete from the array: ");
-            textInput = Console.ReadLine();
+            
+            textInput = PromptConsoleFor("the place of the number you want to delete from the array: ");
             _ = int.TryParse(textInput, out input);
 
             int[] arr5 = RemoveAtIndex(arr, input);
             PrintArray(arr5);
+        }
+
+        static string PromptConsoleFor(string text)
+        {
+            Console.Write("Enter {0}", text);
+            text = Console.ReadLine();
+
+            return text;
         }
 
         static void PrintArray(int[] arr)
@@ -48,25 +56,26 @@ namespace Array_Manipulation
 
         static int[] SelectionSort(int[] arr)
         {
+            int[] arrFinal = arr;
             for (int i = 0; i < arr.Length - 1; i++)
             {
                 int iMin = i;
 
                 for (int j = i + 1; j < arr.Length; j++)
                 {
-                    if (arr[iMin] > arr[j])
+                    if (arrFinal[iMin] > arrFinal[j])
                     {
                         iMin = j;
                     }
                 }
 
-                int temp = arr[i];
-                arr[i] = arr[iMin];
-                arr[iMin] = temp;
+                int temp = arrFinal[i];
+                arrFinal[i] = arrFinal[iMin];
+                arrFinal[iMin] = temp;
             }
             Console.Write("Array after Sorting: ");
 
-            return arr;
+            return arrFinal;
         }
 
         static int[] InsertAtEnd(int[] arr, int value)
