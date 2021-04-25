@@ -55,7 +55,7 @@ namespace RecipeApp.Client
         private void PrettyButton_Click(object sender, EventArgs e)
         {
             var input = SourceRichTextBox.Text;
-            ResultRichTextBox.Text = RecipeConverter.MakeUnitsPretty(input);
+            ResultRichTextBox.Text = RecipeConverter.MakeRecipePretty(input);
         }
     }
 }

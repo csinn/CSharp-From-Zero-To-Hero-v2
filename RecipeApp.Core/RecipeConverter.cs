@@ -2,6 +2,8 @@
 using RecipeApp.Core.Units;
 using System;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 
 namespace RecipeApp
 {
@@ -38,32 +40,50 @@ namespace RecipeApp
             return string.Join(" ", words);
         }
 
-        public static string MakeUnitsPretty(string recipe)
+        //public static string MakeUnitsPretty(string recipe)
+        //{
+        //    string[] words = recipe.Split(' ', '\n');
+
+        //    for (int index = 0; index < words.Length; index++)
+        //    {
+        //        if (words[index] == "ml" && ParseDouble(words[index - 1], out double amount))
+        //        {
+        //            if (amount > 100)
+        //            {
+        //                words[index] = "l";
+        //                words[index - 1] = (amount / 100).ToString("F2");
+        //            }
+        //        }
+
+        //        var cookingUnit = words[index];
+        //        var multiplier = FindSiMultiplier(cookingUnit);
+        //        if (multiplier == -1) continue;
+
+        //        ParseDouble(words[index - 1], out amount);
+
+        //        words[index] = GetClosestCookingUnit(amount);
+        //        words[index - 1] = (amount * multiplier / Conversion.CookingUnits[words[index]]).ToString("F2");
+        //    }
+
+        //    return string.Join(" ", words);
+        //}
+
+        public static string MakeRecipePretty(string words)
         {
-            string[] words = recipe.Split(' ', '\n');
+            string[] splitted = words.Split(' ', '\n');
 
-            for (int index = 0; index < words.Length; index++)
+            for (int i = 0; i < splitted.Length; i++)
             {
-                if (words[index] == "ml" && ParseDouble(words[index - 1], out double amount))
-                {
-                    if (amount > 100)
-                    {
-                        words[index] = "l";
-                        words[index - 1] = (amount / 100).ToString("F2");
-                    }
-                }
+                var unit = GetUnit(i, splitted);
+                if (unit is null) continue;
 
-                var cookingUnit = words[index];
-                var multiplier = FindSiMultiplier(cookingUnit);
-                if (multiplier == -1) continue;
+                unit = SimplifyUnit(unit);
 
-                ParseDouble(words[index - 1], out amount);
-
-                words[index] = GetClosestCookingUnit(amount);
-                words[index - 1] = (amount * multiplier / Conversion.CookingUnits[words[index]]).ToString("F2");
+                splitted[i] = unit.Name;
+                splitted[i - 1] = unit.Amount.ToString("F2");
             }
 
-            return string.Join(" ", words);
+            return string.Join(" ", splitted);
         }
 
         internal static double FindSiMultiplier(string cookingUnit)
@@ -159,6 +179,64 @@ namespace RecipeApp
             {
                 return -1;
             }
+        }
+
+        private static BaseUnit GetUnit(int idx, string[] words)
+        {
+            string unitName = words[idx];
+
+            Type unitType = null;
+            foreach (var baseUnitType in Assembly.GetExecutingAssembly().GetTypes().Where(t => (t.BaseType?.Name ?? "") == "BaseUnit"))
+            {
+                var tempUnit = Assembly.GetExecutingAssembly().CreateInstance(baseUnitType.FullName) as BaseUnit;
+                var tempUnitName = baseUnitType.GetProperties().FirstOrDefault(f =>f.Name == "Name")?.GetValue(tempUnit).ToString() ?? "";
+                if ( tempUnitName == unitName || tempUnitName+ "s" == unitName)
+                {
+                    unitType = baseUnitType;
+                    break;
+                }
+            }
+            if (unitType is null) return null;
+
+            BaseUnit unit = null;
+            if (ParseDouble(words[idx - 1], out double amount))
+            {
+                unit = Assembly.GetExecutingAssembly().CreateInstance(unitType.FullName) as BaseUnit;
+                unit.Amount = amount;
+            }
+
+            return unit;
+        }
+
+        private static BaseUnit SimplifyUnit(BaseUnit unit)
+        {
+            var otherUnits = Conversion.CookingUnits.Keys.Where(k => !k.Equals(unit.Name));
+
+            foreach (var newUnitName in otherUnits)
+            {
+                Type unitType = null;
+                foreach (var baseUnitType in Assembly.GetExecutingAssembly().GetTypes().Where(t => (t.BaseType?.Name ?? "") == "BaseUnit"))
+                {
+                    var tempUnit = Assembly.GetExecutingAssembly().CreateInstance(baseUnitType.FullName) as BaseUnit;
+                    var tempUnitName = baseUnitType.GetProperties().FirstOrDefault(f => f.Name == "Name")?.GetValue(tempUnit).ToString() ?? "";
+                    if (tempUnitName == newUnitName || tempUnitName + "s" == newUnitName)
+                    {
+                        unitType = baseUnitType;
+                        break;
+                    }
+                }
+
+                if (unitType is null) continue;
+
+                var newUnit = unit.ConvertTo(unitType);
+
+                if (newUnit.Amount > 1 && newUnit.Amount <= unit.Amount)
+                {
+                    unit = newUnit;
+                }
+            }
+
+            return unit;
         }
 
         private static void StandardiseCookingUnit(int index, string[] words)

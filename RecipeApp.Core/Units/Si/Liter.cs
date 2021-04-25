@@ -6,6 +6,6 @@ namespace RecipeApp.Core.Units.Si
 {
     public class Liter : BaseUnit
     {
-        public override string Name => "liter";
+        public override string Name => "l";
     }
 }
