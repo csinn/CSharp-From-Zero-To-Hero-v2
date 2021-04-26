@@ -7,7 +7,6 @@ namespace RecipeApp
     {
         static readonly double[] multipliers = { 3790, 950, 470, 240, 29.57, 14.79, 4.93 };
         static readonly string[] units = { "gallon", "quart", "pint", "cup", "ounce", "tablespoon", "teaspoon" };
-        static bool containsCookingOrSiUnits;
 
         public static string ConvertRecipe(string recipe, bool isSiUnit)
         {
@@ -25,26 +24,29 @@ namespace RecipeApp
         {
             string[] words = recipe.Split(' ', '\n');
 
-            containsCookingOrSiUnits = false;
+            bool containsCookingUnits = false;
 
             for (int index = 0; index < words.Length; index++)
             {
-                StandardiseCookingUnit(index, words);
+                if(StandardiseCookingUnit(index, words))
+                {
+                    containsCookingUnits = true;
+                }
             }
 
-            if (!containsCookingOrSiUnits)
+            if (!containsCookingUnits)
             {
-                throw new InvalidRecipeException("No cooking units in recipe.");
+                throw new InvalidRecipeException("No cooking units found in recipe file.");
             }
 
             return string.Join(" ", words);
         }
 
-        static void StandardiseCookingUnit(int index, string[] words)
+        static bool StandardiseCookingUnit(int index, string[] words)
         {
             var cookingUnit = words[index];
             var multiplier = FindMultiplier(cookingUnit);
-            if (multiplier == -1) return;
+            if (multiplier == -1) return false;
 
             var amountText = words[index - 1].Trim();
 
@@ -52,7 +54,7 @@ namespace RecipeApp
 
             if (!isNumber)
             {
-                throw new InvalidRecipeException($"{amountText} is not a number.");
+                throw new InvalidRecipeException($"Trying to convert {amountText}  which is not a number. Please check recipe file.");
             }
 
             var amountMl = amount * multiplier;
@@ -61,19 +63,16 @@ namespace RecipeApp
 
             words[index - 1] = GetAmountInSiUnits(amountMl);
 
-            containsCookingOrSiUnits = true;
+            return true;
         }
 
         private static string GetAmountInSiUnits(double amountMl)
         {
             if (amountMl >= 100)
             {
-                return (amountMl / 1000).ToString("F2", CultureInfo.InvariantCulture);
+                amountMl = amountMl / 100;
             }
-            else
-            {
-                return amountMl.ToString("F2", CultureInfo.InvariantCulture);
-            }
+            return amountMl.ToString("F2", CultureInfo.InvariantCulture);
         }
 
         private static string GetSiUnit(double amountMl)
@@ -106,26 +105,29 @@ namespace RecipeApp
         {
             string[] words = recipe.Split(' ', '\n');
 
-            containsCookingOrSiUnits = false;
+            bool containsSiUnits = false;
 
             for (int index = 0; index < words.Length; index++)
             {
-                StandardiseSiUnit(index, words);
+                if(StandardiseSiUnit(index, words))
+                {
+                    containsSiUnits = true;
+                }
             }
 
-            if (!containsCookingOrSiUnits)
+            if (!containsSiUnits)
             {
-                throw new InvalidRecipeException("No SI units in recipe.");
+                throw new InvalidRecipeException("No SI units found in the recipe file.");
             }
 
             return string.Join(" ", words);
         }
 
-        private static void StandardiseSiUnit(int index, string[] words)
+        private static bool StandardiseSiUnit(int index, string[] words)
         {
             var ml = GetMl(index, words);
 
-            if (ml == -1) return;
+            if (ml == -1) return false;
 
             var cookingUnitIndex = GetClosestCookingUnitIndex(ml);
 
@@ -136,7 +138,7 @@ namespace RecipeApp
             words[index - 1] = convertedAmount.ToString("F2", CultureInfo.InvariantCulture);
             words[index] = unit;
 
-            containsCookingOrSiUnits = true;
+            return true;
         }
 
         static double GetMl(int index, string[] words)

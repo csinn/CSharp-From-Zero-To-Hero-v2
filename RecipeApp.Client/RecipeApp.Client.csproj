@@ -10,4 +10,10 @@
     <ProjectReference Include="..\RecipeApp.Core\RecipeApp.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Recipe.recipe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

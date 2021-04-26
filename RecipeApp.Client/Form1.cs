@@ -22,21 +22,17 @@ namespace RecipeApp.Client
         {
             using (var dialog = new OpenFileDialog())
             {
+                dialog.Filter = "Recipe files (*.recipe)|*.recipe";
+
+                dialog.InitialDirectory = Environment.CurrentDirectory;
+
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    string fileName = dialog.FileName;
+                    var stream = dialog.OpenFile();
 
-                    if (fileName.EndsWith(".recipe"))
+                    using (var reader = new StreamReader(stream))
                     {
-                        var stream = dialog.OpenFile();
-                        using (var reader = new StreamReader(stream))
-                        {
-                            return reader.ReadToEnd();
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid recipe file. Must end with .recipe");
+                        return reader.ReadToEnd();
                     }
                 }
             }
