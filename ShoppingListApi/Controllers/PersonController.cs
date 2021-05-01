@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShoppingListApi.Controllers
+namespace PersonPetsApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

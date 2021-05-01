@@ -1,4 +1,4 @@
-﻿namespace ShoppingListApi
+﻿namespace PersonPetsApi
 {
     public class Pet
     {
