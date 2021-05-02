@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Authentication
 {
@@ -6,7 +7,11 @@ namespace Authentication
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+        }
+
+        public void Login()
+        {
+
         }
     }
 }
