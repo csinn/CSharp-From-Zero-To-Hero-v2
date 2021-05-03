@@ -6,9 +6,9 @@ namespace Authentication
 {
     class DuplicateUserCredentialsException : Exception
     {
-        public DuplicateUserCredentialsException(string userName) : base(userName)
+        public DuplicateUserCredentialsException()
         {
-            Console.WriteLine(userName + " user already exists");
+            Console.WriteLine("There are duplicate entries in the file");
         }
     }
 }

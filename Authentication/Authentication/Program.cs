@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -11,9 +13,11 @@ namespace Authentication
         static void Main(string[] args)
         {
             var path = @"./Data/Users.txt";
-            string choice;
+            string choice = "0";
 
-            do
+            CheckDuplicateUsers(path);
+
+            while (!choice.Equals("Exit", StringComparison.OrdinalIgnoreCase))
             {
                 choice = GetUserChoice();
                 if (choice.Equals("Login", StringComparison.OrdinalIgnoreCase))
@@ -33,38 +37,15 @@ namespace Authentication
                 }
                 else if (choice.Equals("Register", StringComparison.OrdinalIgnoreCase))
                 {
-                    try
-                    {
-                        Register(path);
-                    }
-                    catch (DuplicateUserCredentialsException expcetion)
-                    {
-
-                    }
-                    finally
-                    {
-                        Console.WriteLine();
-                    }
+                    Register(path);
                 }
                 else
                 {
                     Console.WriteLine("Invalid choice: {0}", choice);
                     Console.WriteLine();
                 }
-            } while (!choice.Equals("Exit", StringComparison.OrdinalIgnoreCase));
+            }
 
-        }
-
-        static string[] GetUserData()
-        {
-            var userData = new string[2];
-            Console.Write("Enter Your Username: ");
-            userData[0] = Console.ReadLine();
-
-            Console.Write("Enter Your Password: ");
-            userData[1] = Console.ReadLine();
-
-            return userData;
         }
 
         static string GetUserChoice()
@@ -79,15 +60,22 @@ namespace Authentication
             return choice;
         }
 
+        static string[] GetUserData()
+        {
+            var userData = new string[2];
+            Console.Write("Enter Your Username: ");
+            userData[0] = Console.ReadLine();
+
+            Console.Write("Enter Your Password: ");
+            userData[1] = Console.ReadLine();
+
+            return userData;
+        }
+
         static void Login(string path)
         {
             var userData = GetUserData();
             var userLoginString = $"{userData[0]} - {userData[1]}";
-
-            //if (path.Equals("./Users.txt"))
-            //{
-            //    throw new UsersNotFoundException("Users.txt does not exist");
-            //}
 
             using var sr = new StreamReader(path);
             string line;
@@ -114,7 +102,8 @@ namespace Authentication
                     var userNameCheck = line.Split(' ');
                     if (userNameCheck[0].Equals(userData[0]))
                     {
-                        throw new DuplicateUserCredentialsException(userData[0]);
+                        Console.WriteLine("User Name: {0} already exists", userData[0]);
+                        return;
                     }
                 }
             }
@@ -128,6 +117,22 @@ namespace Authentication
 
             using var sw1 = new StreamWriter(@"../../../Data/Users.txt", true);
             sw1.Write(userRegisterString + Environment.NewLine);
+        }
+
+        static void CheckDuplicateUsers(string path)
+        {
+            using var sr = new StreamReader(path);
+            string line;
+
+            line = sr.ReadToEnd();
+
+            var entriesArray = line.Split(Environment.NewLine);
+            var entriesSet = new HashSet<string>(entriesArray);
+
+            if (entriesSet.Count != entriesArray.Length)
+            {
+                throw new DuplicateUserCredentialsException();
+            }
         }
     }
 }
