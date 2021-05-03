@@ -38,6 +38,7 @@ namespace Authentication
                 else if (choice.Equals("Register", StringComparison.OrdinalIgnoreCase))
                 {
                     Register(path);
+                    Console.WriteLine();
                 }
                 else
                 {
