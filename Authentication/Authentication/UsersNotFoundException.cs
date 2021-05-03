@@ -9,6 +9,7 @@ namespace Authentication
     {
         public UsersNotFoundException(string reason) : base(reason)
         {
+            Console.WriteLine(reason + " was not found");
         }
     }
 }
