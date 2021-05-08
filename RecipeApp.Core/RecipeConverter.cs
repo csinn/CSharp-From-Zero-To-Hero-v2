@@ -40,35 +40,7 @@ namespace RecipeApp
             return string.Join(" ", words);
         }
 
-        //public static string MakeUnitsPretty(string recipe)
-        //{
-        //    string[] words = recipe.Split(' ', '\n');
-
-        //    for (int index = 0; index < words.Length; index++)
-        //    {
-        //        if (words[index] == "ml" && ParseDouble(words[index - 1], out double amount))
-        //        {
-        //            if (amount > 100)
-        //            {
-        //                words[index] = "l";
-        //                words[index - 1] = (amount / 100).ToString("F2");
-        //            }
-        //        }
-
-        //        var cookingUnit = words[index];
-        //        var multiplier = FindSiMultiplier(cookingUnit);
-        //        if (multiplier == -1) continue;
-
-        //        ParseDouble(words[index - 1], out amount);
-
-        //        words[index] = GetClosestCookingUnit(amount);
-        //        words[index - 1] = (amount * multiplier / Conversion.CookingUnits[words[index]]).ToString("F2");
-        //    }
-
-        //    return string.Join(" ", words);
-        //}
-
-        public static string MakeRecipePretty(string words)
+        public static string ReduceAmountThroughUnitConversion(string words)
         {
             string[] splitted = words.Split(' ', '\n');
 
