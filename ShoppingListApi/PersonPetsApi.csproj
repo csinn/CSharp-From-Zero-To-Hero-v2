@@ -4,5 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="ShoppingListApi\obj\Debug\netcoreapp3.1\" />
+  </ItemGroup>
+
 
 </Project>

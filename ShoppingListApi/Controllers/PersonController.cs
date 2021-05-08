@@ -100,10 +100,8 @@ namespace PersonPetsApi.Controllers
                 return NotFound($"Person by id {id} was not found.");
             }
 
-            oldPerson.Pets = person.Pets;
-            oldPerson.Name = person.Name;
-            oldPerson.Age = person.Age;
-            oldPerson.SpouseId = person.SpouseId;
+            oldPerson.UpdatePerson(person);
+
             return Ok();
         }
 
@@ -127,16 +125,10 @@ namespace PersonPetsApi.Controllers
             }
             else
             {
-                Marry(person1, person2);
+                Person.Marry(person1, person2);
             }
 
             return Ok();
-        }
-
-        private void Marry(Person person1, Person person2)
-        {
-            person1.SpouseId = person2.Id;
-            person2.SpouseId = person1.Id;
         }
 
         private Person FindPerson(int id)
