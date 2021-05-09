@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text;
+using ShoppingListApi.Services;
 
 namespace ShoppingListApi.Controllers
 {
@@ -15,7 +18,15 @@ namespace ShoppingListApi.Controllers
     // and now we are able to use them.
     public class ShoppingListController : ControllerBase
     {
-        private static List<ShoppingList> _shoppingLists = new List<ShoppingList>();
+        private static ShoppingListService _shoppingListService = new ShoppingListService();
+        private static ItemsGenerator _itemsGenerator = new ItemsGenerator();
+
+        [HttpGet("total")]
+        public IActionResult GetTotalPrice()
+        {
+            var totalCost = _shoppingListService.CalculateTotalCost();
+            return Ok(totalCost);
+        }
 
         // Allows using a POST http verb.
         // IActionResult allows different types of result to be returned.
@@ -24,12 +35,28 @@ namespace ShoppingListApi.Controllers
         // - either 200 or 500.
         // With IActionresult we can return any status code possible.
         // Usually is used for creating new resources or running complex queries.
-        [HttpPost]
+        [HttpPost("basic")]
         public IActionResult Create(ShoppingList shoppingList)
         {
-            _shoppingLists.Add(shoppingList);
+            _shoppingListService.Add(shoppingList);
 
-            return Created("/shoppinglist", shoppingList);
+            return Created("/shoppinglist/basic", shoppingList);
+        }
+
+        [HttpPost("taxed")]
+        public IActionResult Create(TaxedShoppingList shoppingList)
+        {
+            _shoppingListService.Add(shoppingList);
+
+            return Created("/shoppinglist/taxed", shoppingList);
+        }
+
+        [HttpGet("item/random")]
+        public IActionResult GetRandomItem()
+        {
+            var item = _itemsGenerator.Generate();
+
+            return Ok(item);
         }
 
         // Allows using a GET http verb.
@@ -37,7 +64,9 @@ namespace ShoppingListApi.Controllers
         public IActionResult Get()
         {
             // Never return resource directly, always return it through Ok() or similar.
-            return Ok(_shoppingLists);
+            var shoppingLists = _shoppingListService.Get();
+            
+            return Ok(shoppingLists);
         }
 
         // Allows using a GET http verb
@@ -45,7 +74,7 @@ namespace ShoppingListApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var shoppingList = FindShoppingList(id);
+            var shoppingList = _shoppingListService.FindShoppingList(id);
 
             if (shoppingList == null)
             {
@@ -60,14 +89,14 @@ namespace ShoppingListApi.Controllers
         [HttpPatch("{shoppingListId}")]
         public IActionResult AddItem(int shoppingListId, Item item)
         {
-            var shoppingList = FindShoppingList(shoppingListId);
-
-            if (shoppingList == null)
+            try
             {
-                return NotFound($"Shopping list by id {shoppingListId} was not found.");
+                _shoppingListService.AddItem(shoppingListId, item);
             }
-
-            shoppingList.Items.Add(item);
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
             return Ok();
         }
@@ -77,34 +106,31 @@ namespace ShoppingListApi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateShoppingList(int id, ShoppingList shoppingList)
         {
-            var oldShoppingList = FindShoppingList(id);
-
-            if (oldShoppingList == null)
+            try
             {
-                return NotFound($"Shopping list by id {id} was not found.");
+                _shoppingListService.UpdateShoppingList(id, shoppingList);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
             }
 
-            oldShoppingList.Items = shoppingList.Items;
-            oldShoppingList.Address = shoppingList.Address;
-            oldShoppingList.ShopName = shoppingList.ShopName;
-            oldShoppingList.TotalPrice = shoppingList.TotalPrice;
-
-            return Ok(oldShoppingList);
+            return Ok();
         }
 
         [HttpPatch("{id}/updateName")]
         public IActionResult UpdateShoppingListName(int id, ShoppingList shoppingList)
         {
-            var oldShoppingList = FindShoppingList(id);
-
-            if (oldShoppingList == null)
+            try
             {
-                return NotFound($"Shopping list by id {id} was not found.");
+                _shoppingListService.UpdateShoppingListName(id, shoppingList.ShopName);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
             }
 
-            oldShoppingList.ShopName = shoppingList.ShopName;
-
-            return Ok(oldShoppingList);
+            return Ok();
         }
 
         // Allows using a DELETE http verb
@@ -112,29 +138,16 @@ namespace ShoppingListApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var shoppingList = FindShoppingList(id);
-
-            if (shoppingList == null)
+            try
             {
-                return NotFound($"Shopping list by id {id} was not found.");
+                _shoppingListService.RemoveShoppingList(id);
             }
-
-            _shoppingLists.Remove(shoppingList);
+            catch(ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
             return Ok();
-        }
-
-        private ShoppingList FindShoppingList(int id)
-        {
-            foreach (var list in _shoppingLists)
-            {
-                if (list.Id == id)
-                {
-                    return list;
-                }
-            }
-
-            return null;
         }
     }
 }
