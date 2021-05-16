@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ShoppingListApi.Services
 {
-    public class ShoppingListService
+    public interface IShoppingListService
+    {
+        decimal CalculateTotalCost();
+        void Add(ShoppingList shoppingList);
+        List<ShoppingList> Get();
+        ShoppingList FindShoppingList(int id);
+        void RemoveShoppingList(int id);
+        void UpdateShoppingListName(int id, string name);
+        void UpdateShoppingList(int id, ShoppingList update);
+        void AddItem(int shoppingListId, Item item);
+    }
+
+    public class ShoppingListService: IShoppingListService
     {
         private List<ShoppingList> _shoppingLists = new List<ShoppingList>();
 

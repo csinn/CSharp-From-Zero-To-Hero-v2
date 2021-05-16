@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Text;
 using ShoppingListApi.Services;
 
 namespace ShoppingListApi.Controllers
@@ -18,8 +16,19 @@ namespace ShoppingListApi.Controllers
     // and now we are able to use them.
     public class ShoppingListController : ControllerBase
     {
-        private static ShoppingListService _shoppingListService = new ShoppingListService();
-        private static ItemsGenerator _itemsGenerator = new ItemsGenerator();
+        private readonly ITaxedShoppingListConverter _shoppingListConverter;
+        private readonly IShoppingListService _shoppingListService;
+        private readonly IItemsGenerator _itemsGenerator;
+
+        public ShoppingListController(
+            IShoppingListService shoppingListService,
+            IItemsGenerator itemsGenerator,
+            ITaxedShoppingListConverter shoppingListConverter)
+        {
+            _shoppingListService = shoppingListService;
+            _itemsGenerator = itemsGenerator;
+            _shoppingListConverter = shoppingListConverter;
+        }
 
         [HttpGet("total")]
         public IActionResult GetTotalPrice()
@@ -36,7 +45,7 @@ namespace ShoppingListApi.Controllers
         // With IActionresult we can return any status code possible.
         // Usually is used for creating new resources or running complex queries.
         [HttpPost("basic")]
-        public IActionResult Create(ShoppingList shoppingList)
+        public IActionResult CreateTaxed(ShoppingList shoppingList)
         {
             _shoppingListService.Add(shoppingList);
 
@@ -44,11 +53,12 @@ namespace ShoppingListApi.Controllers
         }
 
         [HttpPost("taxed")]
-        public IActionResult Create(TaxedShoppingList shoppingList)
+        public IActionResult Create(ShoppingList shoppingList)
         {
-            _shoppingListService.Add(shoppingList);
+            var taxedShoppingList = _shoppingListConverter.Converts(shoppingList);
+            _shoppingListService.Add(taxedShoppingList);
 
-            return Created("/shoppinglist/taxed", shoppingList);
+            return Created("/shoppinglist/taxed", taxedShoppingList);
         }
 
         [HttpGet("item/random")]

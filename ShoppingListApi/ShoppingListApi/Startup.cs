@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ShoppingListApi.Bootstrap;
+using ShoppingListApi.Services;
 
 namespace ShoppingListApi
 {
@@ -22,13 +17,29 @@ namespace ShoppingListApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // Register dependencies
+        // IServicesCollection is an Inversion of Control containers.
+        // It inverts the place when the objects get created.
+        // They get created (configured) here
         public void ConfigureServices(IServiceCollection services)
         {
+            // Composition root- a place where you register all the dependencies.
+
             services.AddControllers();
+            // Add dependency of IItemsGenerator
+            // Lifetimes:
+            // Transient- gets created for every time referenced
+            // Scoped- gets created per request
+            // Singleton- created one
+            services.AddSingleton<IShoppingListService, ShoppingListService>();
+            services.AddSingleton<IItemsGenerator, ItemsGenerator>();
+
+            services.AddTaxPolicies();
+
+            // Add dependency of IShoppingListService
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Configure middleware
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

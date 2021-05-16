@@ -1,14 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ShoppingListApi.Services
 {
-    public class ItemsGenerator
+    public interface IItemsGenerator
     {
-        private static Random _random = new Random();
+        public Item Generate();
+    }
+
+    public class ItemsGenerator: IItemsGenerator
+    {
+        private readonly Random _random;
+
+        public ItemsGenerator()
+        {
+            _random = new Random();
+        }
 
         public Item Generate()
         {
