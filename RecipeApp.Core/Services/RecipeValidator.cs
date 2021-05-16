@@ -1,34 +1,45 @@
-﻿using System;
+﻿using RecipeApp.Core.Units;
+using System;
 using System.IO;
 
-namespace RecipeApp.Core
+namespace RecipeApp.Core.Services
 {
     public class RecipeValidator
     {
-        public static bool ValidateUnitsHaveAmounts(string recipe)
+        private readonly IUnitRepository _unitRepo;
+
+        public RecipeValidator(IUnitRepository unitRepo)
+        {
+            _unitRepo = unitRepo;
+        }
+
+        public bool ValidateUnitsHaveAmounts(string recipe)
         {
             int unitCount = 0;
             int amountCount = 0;
 
             string[] words = recipe.Split(' ', '\n');
+
             for (int i = 0; i < words.Length; i++)
             {
                 string word = words[i];
-                if (RecipeConverter.FindSiMultiplier(word) != -1)
+                if (_unitRepo.TryFindUnit(word, out Unit foundUnit))
                 {
-                    if (RecipeConverter.ParseDouble(words[i - 1], out _))
+                    unitCount++;
+
+                    if (double.TryParse(words[i - 1], out _))
                     {
                         amountCount++;
                     }
-                    unitCount++;
                 }
+
             }
 
             return unitCount == amountCount;
         }
 
         [Obsolete("OpenFileDialog.Filter is sufficient!")]
-        public static bool ValiateFileExtension(string filename)
+        public bool ValiateFileExtension(string filename)
         {
             return Path.GetExtension(filename)?.Equals(".recipe") ?? false;
         }

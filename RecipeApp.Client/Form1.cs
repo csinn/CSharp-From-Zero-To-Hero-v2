@@ -1,4 +1,5 @@
-﻿using RecipeApp.Core;
+﻿using RecipeApp.Core.Services;
+using RecipeApp.Core.Units;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -7,12 +8,20 @@ namespace RecipeApp.Client
 {
     public partial class RecipeApp : Form
     {
+        private readonly IUnitRepository _unitRepo;
+        private readonly RecipeConverter _converter;
+        private readonly RecipeValidator _validator;
+
         public RecipeApp()
         {
             InitializeComponent();
+
+            _unitRepo = new UnitRepository();
+            _converter = new RecipeConverter(_unitRepo);
+            _validator = new RecipeValidator(_unitRepo);
         }
 
-        private static string ReadContentsFromFileBrowser()
+        private string ReadContentsFromFileBrowser()
         {
             // Prepare for browsing files
             using (var dialog = new OpenFileDialog())
@@ -39,7 +48,7 @@ namespace RecipeApp.Client
         {
             var isConvertToSiUnits = SiUnitsRadioButton.Checked;
             var input = SourceRichTextBox.Text;
-            ResultRichTextBox.Text = RecipeConverter.ConvertRecipe(input, isConvertToSiUnits);
+            ResultRichTextBox.Text = _converter.ConvertRecipe(input, isConvertToSiUnits);
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -47,7 +56,7 @@ namespace RecipeApp.Client
             string recipe = ReadContentsFromFileBrowser();
 
             if (string.IsNullOrWhiteSpace(recipe)) recipe = "Recipe must contain something.";
-            if (!RecipeValidator.ValidateUnitsHaveAmounts(recipe)) recipe = "Recipe must contain same number of units and amounts.";
+            if (!_validator.ValidateUnitsHaveAmounts(recipe)) recipe = "Recipe must contain same number of units and amounts.";
 
             SourceRichTextBox.Text = recipe;
         }
@@ -55,7 +64,7 @@ namespace RecipeApp.Client
         private void PrettyButton_Click(object sender, EventArgs e)
         {
             var input = SourceRichTextBox.Text;
-            ResultRichTextBox.Text = RecipeConverter.ReduceAmountThroughUnitConversion(input);
+            ResultRichTextBox.Text = _converter.UseLargerUnits(input);
         }
     }
 }
