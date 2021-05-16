@@ -39,41 +39,41 @@ namespace PeopleApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetPersonById(int id)
         {
-            Person tempPersonObj = FindPersonById(id);
+            Person personObj = FindPersonById(id);
 
-            if (tempPersonObj == null)
+            if (personObj == null)
             {
                 return NotFound($"Person by id {id} was not found.");
             }
 
-            return Ok(tempPersonObj);
+            return Ok(personObj);
         }
 
         [HttpPut("{id}")]
         public IActionResult AddPetToPersonChosenById(int id, Pet petObj)
         {
-            Person tempPersonObj = FindPersonById(id);
-            if (tempPersonObj == null)
+            Person personObj = FindPersonById(id);
+            if (personObj == null)
             {
                 return NotFound($"Person by id {id} was not found.");
             }
 
-            tempPersonObj.Pets.Add(petObj);
+            personObj.Pets.Add(petObj);
 
-            return Ok(tempPersonObj);
+            return Ok(personObj);
         }
 
         [HttpDelete("{id}")]
         public IActionResult RemovePerson(int id)
         {
-            Person tempPersonObj= FindPersonById(id);
+            Person personObj= FindPersonById(id);
 
-            if (tempPersonObj == null)
+            if (personObj == null)
             {
                 return NotFound($"Shopping list by id {id} was not found.");
             }
 
-            personList.Remove(tempPersonObj);
+            personList.Remove(personObj);
 
             return Ok();
         }
@@ -81,21 +81,21 @@ namespace PeopleApi.Controllers
         [HttpPut("{id}/{petName}")]
         public IActionResult RemovePetFromPerson(int id, string petName)
         {
-            Person tempPersonObj = FindPersonById(id);
-            if (tempPersonObj == null)
+            Person personObj = FindPersonById(id);
+            if (personObj == null)
             {
                 return NotFound($"Person by id {id} was not found.");
             }
 
-            Pet tempPetObj = FindPetByName(tempPersonObj.Pets, petName);
-            if (tempPetObj == null)
+            Pet petObj = FindPetByName(personObj.Pets, petName);
+            if (petObj == null)
             {
                 return NotFound($"Pet by name of {petName} was not found.");
             }
 
-            RemovePetObjectFromPersonObject(tempPersonObj, tempPetObj);
-            tempPersonObj = FindPersonById(id);
-            return Ok(tempPersonObj);
+            RemovePetObjectFromPersonObject(personObj, petObj);
+            personObj = FindPersonById(id);
+            return Ok(personObj);
         }
 
         [HttpPatch("{id}/updatePerson")]
@@ -156,17 +156,14 @@ namespace PeopleApi.Controllers
         /// <param name="newPersonObj">New object that updates old one</param>
         private void UpdatePersonObjectInList(int id, Person newPersonObj)
         {
-            Person personReference = FindPersonById(id);
-            if (personReference != null)
+            for (int i = 0; i < personList.Count; i++)
             {
-                for (int i = 0; i < personList.Count; i++)
+                if (personList[i].Id == id)
                 {
-                    if (personList[i] == personReference)
-                    {
-                        personList[i] = newPersonObj;
-                    }
+                    personList[i].UpdatePerson(newPersonObj);
                 }
             }
+           
         }
 
         /// <summary>
