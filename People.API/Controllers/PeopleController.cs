@@ -74,7 +74,7 @@ namespace People.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPersons()
+        public IActionResult GetPeople()
         {
             return Ok(_persons.Values);
         }
@@ -115,14 +115,6 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
-        private Person FindPersonById(int personId)
-        {
-            if (_persons.TryGetValue(personId, out var person))
-            {
-                return person;
-            }
 
-            return NotFound($"The person with id {personId} could not be found.");
-        }
     }
 }
