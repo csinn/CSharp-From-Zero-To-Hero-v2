@@ -15,15 +15,15 @@ namespace People.API.Controllers
         [HttpPost]
         public IActionResult AddPerson([FromBody] Person value)
         {
-            while (!_persons.TryAdd(value.Id, value))
+            if (!_persons.TryAdd(value.Id, value))
             {
-                value.Id++;
+                return BadRequest();
             }
 
             return Created($"/people/{value.Id}", value);
         }
 
-        [HttpPut("{id:int}/pets")]
+        [HttpPut("{id}/pets")]
         public IActionResult AddPetToPerson(int id, [FromBody] Pet value)
         {
             if (_persons.TryGetValue(id, out var owner))
@@ -36,7 +36,7 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
-        [HttpPatch("{id:int}")]
+        [HttpPatch("{id}")]
         public IActionResult ChangePerson(int id, [FromBody] Person value)
         {
             if (id != value.Id) return BadRequest();
@@ -51,7 +51,7 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         public IActionResult DeletePerson(int id)
         {
             if (_persons.ContainsKey(id))
@@ -64,7 +64,7 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public IActionResult GetPerson(int id)
         {
             if (_persons.TryGetValue(id, out var person))
@@ -81,7 +81,7 @@ namespace People.API.Controllers
             return Ok(_persons.Values);
         }
 
-        [HttpPatch("{id:int}/marry/{otherId:int}")]
+        [HttpPatch("{id}/marry/{otherId}")]
         public IActionResult MarryPeople(int id, int otherId)
         {
             if (_persons.TryGetValue(id, out var personOne))
@@ -99,7 +99,7 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
-        [HttpDelete("{id:int}/pets/{petName}")]
+        [HttpDelete("{id}/pets/{petName}")]
         public IActionResult RemovePet(int id, string petName)
         {
             if (_persons.TryGetValue(id, out var person))
@@ -116,5 +116,7 @@ namespace People.API.Controllers
 
             return NotFound($"The person with id {id} could not be found.");
         }
+
+
     }
 }
