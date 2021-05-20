@@ -62,6 +62,12 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
+        [HttpGet]
+        public IActionResult GetPeople()
+        {
+            return Ok(_persons.Values);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetPerson(int id)
         {
@@ -71,12 +77,6 @@ namespace People.API.Controllers
             }
 
             return NotFound($"The person with id {id} could not be found.");
-        }
-
-        [HttpGet]
-        public IActionResult GetPeople()
-        {
-            return Ok(_persons.Values);
         }
 
         [HttpPatch("{id}/marry/{otherId}")]
@@ -102,19 +102,16 @@ namespace People.API.Controllers
         {
             if (_persons.TryGetValue(id, out var person))
             {
-                if (person.Pets.Exists(p => p.Name.Equals(petName, System.StringComparison.OrdinalIgnoreCase)))
-                {
-                    person.Pets.RemoveAll(p => p.Name.Equals(petName, System.StringComparison.OrdinalIgnoreCase));
+                int removedPet = person.Pets.RemoveAll(p => p.Name.Equals(petName, System.StringComparison.OrdinalIgnoreCase));
 
+                if (removedPet == 1)
+                {
                     return Ok(person);
                 }
-
                 return NotFound($"The person with id {id} has no such pet.");
             }
 
             return NotFound($"The person with id {id} could not be found.");
         }
-
-
     }
 }
