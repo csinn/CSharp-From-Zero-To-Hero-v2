@@ -17,7 +17,7 @@ namespace People.API.Controllers
         {
             if (!_persons.TryAdd(value.Id, value))
             {
-                return BadRequest();
+                return BadRequest("Could not add a person with the specified id.");
             }
 
             return Created($"/people/{value.Id}", value);
@@ -39,8 +39,6 @@ namespace People.API.Controllers
         [HttpPatch("{id}")]
         public IActionResult ChangePerson(int id, [FromBody] Person value)
         {
-            if (id != value.Id) return BadRequest();
-
             if (_persons.TryGetValue(id, out var person))
             {
                 _persons[id] = value;
@@ -117,6 +115,14 @@ namespace People.API.Controllers
             return NotFound($"The person with id {id} could not be found.");
         }
 
+        private Person FindPersonById(int personId)
+        {
+            if (_persons.TryGetValue(personId, out var person))
+            {
+                return person;
+            }
 
+            return NotFound($"The person with id {personId} could not be found.");
+        }
     }
 }
