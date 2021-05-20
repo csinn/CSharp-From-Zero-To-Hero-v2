@@ -10,12 +10,12 @@ namespace People.API.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private static Dictionary<int, Person> _persons = new Dictionary<int, Person>();
+        private static Dictionary<int, Person> _people = new Dictionary<int, Person>();
 
         [HttpPost]
         public IActionResult AddPerson([FromBody] Person value)
         {
-            if (!_persons.TryAdd(value.Id, value))
+            if (!_people.TryAdd(value.Id, value))
             {
                 return BadRequest("Could not add a person with the specified id.");
             }
@@ -39,14 +39,14 @@ namespace People.API.Controllers
             Person person = FindPerson(id);
             if (person is null) return NotFound($"The person with id {id} could not be found.");
 
-            _persons[id] = value;
+            _people[id] = value;
             return Ok(value);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletePerson(int id)
         {
-            if (_persons.Remove(id))
+            if (_people.Remove(id))
             {
                 return Ok();
             }
@@ -57,7 +57,7 @@ namespace People.API.Controllers
         [HttpGet]
         public IActionResult GetPeople()
         {
-            return Ok(_persons.Values);
+            return Ok(_people.Values);
         }
 
         [HttpGet("{id}")]
@@ -94,7 +94,7 @@ namespace People.API.Controllers
 
         private Person FindPerson(int id)
         {
-            if (_persons.TryGetValue(id, out var person))
+            if (_people.TryGetValue(id, out var person))
             {
                 return person;
             }
