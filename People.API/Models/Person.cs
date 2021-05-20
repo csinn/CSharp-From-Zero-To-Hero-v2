@@ -4,15 +4,16 @@ namespace People.API.Models
 {
     public class Person
     {
+        private const int _notMarried = -1;
         public int Age { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public List<Pet> Pets { get; set; } = new();
-        public int SpouseId { get; set; } = -1;
+        public int SpouseId { get; set; } = _notMarried;
 
         public void Marry(Person otherPerson)
         {
-            if(otherPerson.SpouseId == -1)
+            if(otherPerson.SpouseId == _notMarried)
             {
                 otherPerson.SpouseId = Id;
                 SpouseId = otherPerson.Id;
