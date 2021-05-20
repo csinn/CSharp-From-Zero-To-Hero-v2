@@ -26,37 +26,29 @@ namespace People.API.Controllers
         [HttpPut("{id}/pets")]
         public IActionResult AddPetToPerson(int id, [FromBody] Pet value)
         {
-            if (_persons.TryGetValue(id, out var owner))
-            {
-                owner.Pets.Add(value);
+            Person person = FindPerson(id);
+            if (person is null) return NotFound($"The person with id {id} could not be found.");
 
-                return Ok(owner);
-            }
-
-            return NotFound($"The person with id {id} could not be found.");
+            person.Pets.Add(value);
+            return Ok(person);
         }
 
         [HttpPatch("{id}")]
         public IActionResult ChangePerson(int id, [FromBody] Person value)
         {
-            if (_persons.TryGetValue(id, out var person))
-            {
-                _persons[id] = value;
+            Person person = FindPerson(id);
+            if (person is null) return NotFound($"The person with id {id} could not be found.");
 
-                return Ok(value);
-            }
-
-            return NotFound($"The person with id {id} could not be found.");
+            _persons[id] = value;
+            return Ok(value);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletePerson(int id)
         {
-            if (_persons.ContainsKey(id))
+            if (_persons.Remove(id))
             {
-                _persons.Remove(id);
-
-                return NoContent();
+                return Ok();
             }
 
             return NotFound($"The person with id {id} could not be found.");
@@ -71,47 +63,43 @@ namespace People.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetPerson(int id)
         {
-            if (_persons.TryGetValue(id, out var person))
-            {
-                return Ok(person);
-            }
+            Person person = FindPerson(id);
+            if (person is null) return NotFound($"The person with id {id} could not be found.");
 
-            return NotFound($"The person with id {id} could not be found.");
+            return Ok(person);
         }
 
         [HttpPatch("{id}/marry/{otherId}")]
         public IActionResult MarryPeople(int id, int otherId)
         {
-            if (_persons.TryGetValue(id, out var personOne))
-            {
-                if (_persons.TryGetValue(otherId, out var personTwo))
-                {
-                    personOne.Marry(personTwo);
+            Person person = FindPerson(id);
+            if (person is null) return NotFound($"The person with id {id} could not be found.");
+            Person otherPerson = FindPerson(otherId);
+            if (otherPerson is null) return NotFound($"The person with id {otherId} could not be found.");
 
-                    return Ok(new List<Person> { personOne, personTwo });
-                }
-
-                return NotFound($"The person with id {otherId} could not be found.");
-            }
-
-            return NotFound($"The person with id {id} could not be found.");
+            person.Marry(otherPerson);
+            return Ok(new List<Person> { person, otherPerson });
         }
 
         [HttpDelete("{id}/pets/{petName}")]
         public IActionResult RemovePet(int id, string petName)
         {
+            Person person = FindPerson(id);
+            if (person is null) return NotFound($"The person with id {id} could not be found.");
+
+            int removedPet = person.Pets.RemoveAll(p => p.Name.Equals(petName, System.StringComparison.OrdinalIgnoreCase));
+            if (removedPet == 1) return Ok(person);
+            return NotFound($"The person with id {id} has no such pet.");
+        }
+
+        private Person FindPerson(int id)
+        {
             if (_persons.TryGetValue(id, out var person))
             {
-                int removedPet = person.Pets.RemoveAll(p => p.Name.Equals(petName, System.StringComparison.OrdinalIgnoreCase));
-
-                if (removedPet == 1)
-                {
-                    return Ok(person);
-                }
-                return NotFound($"The person with id {id} has no such pet.");
+                return person;
             }
 
-            return NotFound($"The person with id {id} could not be found.");
+            return null;
         }
     }
 }
