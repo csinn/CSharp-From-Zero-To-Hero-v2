@@ -30,6 +30,14 @@ namespace ShoppingListApi.Controllers
             _shoppingListConverter = shoppingListConverter;
         }
 
+        [HttpGet("name/{name}")]
+        public IActionResult GetByName(string name)
+        {
+            var shoppingLists = _shoppingListService.Get();
+
+            return Ok(shoppingLists);
+        }
+
         [HttpGet("total")]
         public IActionResult GetTotalPrice()
         {

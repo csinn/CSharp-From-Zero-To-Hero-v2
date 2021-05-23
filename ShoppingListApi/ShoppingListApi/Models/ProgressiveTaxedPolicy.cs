@@ -21,7 +21,7 @@
             for (int i = 0; i < _taxRange.Length; i++)
             {
                 var range = _taxRange[i];
-                if (price < range.End)
+                if (price <= range.End)
                 {
                     return price * range.Taxes;
                 }
