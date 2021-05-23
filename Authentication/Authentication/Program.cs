@@ -13,13 +13,20 @@ namespace Authentication
         static void Main(string[] args)
         {
             var path = @"./Data/Users.txt";
-            string choice = "0";
 
             CheckDuplicateUsers(path);
+            
+            Menu(path);
+        }
+
+        static void Menu(string path)
+        {
+            var choice = "0";
 
             while (!choice.Equals("Exit", StringComparison.OrdinalIgnoreCase))
             {
                 choice = GetUserChoice();
+
                 if (choice.Equals("Login", StringComparison.OrdinalIgnoreCase))
                 {
                     try
@@ -46,7 +53,6 @@ namespace Authentication
                     Console.WriteLine();
                 }
             }
-
         }
 
         static string GetUserChoice()
@@ -111,21 +117,13 @@ namespace Authentication
 
             using var sw = new StreamWriter(path, true);
             sw.Write(userRegisterString + Environment.NewLine);
-
-            // added these line so that the userRegisterString gets appended to the Users.txt present
-            // in the project folder as the during runtime it was only getting appended
-            // to the bin/dotnetcoreapp/debug/Users.txt file
-
-            using var sw1 = new StreamWriter(@"../../../Data/Users.txt", true);
-            sw1.Write(userRegisterString + Environment.NewLine);
         }
 
         static void CheckDuplicateUsers(string path)
         {
             using var sr = new StreamReader(path);
-            string line;
 
-            line = sr.ReadToEnd();
+            var line = sr.ReadToEnd();
 
             var entriesArray = line.Split(Environment.NewLine);
             var entriesSet = new HashSet<string>(entriesArray);
