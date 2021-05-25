@@ -6,7 +6,7 @@ namespace BootCamp.Chapter
 {
     public class FileLogger : ILogger
     {
-        public string LogMessage(LogLevel loglevel, string message)
+        public void LogMessage(LogLevel loglevel, string message)
         {
             string fullFileName = GlobalSettings.filePath + @"\log.txt";
 
@@ -21,11 +21,10 @@ namespace BootCamp.Chapter
             try
             {
                 File.AppendAllLines(fullFileName, logEntry);
-                return "";
             }
             catch (Exception ex)
             {
-                return $"Error writing to file: {ex.Message}";
+                Console.WriteLine($"Error writing to file: {ex.Message}");
             }
         }
     }

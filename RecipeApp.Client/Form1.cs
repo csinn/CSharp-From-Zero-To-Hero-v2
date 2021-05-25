@@ -60,7 +60,6 @@ namespace RecipeApp.Client
             {
                 MessageBox.Show($"Cannot convert recipe because: {ex.Message}");
             }
-
         }
     }
 }
