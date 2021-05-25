@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BootCamp.Chapter;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -24,7 +25,8 @@ namespace RecipeApp.Client
             {
                 dialog.Filter = "Recipe files (*.recipe)|*.recipe";
 
-                dialog.InitialDirectory = Environment.CurrentDirectory;
+                //dialog.InitialDirectory = Environment.CurrentDirectory;
+                dialog.InitialDirectory = GlobalSettings.filePath;
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
