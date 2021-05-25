@@ -8,6 +8,8 @@ namespace BootCamp.Chapter
     {
         public static string filePath = Directory.GetCurrentDirectory();
 
+        public static ILogger currentLogger = CreateLog(LogType.FileLog);
+
         public static ILogger CreateLog(LogType logType)
         {
             switch (logType)

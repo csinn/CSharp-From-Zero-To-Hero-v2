@@ -11,7 +11,13 @@ namespace RecipeApp.Client
 
         public RecipeApp()
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CatchUnhandledException);
             InitializeComponent();
+        }
+
+        static void CatchUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            GlobalSettings.currentLogger.LogMessage(LogLevel.Error, $"{e.ExceptionObject}");
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -25,7 +31,6 @@ namespace RecipeApp.Client
             {
                 dialog.Filter = "Recipe files (*.recipe)|*.recipe";
 
-                //dialog.InitialDirectory = Environment.CurrentDirectory;
                 dialog.InitialDirectory = GlobalSettings.filePath;
 
                 if (dialog.ShowDialog() == DialogResult.OK)

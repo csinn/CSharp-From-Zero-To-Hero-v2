@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BootCamp.Chapter;
+using System;
 using System.Globalization;
 
 namespace RecipeApp
@@ -38,7 +39,10 @@ namespace RecipeApp
             {
                 throw new InvalidRecipeException("No cooking units found in recipe file.");
             }
-
+            else
+            {
+                GlobalSettings.currentLogger.LogMessage(LogLevel.Info, $"Sucessfully converted recipe to SI units.");
+            }
             return string.Join(" ", words);
         }
 
@@ -118,6 +122,10 @@ namespace RecipeApp
             if (!containsSiUnits)
             {
                 throw new InvalidRecipeException("No SI units found in the recipe file.");
+            }
+            else
+            {
+                GlobalSettings.currentLogger.LogMessage(LogLevel.Info, $"Sucessfully converted recipe to cooking units.");
             }
 
             return string.Join(" ", words);

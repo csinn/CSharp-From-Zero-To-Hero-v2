@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BootCamp.Chapter;
+using System;
 
 namespace RecipeApp
 {
@@ -6,6 +7,8 @@ namespace RecipeApp
     {
         public InvalidRecipeException(string reason) : base(reason)
         {
+            GlobalSettings.currentLogger.LogMessage(LogLevel.Warning, $"Cannot convert recipe because: {reason}");
         }
     }
+
 }
