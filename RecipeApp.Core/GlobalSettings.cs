@@ -19,7 +19,7 @@ namespace BootCamp.Chapter
                 case LogType.FileLog:
                     return new FileLogger();
                 default:
-                    return new ConsoleLogger();
+                    return new FileLogger();
             }
         }
     }
