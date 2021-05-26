@@ -22,7 +22,7 @@ namespace BootCamp.Chapter
             {
                 File.AppendAllLines(fullFileName, logEntry);
             }
-            catch (Exception ex)
+            catch (IOException ex)
             {
                 Console.WriteLine($"Error writing to file: {ex.Message}");
             }
