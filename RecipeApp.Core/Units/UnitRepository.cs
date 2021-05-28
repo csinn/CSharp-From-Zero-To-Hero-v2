@@ -1,4 +1,5 @@
 ﻿using RecipeApp.Core.Exceptions;
+using RecipeApp.Core.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,13 @@ namespace RecipeApp.Core.Units
 {
     public class UnitRepository : IUnitRepository
     {
+        private readonly ILogger _logger;
+
+        public UnitRepository(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         private readonly Dictionary<string, double> _cookingUnits = new Dictionary<string, double>
         {
             { "gallon", 3790},
@@ -101,7 +109,11 @@ namespace RecipeApp.Core.Units
                 }
             }
 
-            if (smallestUnit is null) throw new UnitNotFoundException($"Conversion not found for unit '{unitToConvert.Name}'");
+            if (smallestUnit is null)
+            {
+                _logger?.Log("Unit not found!", LogLevel.Error);
+                throw new UnitNotFoundException($"Conversion not found for unit '{unitToConvert.Name}'", _logger);
+            }
             return smallestUnit;
         }
     }

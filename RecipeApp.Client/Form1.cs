@@ -1,4 +1,5 @@
 ﻿using RecipeApp.Core.Services;
+using RecipeApp.Core.Services.Logging;
 using RecipeApp.Core.Units;
 using System;
 using System.IO;
@@ -11,13 +12,15 @@ namespace RecipeApp.Client
         private readonly IUnitRepository _unitRepo;
         private readonly RecipeConverter _converter;
         private readonly RecipeValidator _validator;
+        private readonly ILogger _logger;
 
         public RecipeApp()
         {
             InitializeComponent();
 
-            _unitRepo = new UnitRepository();
-            _converter = new RecipeConverter(_unitRepo);
+            _logger = new ConsoleLogger();
+            _unitRepo = new UnitRepository(_logger);
+            _converter = new RecipeConverter(_unitRepo, _logger);
             _validator = new RecipeValidator(_unitRepo);
         }
 
@@ -31,6 +34,7 @@ namespace RecipeApp.Client
                 // Browse files... if file was confirmed
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
+                    _logger.Log($"Opening file {dialog.FileName}");
                     // Read the contents of that file
                     var stream = dialog.OpenFile();
                     using (var reader = new StreamReader(stream))

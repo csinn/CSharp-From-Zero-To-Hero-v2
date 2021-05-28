@@ -1,17 +1,19 @@
 ﻿using RecipeApp.Core.Exceptions;
+using RecipeApp.Core.Services.Logging;
 using RecipeApp.Core.Units;
-using System;
 using System.Globalization;
 
 namespace RecipeApp.Core.Services
 {
     public class RecipeConverter
     {
+        private readonly ILogger _logger;
         private readonly IUnitRepository _unitRepo;
 
-        public RecipeConverter(IUnitRepository unitRepo)
+        public RecipeConverter(IUnitRepository unitRepo, ILogger logger = default)
         {
             _unitRepo = unitRepo;
+            _logger = logger;
         }
 
         public string ConvertRecipe(string recipe, bool isSiUnit)
@@ -43,7 +45,7 @@ namespace RecipeApp.Core.Services
                 }
                 catch (InvalidRecipeException ex)
                 {
-                    Console.WriteLine($"Skipping word, because: {ex.Message}");
+                    _logger?.Log($"Skipping word, because: {ex.Message}");
                 }
             }
 
@@ -67,7 +69,7 @@ namespace RecipeApp.Core.Services
                 }
                 catch (InvalidRecipeException ex)
                 {
-                    Console.WriteLine($"Skipping word, because: {ex.Message}");
+                    _logger?.Log($"Skipping word, because: {ex.Message}");
                 }
             }
 
@@ -118,11 +120,13 @@ namespace RecipeApp.Core.Services
 
         private Unit ConvertToCookingUnit(Unit siUnit)
         {
+            _logger?.Log($"Converting {siUnit.Name} to cooking unit");
             return _unitRepo.GetClosestCookingUnit(siUnit);
         }
 
         private Unit ConvertToSiUnit(Unit cookingUnit)
         {
+            _logger?.Log($"Converting {cookingUnit.Name} to si");
             var siUnit = _unitRepo.GetClosestSiUnit(cookingUnit);
             TryConvertToLargerUnit(siUnit, out Unit largestSiUnit);
             return largestSiUnit;
@@ -151,10 +155,12 @@ namespace RecipeApp.Core.Services
 
             if (!_unitRepo.TryFindUnit(unitText, out parsedUnit) || !ParseDouble(words[idx - 1], out double amount))
             {
+                _logger?.Log($"Failed to parse unit '{parsedUnit?.Name}'");
                 return false;
             }
 
             parsedUnit.Amount = amount;
+            _logger?.Log($"Sucessfully parsed unit '{parsedUnit.Name}'");
 
             return true;
         }
