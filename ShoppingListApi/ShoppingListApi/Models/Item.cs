@@ -1,6 +1,6 @@
 ﻿using ShoppingListApi.Extensions;
 
-namespace ShoppingListApi
+namespace ShoppingListApi.Models
 {
     public class Item
     {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ShoppingListApi.Models;
 
 namespace ShoppingListApi.Services
 {
@@ -7,7 +9,7 @@ namespace ShoppingListApi.Services
     {
         decimal CalculateTotalCost();
         void Add(ShoppingList shoppingList);
-        List<ShoppingList> Get();
+        IEnumerable<ShoppingList> Get();
         ShoppingList FindShoppingList(int id);
         void RemoveShoppingList(int id);
         void UpdateShoppingListName(int id, string name);
@@ -17,55 +19,39 @@ namespace ShoppingListApi.Services
 
     public class ShoppingListService: IShoppingListService
     {
-        private List<ShoppingList> _shoppingLists = new List<ShoppingList>();
+        private Dictionary<int, ShoppingList> _shoppingLists = new Dictionary<int, ShoppingList>();
 
         public decimal CalculateTotalCost()
         {
-            decimal totalCost = 0;
-            foreach (var shoppingList in _shoppingLists)
-            {
-                totalCost += shoppingList.CalculateTotalCost();
-            }
-
-            return totalCost;
-
+            return _shoppingLists.Values
+                .Select(sl => sl.CalculateTotalCost())
+                .Sum();
         }
 
         public void Add(ShoppingList shoppingList)
         {
-            _shoppingLists.Add(shoppingList);
+            _shoppingLists.Add(shoppingList.Id, shoppingList);
         }
 
-        public IEnumerable<ShoppingList> GetByName(string name)
+        public IEnumerable<ShoppingList> Get()
         {
-            var shoppingLists = new List<ShoppingList>();
-            foreach (var shoppingList in _shoppingLists)
-            {
-                if (shoppingList.ShopName.ToLower() == name.ToLower())
-                {
-                    shoppingLists.Add(shoppingList);
-                }
-            }
-
-            return shoppingLists;
-        }
-
-        public List<ShoppingList> Get()
-        {
-            return _shoppingLists;
+            return _shoppingLists.Values;
         }
 
         public ShoppingList FindShoppingList(int id)
         {
-            foreach (var list in _shoppingLists)
+            if (_shoppingLists.ContainsKey(id))
             {
-                if (list.Id == id)
-                {
-                    return list;
-                }
+                return _shoppingLists[id];
             }
 
             return null;
+        }
+
+        public IEnumerable<ShoppingList> GetByName(string name)
+        {
+            return _shoppingLists.Values.Where(list => 
+                list.ShopName.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public void RemoveShoppingList(int id)
@@ -76,7 +62,7 @@ namespace ShoppingListApi.Services
                 throw new ArgumentException($"Shopping list by id {id} was not found.");
             }
 
-            _shoppingLists.Remove(shoppingList);
+            _shoppingLists.Remove(shoppingList.Id);
         }
 
         public void UpdateShoppingListName(int id, string name)

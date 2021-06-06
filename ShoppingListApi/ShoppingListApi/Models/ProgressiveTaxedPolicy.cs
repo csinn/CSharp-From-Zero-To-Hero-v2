@@ -1,4 +1,4 @@
-﻿namespace ShoppingListApi
+﻿namespace ShoppingListApi.Models
 {
     public class ProgressiveTaxedPolicy : ITaxPolicy
     {

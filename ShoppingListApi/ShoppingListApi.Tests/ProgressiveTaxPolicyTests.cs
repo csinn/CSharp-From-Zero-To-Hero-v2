@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ShoppingListApi.Models;
 using Xunit;
 
 namespace ShoppingListApi.Tests

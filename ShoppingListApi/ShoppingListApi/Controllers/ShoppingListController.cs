@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingListApi.Models;
 using ShoppingListApi.Services;
 
 namespace ShoppingListApi.Controllers

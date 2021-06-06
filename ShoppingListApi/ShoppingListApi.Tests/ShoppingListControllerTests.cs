@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoppingListApi.Controllers;
+using ShoppingListApi.Models;
 using ShoppingListApi.Services;
 using Xunit;
 

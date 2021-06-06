@@ -1,4 +1,5 @@
 using System;
+using ShoppingListApi.Models;
 using Xunit;
 
 namespace ShoppingListApi.Tests

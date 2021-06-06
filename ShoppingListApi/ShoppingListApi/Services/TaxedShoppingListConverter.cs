@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ShoppingListApi.Models;
 
 namespace ShoppingListApi.Services
 {

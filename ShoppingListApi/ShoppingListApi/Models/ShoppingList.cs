@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ShoppingListApi
+namespace ShoppingListApi.Models
 {
     public class ShoppingList
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ShoppingListApi
+namespace ShoppingListApi.Models
 {
     public class TaxedShoppingList : ShoppingList
     {

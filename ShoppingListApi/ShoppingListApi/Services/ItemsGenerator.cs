@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using ShoppingListApi.Models;
 
 namespace ShoppingListApi.Services
 {

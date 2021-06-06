@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ShoppingListApi.Models;
 using ShoppingListApi.Services;
 
 namespace ShoppingListApi.Bootstrap
