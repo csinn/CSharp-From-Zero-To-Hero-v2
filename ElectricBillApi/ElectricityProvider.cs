@@ -11,6 +11,8 @@ namespace ElectricBillApi
     {
         public string Name { get; set; }
 
+        private PowerPlant currentSubscribedPowerPlant = null;
+
         public decimal CalculatePrice(Address address)
         {
             throw new NotImplementedException();
@@ -18,7 +20,17 @@ namespace ElectricBillApi
 
         public void Subscribe(PowerPlant plant)
         {
-            throw new NotImplementedException();
+            if(plant != null)
+            {
+                if(plant == currentSubscribedPowerPlant)
+                {
+                    throw new AlreadySubscribedException(plant.Name);
+                }
+                else
+                {
+                    currentSubscribedPowerPlant = plant;
+                }
+            }
         }
 
         public void Unsubscribe(PowerPlant plant)
