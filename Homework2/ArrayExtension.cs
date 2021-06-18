@@ -6,27 +6,11 @@ namespace Homework2
     {
         public static T[] AddAt<T>(this T[] array, T item, int idx)
         {
-            int newSize = array.Length + 1;
+            var firsthalf = array.Take(idx + 1);
+            var secondhalf = array.Skip(idx + 1);
 
-            T[] output = new T[newSize];
-
-            for (int i = 0; i < newSize; i++)
-            {
-                if (i == idx)
-                {
-                    output[i] = item;
-
-                    for (int j = idx; j < array.Length; j++)
-                    {
-                        i++;
-                        output[i] = array[j];
-                    }
-
-                    break;
-                }
-
-                output[i] = array[i];
-            }
+            var firsthalfplus = firsthalf.Append(item);
+            var output = firsthalfplus.Concat(secondhalf).ToArray();
 
             return output;
         }
@@ -43,27 +27,9 @@ namespace Homework2
 
         public static T[] RemoveAt<T>(this T[] array, int idx)
         {
-            int newSize = array.Length - 1;
+            var cleaned = array.RemoveAt(idx);
 
-            T[] output = new T[newSize];
-
-            for (int i = 0; i < newSize; i++)
-            {
-                if (i == idx)
-                {
-                    for (int j = idx + 1; j < newSize; j++)
-                    {
-                        output[i] = array[j];
-                        i++;
-                    }
-
-                    break;
-                }
-
-                output[i] = array[i];
-            }
-
-            return output;
+            return cleaned.ToArray();
         }
 
         public static T[] RemoveAtBeginning<T>(this T[] array)
@@ -78,19 +44,7 @@ namespace Homework2
 
         public static void Sort<T>(this T[] array)
         {
-            //var arraycopy = new T[array.Length];
-            //array.CopyTo(arraycopy, 0);
-
-            var arraycopy = array.ToList();
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                var currentmin = arraycopy.Min();
-
-                array[i] = currentmin;
-
-                arraycopy.Remove(currentmin);
-            }
+            array.Sort();
         }
     }
 }
