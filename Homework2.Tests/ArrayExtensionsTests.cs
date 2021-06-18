@@ -34,19 +34,23 @@ namespace Homework2.Tests
         }
 
         [Theory]
-        [InlineData(4, 5, 6, 1, 3, 1, 3, 4, 5, 6)]
-        [InlineData(0, 1, 2, 3, 9, -5, -5, 0, 1, 2, 3, 9)]
-        [InlineData(9.1, 8.5, 1.0, -5.2, -5.2, 1.0, 8.5, 9.1)]
-        public void Sort_sorts_the_array(params object[] objs)
+        [InlineData(new int[] { 4, 5, 6, 1, 3 }, new int[] { 1, 3, 4, 5, 6 })]
+        [InlineData(new int[] { 0, 1, 2, 3, 9, -5 }, new int[] { -5, 0, 1, 2, 3, 9 })]
+        public void Sort_sorts_the_int_array(int[] testData, int[] expected)
         {
-            int count = objs.Length / 2;
+            testData.Sort();
 
-            var array = objs.Take(count).ToArray();
-            array.Sort();
-
-            var expected = objs.TakeLast(count).ToArray();
-
-            Assert.Equal(array, expected);
+            Assert.Equal(expected, testData);
         }
+
+        [Theory]
+        [InlineData(new double[] { 9.1, 8.5, 1.0, -5.2 }, new double[] { -5.2, 1.0, 8.5, 9.1 })]
+        public void Sort_sorts_the_double_array(double[] testData, double[] expected)
+        {
+            testData.Sort();
+
+            Assert.Equal(expected, testData);
+        }
+
     }
 }

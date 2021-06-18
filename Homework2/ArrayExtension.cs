@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Homework2
 {
@@ -6,8 +7,8 @@ namespace Homework2
     {
         public static T[] AddAt<T>(this T[] array, T item, int idx)
         {
-            var firsthalf = array.Take(idx + 1);
-            var secondhalf = array.Skip(idx + 1);
+            var firsthalf = array.Take(idx );
+            var secondhalf = array.Skip(idx );
 
             var firsthalfplus = firsthalf.Append(item);
             var output = firsthalfplus.Concat(secondhalf).ToArray();
@@ -27,7 +28,8 @@ namespace Homework2
 
         public static T[] RemoveAt<T>(this T[] array, int idx)
         {
-            var cleaned = array.RemoveAt(idx);
+            var element = array.ElementAt(idx);
+            var cleaned = array.Except(new List<T>() { element });
 
             return cleaned.ToArray();
         }
@@ -44,7 +46,12 @@ namespace Homework2
 
         public static void Sort<T>(this T[] array)
         {
-            array.Sort();
+            var sortedarray = array.OrderBy(t => t).ToArray();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = sortedarray[i];
+            }
         }
     }
 }
