@@ -24,7 +24,7 @@ namespace ElectricityBillApi.Models
                 return;
             }
 
-            throw new InvalidOperationException("Povider already subscribed to a power plant.");
+            throw new InvalidOperationException($"Povider {_subscibedPowerPlant.Name} already subscribed to a power plant.");
         }
 
         public void Unsubscribe(PowerPlant powerPlant)

@@ -17,7 +17,7 @@ namespace ElectricityBillApi.Services
         {
             decimal smallestPrice = decimal.MaxValue;
 
-            foreach (var provider in _providers)
+            foreach (var provider in _providers.GetProviders)
             {
                 decimal currentPrice = provider.CalculatePrice(address);
                 if (currentPrice < smallestPrice)
@@ -26,7 +26,7 @@ namespace ElectricityBillApi.Services
                 }
             }
 
-            return _providers.First(p => p.CalculatePrice(address) == smallestPrice);
+            return _providers.GetProviders.First(p => p.CalculatePrice(address) == smallestPrice);
         }
     }
 }
