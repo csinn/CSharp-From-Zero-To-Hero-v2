@@ -2,8 +2,10 @@
 
 namespace ElectricityBillApi.Models
 {
-    public class ElectricProviders : List<ElectricProvider>
+    public class ElectricProviders
     {
+        private List<ElectricProvider> _providers = new List<ElectricProvider>();
+
         public ElectricProviders()
         {
             AddDummyData();
@@ -49,9 +51,11 @@ namespace ElectricityBillApi.Models
             };
             provider2.Subscribe(plant2);
 
-            Add(provider1);
-            Add(provider2);
+            _providers.Add(provider1);
+            _providers.Add(provider2);
 
         }
+
+        public List<ElectricProvider> GetProviders => _providers;
     }
 }

@@ -10,7 +10,7 @@ namespace ElectricityBillApi.Models
 
         public decimal CalculatePrice(Address address)
         {
-            if (_subscibedPowerPlant == default) throw new NotImplementedException("What to do here? More infos needed!");
+            if (_subscibedPowerPlant == default) throw new ArgumentNullException(nameof(address));
 
             double priceDistanceFactor = CalculateDistanceFactor(address);
             return _subscibedPowerPlant.ElectricityPrice * (decimal)priceDistanceFactor;
@@ -24,7 +24,7 @@ namespace ElectricityBillApi.Models
                 return;
             }
 
-            throw new InvalidOperationException("Povider already subscribed to a power plant.");
+            throw new InvalidOperationException($"Povider {_subscibedPowerPlant.Name} already subscribed to a power plant.");
         }
 
         public void Unsubscribe(PowerPlant powerPlant)

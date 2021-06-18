@@ -13,11 +13,11 @@ namespace ElectricityBillApi.Services
             _providers = providers;
         }
 
-        public ElectricProvider FindCheapest(Address address)
+        public (ElectricProvider, decimal) FindCheapestProviderAndPrice(Address address)
         {
             decimal smallestPrice = decimal.MaxValue;
 
-            foreach (var provider in _providers)
+            foreach (var provider in _providers.GetProviders)
             {
                 decimal currentPrice = provider.CalculatePrice(address);
                 if (currentPrice < smallestPrice)
@@ -26,7 +26,9 @@ namespace ElectricityBillApi.Services
                 }
             }
 
-            return _providers.First(p => p.CalculatePrice(address) == smallestPrice);
+            var cheapestProvider = _providers.GetProviders.First(p => p.CalculatePrice(address) == smallestPrice);
+
+            return (cheapestProvider, smallestPrice);
         }
     }
 }

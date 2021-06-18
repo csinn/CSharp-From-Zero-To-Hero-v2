@@ -4,6 +4,6 @@ namespace ElectricityBillApi.Services
 {
     public interface IElectricProviderPickerService
     {
-        ElectricProvider FindCheapest(Address address);
+        (ElectricProvider, decimal) FindCheapestProviderAndPrice(Address address);
     }
 }

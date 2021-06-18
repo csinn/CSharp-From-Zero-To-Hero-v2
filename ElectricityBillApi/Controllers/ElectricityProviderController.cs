@@ -19,8 +19,8 @@ namespace ElectricityBillApi.Controllers
         [HttpGet]
         public IActionResult Get([FromBody] Address address)
         {
-            var provider = _electricProviderPickerService.FindCheapest(address);
-            return Ok(new { Name = provider.Name, Price = provider.CalculatePrice(address)});
+            var (provider, price) = _electricProviderPickerService.FindCheapestProviderAndPrice(address);
+            return Ok(new { Name = provider.Name, Price = price});
         }
     }
 }
