@@ -2,7 +2,7 @@
 
 namespace ElectricityBillApi.Models
 {
-    public class ElectricProviders
+    public class ElectricProviders : IElectricProviders
     {
         private List<ElectricProvider> _providers = new List<ElectricProvider>();
 

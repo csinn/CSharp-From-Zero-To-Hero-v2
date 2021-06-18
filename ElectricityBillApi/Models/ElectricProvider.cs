@@ -41,7 +41,7 @@ namespace ElectricityBillApi.Models
             var yFac = Math.Abs(_subscibedPowerPlant.Location.Y - address.Location.Y);
             var zFac = Math.Abs(_subscibedPowerPlant.Location.Z - address.Location.Z);
 
-            return Math.Exp((xFac + yFac + zFac)/(xFac * yFac * zFac));
+            return xFac + yFac + zFac;
         }
     }
 }

@@ -6,9 +6,9 @@ namespace ElectricityBillApi.Services
 {
     public class ElectricProviderPickerService : IElectricProviderPickerService
     {
-        private readonly ElectricProviders _providers;
+        private readonly IElectricProviders _providers;
 
-        public ElectricProviderPickerService(ElectricProviders providers)
+        public ElectricProviderPickerService(IElectricProviders providers)
         {
             _providers = providers;
         }
