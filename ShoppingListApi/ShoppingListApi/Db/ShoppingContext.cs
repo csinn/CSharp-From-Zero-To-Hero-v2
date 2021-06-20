@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -18,18 +19,20 @@ namespace ShoppingListApi.Db
         //}
 
         // Supports injecting any provider we want
-        public ShoppingContext(DbContextOptions<ShoppingContext> options): base(options)
+
+        public ShoppingContext() : base(UseSqlite())
         {
         }
 
-        public ShoppingContext(): base(UseSqlite())
+        public ShoppingContext(DbContextOptions<ShoppingContext> options) : base(options)
         {
         }
 
-        private static DbContextOptions UseSqlite()
+        private static DbContextOptions<ShoppingContext> UseSqlite()
         {
-            return new DbContextOptionsBuilder()
+            return new DbContextOptionsBuilder<ShoppingContext>()
                 .UseSqlite(@"DataSource=ShoppingList.db;")
+                .LogTo(m => Debug.WriteLine(m))
                 .Options;
         }
     }

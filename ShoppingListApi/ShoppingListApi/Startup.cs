@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using ShoppingListApi.Bootstrap;
 using ShoppingListApi.Db;
 using ShoppingListApi.Services;
+using ShoppingListApi.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingListApi
 {
@@ -32,12 +34,17 @@ namespace ShoppingListApi
             // Transient- gets created for every time referenced
             // Scoped- gets created per request
             // Singleton- created one
-            services.AddSingleton<IShoppingListService, ShoppingListService>();
-            services.AddSingleton<IItemsGenerator, ItemsGenerator>();
+            services.AddTransient<IShoppingListService, ShoppingListService>();
+            services.AddTransient<IItemsGenerator, ItemsGenerator>();
+            services.AddTransient<IShoppingListRepository, ShoppingListRepository>();
+            services.AddTransient<IItemsRepository, ItemsRepository>();
 
             services.AddTaxPolicies();
 
-            services.AddDbContext<ShoppingContext>();
+            services.AddDbContext<ShoppingContext>(builder =>
+            {
+                builder.UseSqlite(@"DataSource=ShoppingList.db;");
+            });
         }
 
         // Configure middleware

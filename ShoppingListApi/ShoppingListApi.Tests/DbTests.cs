@@ -8,7 +8,7 @@ using Xunit;
 
 namespace ShoppingListApi.Tests
 {
-    public class DbTests
+    public abstract class DbTests : IDisposable
     {
         protected ShoppingContext Context { get; set; }
 
@@ -20,10 +20,9 @@ namespace ShoppingListApi.Tests
                     .Options);
         }
 
-        [Fact]
-        public void Test()
+        public void Dispose()
         {
-            Assert.Empty(Context.Items);
+            Context.Dispose();
         }
     }
 }

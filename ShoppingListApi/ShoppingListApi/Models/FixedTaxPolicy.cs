@@ -2,16 +2,16 @@
 {
     public class FixedTaxPolicy : ITaxPolicy
     {
-        private readonly decimal _taxes;
+        public decimal Taxes { get; }
 
         public FixedTaxPolicy(decimal taxes)
         {
-            _taxes = taxes;
+            Taxes = taxes;
         }
 
         public decimal Apply(decimal price)
         {
-            return price * _taxes;
+            return price * Taxes;
         }
     }
 }

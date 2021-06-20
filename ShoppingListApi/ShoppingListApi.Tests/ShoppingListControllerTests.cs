@@ -18,7 +18,7 @@ namespace ShoppingListApi.Tests
         public ShoppingListControllerTests()
         {
             _shoppingListConverter = new TaxedShoppingListConverter(new ITaxPolicy[]{new FixedTaxPolicy(1)});
-            _shoppingListService = new ShoppingListService();
+            _shoppingListService = new ShoppingListService(null, null);
             _itemsGenerator = new ItemsGenerator();
 
             _controller = new ShoppingListController(_shoppingListService, _itemsGenerator, _shoppingListConverter);
