@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShoppingListApi.Bootstrap;
+using ShoppingListApi.Db;
 using ShoppingListApi.Services;
 
 namespace ShoppingListApi
@@ -36,7 +37,7 @@ namespace ShoppingListApi
 
             services.AddTaxPolicies();
 
-            // Add dependency of IShoppingListService
+            services.AddDbContext<ShoppingContext>();
         }
 
         // Configure middleware
