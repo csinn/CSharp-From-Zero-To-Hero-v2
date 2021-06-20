@@ -29,7 +29,7 @@ namespace ShoppingListApi.Db
         private static DbContextOptions UseSqlite()
         {
             return new DbContextOptionsBuilder()
-                .UseSqlite()
+                .UseSqlite(@"DataSource=ShoppingList.db;")
                 .Options;
         }
     }
