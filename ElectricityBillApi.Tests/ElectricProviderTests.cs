@@ -17,29 +17,19 @@ namespace ElectricityBillApi.Tests
         public void CalculatePrice_CalculatesCorrectPrice()
         {
             // arrange
-            var loc1 = new Location()
-            {
-                X = 0,
-                Y = 0,
-                Z = 0
-            };
-            var loc2 = new Location()
-            {
-                X = 1,
-                Y = 1,
-                Z = 1
-            };
-            decimal plantPrice = 5;
+            var loc1 = new Location(0, 0, 0);
+            var loc2 = new Location(1, 1, 1);
+            decimal electricityPrice = 5;
             var plant = new PowerPlant()
             {
                 Location = loc1,
-                ElectricityPrice = plantPrice
+                ElectricityPrice = electricityPrice
             };
 
             // act
             _sut.Subscribe(plant);
             var actual = _sut.CalculatePrice(new Address() { Location = loc2 });
-            var expected = 3 * plantPrice;
+            var expected = 3 * electricityPrice;
 
             // assert
             Assert.Equal(expected, actual);
@@ -49,18 +39,14 @@ namespace ElectricityBillApi.Tests
         public void CalculatePrice_ThrowsIfNoPlantIsSubscribed()
         {
             // arrange
-
-            var loc2 = new Location()
-            {
-                X = 1,
-                Y = 1,
-                Z = 1
-            };
+            var loc2 = new Location(1, 1, 1);
+            var address = new Address() { Location = loc2 };
 
             // act
+            Action priceCalculation = () => _sut.CalculatePrice(address);
 
             // assert
-            Assert.ThrowsAny<ArgumentNullException>(() => _sut.CalculatePrice(new Address() { Location = loc2 }));
+            Assert.ThrowsAny<ArgumentNullException>(priceCalculation);
         }
 
         [Fact]
