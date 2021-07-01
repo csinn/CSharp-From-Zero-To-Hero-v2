@@ -37,7 +37,7 @@ namespace ElectricityBillApi.Tests
         }
 
         [Fact]
-        public void CalculatePrice_ThrowsIfNoPlantIsSubscribed()
+        public void CalculatePrice_IfNoPlantIsSubscribed_Throws_ArgumentNullException()
         {
             // arrange
             var loc2 = new Location(1, 1, 1);
@@ -51,7 +51,7 @@ namespace ElectricityBillApi.Tests
         }
 
         [Fact]
-        public void Subscribe_SubscribeTwoTimesThrows()
+        public void Subscribe_SubscribeTwoTimes_Throws_InvalidOperationException()
         {
             // arrange
             var plant = new PowerPlant();
@@ -65,7 +65,7 @@ namespace ElectricityBillApi.Tests
         }
 
         [Fact]
-        public void Unsubscribe_SubscribeTwoTimesDoesntThrow()
+        public void Unsubscribe_SubscribeTwoTimesDoesnt_ThrowAnything()
         {
             // arrange
             var plant = new PowerPlant();
