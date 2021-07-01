@@ -1,46 +1,85 @@
-﻿using System.Linq;
+﻿using System;
 using Xunit;
 
 namespace Homework2.Tests
 {
     public class ArrayExtensionsTests
     {
+        private int[] _testArray;
+
+        public ArrayExtensionsTests()
+        {
+            _testArray = new int[] { 1, 3, 3, 7 };
+        }
+
         [Theory]
-        [InlineData(999, 4)]
+        [InlineData(999, 2)]
         [InlineData(999, 0)]
-        [InlineData(999, 10)]
+        [InlineData(999, 3)]
         public void AddAt_adds_at_idx(int item, int idx)
         {
-            var testarray = new int[] { 11, 22, 33, 44, 55, 66, 77, 88, 99, 111 };
+            var newarray = _testArray.AddAt(item, idx);
 
-            var newarray = testarray.AddAt(item, idx);
-
-            Assert.Equal(testarray.Length + 1, newarray.Length);
+            Assert.Equal(_testArray.Length + 1, newarray.Length);
             Assert.Equal(newarray[idx], item);
         }
 
-        [Theory]
-        [InlineData(4)]
-        [InlineData(0)]
-        [InlineData(9)]
-        public void RemoveAt_removes_at_idx(int idx)
+        [Fact]
+        public void AddAt_TryingToAddAtNegativeOutOfRangeIndex_Throws_ArgumentOutOfRangeException()
         {
-            var testarray = new int[] { 11, 22, 33, 44, 55, 66, 77, 88, 99, 111 };
+            var arrayLength = _testArray.Length;
+            Action faultyAddCall = () => _testArray.AddAt(999, -5);
 
-            var newarray = testarray.RemoveAt(idx);
+            Assert.Throws<IndexOutOfRangeException>(faultyAddCall);
+        }
 
-            Assert.Equal(testarray.Length - 1, newarray.Length);
-            Assert.DoesNotContain(testarray[idx], newarray);
+        [Fact]
+        public void AddAt_TryingToAddAtOutOfRangeIndex_Throws_ArgumentOutOfRangeException()
+        {
+            var arrayLength = _testArray.Length;
+            Action faultyAddCall = () => _testArray.AddAt(999, arrayLength + 5);
+
+            Assert.Throws<IndexOutOfRangeException>(faultyAddCall);
         }
 
         [Theory]
-        [InlineData(new int[] { 4, 5, 6, 1, 3 }, new int[] { 1, 3, 4, 5, 6 })]
-        [InlineData(new int[] { 0, 1, 2, 3, 9, -5 }, new int[] { -5, 0, 1, 2, 3, 9 })]
-        public void Sort_sorts_the_int_array(int[] testData, int[] expected)
+        [InlineData(2)]
+        [InlineData(0)]
+        [InlineData(3)]
+        public void RemoveAt_removes_at_idx(int idx)
         {
-            testData.Sort();
+            var newarray = _testArray.RemoveAt(idx);
 
-            Assert.Equal(expected, testData);
+            Assert.Equal(_testArray.Length - 1, newarray.Length);
+
+            for (int i = 0; i < newarray.Length; i++)
+            {
+                if (i >= idx)
+                {
+                    Assert.Equal(_testArray[i + 1], newarray[i]);
+                    continue;
+                }
+
+                Assert.Equal(_testArray[i], newarray[i]);
+            }
+        }
+
+        [Fact]
+        public void RemoveAt_TryingToRemoveAtNegativeOutOfRangeIndex_Throws_ArgumentOutOfRangeException()
+        {
+            var arrayLength = _testArray.Length;
+            Action faultyAddCall = () => _testArray.RemoveAt(-5);
+
+            Assert.Throws<IndexOutOfRangeException>(faultyAddCall);
+        }
+
+        [Fact]
+        public void RemoveAt_TryingToRemoveAtOutOfRangeIndex_Throws_ArgumentOutOfRangeException()
+        {
+            var arrayLength = _testArray.Length;
+            Action faultyAddCall = () => _testArray.RemoveAt(arrayLength + 5);
+
+            Assert.Throws<IndexOutOfRangeException>(faultyAddCall);
         }
 
         [Theory]
@@ -52,5 +91,14 @@ namespace Homework2.Tests
             Assert.Equal(expected, testData);
         }
 
+        [Theory]
+        [InlineData(new int[] { 4, 5, 6, 1, 3 }, new int[] { 1, 3, 4, 5, 6 })]
+        [InlineData(new int[] { 0, 1, 2, 3, 9, -5 }, new int[] { -5, 0, 1, 2, 3, 9 })]
+        public void Sort_sorts_the_int_array(int[] testData, int[] expected)
+        {
+            testData.Sort();
+
+            Assert.Equal(expected, testData);
+        }
     }
 }

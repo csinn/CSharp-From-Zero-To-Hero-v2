@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Homework2
@@ -7,8 +8,9 @@ namespace Homework2
     {
         public static T[] AddAt<T>(this T[] array, T item, int idx)
         {
-            var firsthalf = array.Take(idx );
-            var secondhalf = array.Skip(idx );
+            if (idx < 0 || idx >= array.Length) throw new IndexOutOfRangeException();
+            var firsthalf = array.Take(idx);
+            var secondhalf = array.Skip(idx);
 
             var firsthalfplus = firsthalf.Append(item);
             var output = firsthalfplus.Concat(secondhalf).ToArray();
@@ -28,10 +30,16 @@ namespace Homework2
 
         public static T[] RemoveAt<T>(this T[] array, int idx)
         {
-            var element = array.ElementAt(idx);
-            var cleaned = array.Except(new List<T>() { element });
+            if (idx < 0 || idx >= array.Length) throw new IndexOutOfRangeException();
 
-            return cleaned.ToArray();
+            var copy = (T[])array.Clone();
+
+            for (int i = idx; i < copy.Length - 1; i++)
+            {
+                copy.SetValue(copy[i + 1], i);
+            }
+
+            return copy.Take(copy.Length - 1).ToArray();
         }
 
         public static T[] RemoveAtBeginning<T>(this T[] array)
