@@ -10,109 +10,86 @@ namespace ElectricityBillApi.Tests
 {
     public class ElectricProviderPickerServiceTests
     {
-        [Fact]
-        public void FindCheapestProviderAndPrice_returnsNearCheapestProvider()
+        private readonly IElectricProviders _iProviders;
+        private readonly List<ElectricProvider> _providers;
+
+        public ElectricProviderPickerServiceTests()
         {
-            // arrange
-            var providers = GetTestData().ToList();
-            var iProviders = Substitute.For<IElectricProviders>();
-            iProviders.GetProviders.ReturnsForAnyArgs(providers);
-            var sut = new ElectricProviderPickerService(iProviders);
-            var ownAddress = new Address()
-            {
-                Location = new Location()
-                {
-                    X=0,
-                    Y=0,
-                    Z=0
-                }
-            };
-
-            // act 
-            var (cheapestProvider, calculatedPrice) = sut.FindCheapestProviderAndPrice(ownAddress);
-
-            // assert
-            Assert.Equal(providers.First(), cheapestProvider);
+            _providers = GetTestData().ToList();
+            _iProviders = Substitute.For<IElectricProviders>();
+            _iProviders.GetProviders.ReturnsForAnyArgs(_providers);
         }
 
         [Fact]
         public void FindCheapestProviderAndPrice_returnsFarCheapestProvider()
         {
             // arrange
-            var providers = GetTestData().ToList();
-            var iProviders = Substitute.For<IElectricProviders>();
-            iProviders.GetProviders.ReturnsForAnyArgs(providers);
-            var sut = new ElectricProviderPickerService(iProviders);
+            var sut = new ElectricProviderPickerService(_iProviders);
             var ownAddress = new Address()
             {
-                Location = new Location()
-                {
-                    X=20,
-                    Y=20,
-                    Z=0
-                }
+                Location = new Location(20, 20, 0)
             };
 
-            // act 
+            // act
             var (cheapestProvider, calculatedPrice) = sut.FindCheapestProviderAndPrice(ownAddress);
 
             // assert
-            Assert.Equal(providers[1], cheapestProvider);
+            Assert.Equal(_providers[1], cheapestProvider);
         }
 
         [Fact]
-        public void FindCheapestProviderAndPrice_throwsIfNoProvidersExist()
+        public void FindCheapestProviderAndPrice_returnsNearCheapestProvider()
         {
             // arrange
-            var iProviders = Substitute.For<IElectricProviders>();
-            iProviders.GetProviders.ReturnsForAnyArgs(new List<ElectricProvider>());
-            var sut = new ElectricProviderPickerService(iProviders);
+            var sut = new ElectricProviderPickerService(_iProviders);
             var ownAddress = new Address()
             {
-                Location = new Location()
-                {
-                    X = 20,
-                    Y = 20,
-                    Z = 0
-                }
+                Location = new Location(0, 0, 0)
             };
 
-            // act 
+            // act
+            var (cheapestProvider, calculatedPrice) = sut.FindCheapestProviderAndPrice(ownAddress);
 
             // assert
-            Assert.ThrowsAny<InvalidOperationException>(() => sut.FindCheapestProviderAndPrice(ownAddress));
+            Assert.Equal(_providers.First(), cheapestProvider);
         }
 
         [Fact]
         public void FindCheapestProviderAndPrice_throwsIfLocationIsNull()
         {
             // arrange
-            var providers = GetTestData().ToList();
-            var iProviders = Substitute.For<IElectricProviders>();
-            iProviders.GetProviders.ReturnsForAnyArgs(providers);
-            var sut = new ElectricProviderPickerService(iProviders);
+            var sut = new ElectricProviderPickerService(_iProviders);
             var ownAddress = new Address();
 
-            // act 
+            // act
+            Action throwingMethod = () => sut.FindCheapestProviderAndPrice(ownAddress);
 
             // assert
-            Assert.ThrowsAny<NullReferenceException>(() => sut.FindCheapestProviderAndPrice(ownAddress));
+            Assert.ThrowsAny<NullReferenceException>(throwingMethod);
         }
 
-        private IEnumerable<ElectricProvider> GetTestData()
+        [Fact]
+        public void FindCheapestProviderAndPrice_throwsIfNoProvidersExist()
         {
-            var locationFar = new Location()
+            // arrange
+            _iProviders.GetProviders.ReturnsForAnyArgs(new List<ElectricProvider>());
+            var sut = new ElectricProviderPickerService(_iProviders);
+            var ownAddress = new Address()
             {
-                X = 10,
-                Y = 10,
-                Z = 0
+                Location = new Location(20, 20, 0)
             };
-            var locationNear = new Location()
-            {
-                X = 5,
-                Y = 5,
-                Z = 0
-            };
+
+            // act
+            Action throwingMethod = () => sut.FindCheapestProviderAndPrice(ownAddress);
+
+            // assert
+            Assert.ThrowsAny<InvalidOperationException>(throwingMethod);
+        }
+
+        private List<ElectricProvider> GetTestData()
+        {
+            var locationFar = new Location(10, 10, 0);
+            var locationNear = new Location(5, 5, 0);
 
             var providerCheapNear = new ElectricProvider()
             {
@@ -157,10 +134,13 @@ namespace ElectricityBillApi.Tests
             providerExpensiveNear.Subscribe(plantExpensive);
             providerExpensiveFar.Subscribe(plantExpensiveFar);
 
-            yield return providerCheapNear;
-            yield return providerCheapFar;
-            yield return providerExpensiveNear;
-            yield return providerExpensiveFar;
+            return new List<ElectricProvider>() 
+            {
+                providerCheapNear,
+                providerCheapFar,
+                providerExpensiveNear,
+                providerExpensiveFar
+            };
         }
     }
 }
