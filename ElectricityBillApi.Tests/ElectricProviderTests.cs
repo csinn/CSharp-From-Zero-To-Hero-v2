@@ -29,7 +29,8 @@ namespace ElectricityBillApi.Tests
             // act
             _sut.Subscribe(plant);
             var actual = _sut.CalculatePrice(new Address() { Location = loc2 });
-            var expected = 3 * electricityPrice;
+            var locationBasedPriceFactor = CalcLocationFactor(loc1, loc2);
+            var expected = (decimal)locationBasedPriceFactor * electricityPrice;
 
             // assert
             Assert.Equal(expected, actual);
@@ -75,6 +76,15 @@ namespace ElectricityBillApi.Tests
             // assert
             _sut.Unsubscribe(plant);
             _sut.Unsubscribe(plant);
+        }
+
+        private double CalcLocationFactor(Location plantLocation, Location consumerLocation)
+        {
+            var xFac = Math.Abs(plantLocation.X - consumerLocation.X);
+            var yFac = Math.Abs(plantLocation.Y - consumerLocation.Y);
+            var zFac = Math.Abs(plantLocation.Z - consumerLocation.Z);
+
+            return xFac + yFac + zFac; 
         }
     }
 }
