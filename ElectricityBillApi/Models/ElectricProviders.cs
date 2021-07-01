@@ -18,12 +18,7 @@ namespace ElectricityBillApi.Models
                 Name = "Plant1",
                 ElectricityPrice = 3m,
                 ProducedPowerPerDay = 1000,
-                Location = new Location()
-                {
-                    X = 5,
-                    Y = 10,
-                    Z = 11
-                }
+                Location = new Location(5,10,11)
             };
 
             var provider1 = new ElectricProvider()
@@ -37,12 +32,7 @@ namespace ElectricityBillApi.Models
                 Name = "Plant2",
                 ElectricityPrice = 5m,
                 ProducedPowerPerDay = 1000,
-                Location = new Location()
-                {
-                    X = 10,
-                    Y = 5,
-                    Z = 22
-                }
+                Location = new Location(10,5,22)
             };
 
             var provider2 = new ElectricProvider()
