@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ElectricBillApi
+namespace ElectricBillApi.Exceptions
 {
     [Serializable]
     internal class AlreadySubscribedException : Exception
@@ -12,7 +12,6 @@ namespace ElectricBillApi
 
         public AlreadySubscribedException(string message) : base(message)
         {
-            Console.WriteLine("Plant " + message + " is already subscribed to.");
         }
 
         public AlreadySubscribedException(string message, Exception innerException) : base(message, innerException)

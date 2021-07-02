@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ElectricBillApi.Models
 {
-    public class Location : IComparable
+    public class Location
     {
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-
-        public int CompareTo(object obj)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

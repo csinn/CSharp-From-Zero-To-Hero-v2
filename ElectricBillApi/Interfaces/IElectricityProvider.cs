@@ -1,10 +1,6 @@
 ﻿using ElectricBillApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ElectricBillApi
+namespace ElectricBillApi.Interfaces
 {
     public interface IElectricityProvider
     {
