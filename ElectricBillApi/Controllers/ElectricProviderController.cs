@@ -36,7 +36,7 @@ namespace ElectricBillApi.Controllers
             }
         }
 
-        [HttpPost("{provider}/subscribeToPlant")]
+        [HttpPut("{provider}/subscribeToPlant")]
         public IActionResult SubscribeToPowerPlant(string provider, PowerPlant powerPlant)
         {
             try
@@ -59,7 +59,7 @@ namespace ElectricBillApi.Controllers
             }
         }
 
-        [HttpPost("{provider}/unsubscribeToPlant")]
+        [HttpPatch("{provider}/unsubscribeToPlant")]
         public IActionResult UnsubscribeToPowerPlant(string provider, PowerPlant powerPlant)
         {
             try
