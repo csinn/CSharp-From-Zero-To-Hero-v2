@@ -44,12 +44,7 @@ namespace ElectricBillApi.Services
 
         public decimal CalculatePrice(Address address)
         {
-            if(currentSubscribedPowerPlant == null)
-            {
-                throw new NoSubscribedPowerPlantException("Cannot calculate cost. No subscription to a Powerplant exists.");
-            }
-
-            var distanceFromPlantToCustomer = CalculateDistance(address.Location, currentSubscribedPowerPlant.Location);
+            var distanceFromPlantToCustomer = Location.CalculateDistance(address.Location, currentSubscribedPowerPlant.Location);
 
             for (int i = 0; i < _costRange.Count; i++)
             {
@@ -66,21 +61,12 @@ namespace ElectricBillApi.Services
 
         public void Subscribe(PowerPlant plant)
         {
-            if(plant.IsPowerPlantValid())
+            if (plant.Equals(currentSubscribedPowerPlant))
             {
-                if(plant.Name == currentSubscribedPowerPlant.Name)
-                {
-                    throw new AlreadySubscribedException($"Already subscribed to {plant.Name}.");
-                }
-                else
-                {
-                    currentSubscribedPowerPlant = plant;
-                }
+                throw new AlreadySubscribedException($"Already subscribed to {plant.Name}.");
             }
-            else
-            {
-                throw new NoValidPowerPlantException("No valid powerplant was provided. Must have valid name and location.");
-            }
+
+            currentSubscribedPowerPlant = plant;
         }
 
         public void Unsubscribe(PowerPlant plant)
@@ -89,15 +75,8 @@ namespace ElectricBillApi.Services
             {
                 return;
             }
-            else
-            {
-                currentSubscribedPowerPlant = null;
-            }
-        }
 
-        private static double CalculateDistance (Location a, Location b)
-        {
-            return Math.Sqrt(Math.Pow((a.X - b.X), 2) + Math.Pow((a.Y - b.Y), 2) + Math.Pow((a.Z - b.Z), 2));
+            currentSubscribedPowerPlant = null;
         }
     }
 }

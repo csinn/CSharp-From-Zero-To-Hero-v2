@@ -20,19 +20,15 @@ namespace ElectricBillApi.Controllers
         [HttpGet]
         public IActionResult GetBestProvider(Address address)
         {
-            try
-            {
-                var provider = _electricProviderPicker.FindCheapest(address);
+            var provider = _electricProviderPicker.FindCheapest(address);
 
+            if (provider == null)
+            {
+                return StatusCode(500);
+            }
+            else
+            {
                 return Ok($"{provider.Name}, {provider.CalculatePrice(address)}, {provider.CurrentSubscribedPlant}");
-            }
-            catch (NoSubscribedPowerPlantException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (NoValidAdressException ex)
-            {
-                return BadRequest(ex.Message);
             }
         }
 
@@ -49,29 +45,14 @@ namespace ElectricBillApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch (NoValidPowerPlantException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NoProviderFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         [HttpPatch("{provider}/unsubscribeToPlant")]
         public IActionResult UnsubscribeToPowerPlant(string provider, PowerPlant powerPlant)
         {
-            try
-            {
-                provider.StringToProvider().Unsubscribe(powerPlant);
+            provider.StringToProvider().Unsubscribe(powerPlant);
 
-                return Ok("Unsubscribed from powerplant.");
-            }
-            catch (NoProviderFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok("Unsubscribed from powerplant.");
         }
     }
 }

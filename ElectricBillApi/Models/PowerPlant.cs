@@ -10,5 +10,39 @@ namespace ElectricBillApi.Models
         public decimal ElectricityPrice { get; set; }
         public double ProducedPowerPerDay { get; set; }
         public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if(!(obj is PowerPlant))
+            {
+                return false;
+            }
+
+            var other = obj as PowerPlant;
+
+            if (this.Name == other.Name)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator ==(PowerPlant a, PowerPlant b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(PowerPlant a, PowerPlant b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode();
+        }
     }
 }

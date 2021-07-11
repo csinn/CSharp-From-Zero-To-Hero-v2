@@ -20,9 +20,9 @@ namespace ElectricBillApi.Services
 
         public ElectricityProvider FindCheapest (Address adress)
         {
-            if(adress == null || adress.Location == null)
+            if (adress == null || adress.Location == null)
             {
-                throw new NoValidAdressException("No valid address / location provided.");
+                return null;
             }
 
             ElectricityProvider cheapestProvider = null;
