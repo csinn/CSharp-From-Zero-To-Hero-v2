@@ -56,7 +56,7 @@ namespace ElectricBillApi.Services
                 }
             }
 
-            return 15;
+            return 75;
         }
 
         public void Subscribe(PowerPlant plant)

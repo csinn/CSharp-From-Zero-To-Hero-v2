@@ -20,7 +20,8 @@ namespace ElectricBillApi.Services
                 }
             }
 
-            return null;
+            throw new NoProviderFoundException("No such electricityprovider exists.");
         }
     }
+
 }

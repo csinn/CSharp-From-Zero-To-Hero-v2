@@ -22,29 +22,15 @@ namespace ElectricBillApi.Controllers
         {
             var provider = _electricProviderPicker.FindCheapest(address);
 
-            if (provider == null)
-            {
-                return StatusCode(500);
-            }
-            else
-            {
-                return Ok($"{provider.Name}, {provider.CalculatePrice(address)}, {provider.CurrentSubscribedPlant}");
-            }
+            return Ok($"{provider.Name}, {provider.CalculatePrice(address)}, {provider.CurrentSubscribedPlant}");
         }
 
         [HttpPut("{provider}/subscribeToPlant")]
         public IActionResult SubscribeToPowerPlant(string provider, PowerPlant powerPlant)
         {
-            try
-            {
-                provider.StringToProvider().Subscribe(powerPlant);
+            provider.StringToProvider().Subscribe(powerPlant);
 
-                return Ok("Successfully subscribed to powerplant.");
-            }
-            catch (AlreadySubscribedException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok("Successfully subscribed to powerplant.");
         }
 
         [HttpPatch("{provider}/unsubscribeToPlant")]
