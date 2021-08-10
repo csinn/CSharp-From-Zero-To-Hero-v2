@@ -7,64 +7,34 @@ namespace Homework2
         static void Main(string[] args)
         {
             int[] array = {4, 3, 6, 43, 54, 21, 2, 14, 1, 5, 7, 41, 22};
-
-            Console.WriteLine("=== SORTING AN ARRAY ===");
             SortArray(array);
 
-            Console.WriteLine("\n=== ADDING NUMBER TO THE START ===");
-            Console.Write("What Number would you like to add at the start? ");
-            int.TryParse(Console.ReadLine(), out int num);
-            AddToStart(num, array);
+            AddToArrayOptions(array);
 
-            Console.WriteLine("\n=== ADDING NUMBER TO THE END ===");
-            Console.Write("What Number would you like to add at the end? ");
-            int.TryParse(Console.ReadLine(), out int num2);
-            AddToEnd(num2, array);
+            RemoveOutOfArrayOptions(array);
 
-            Console.WriteLine("\n=== ADDING NUMBER TO ANY POSITION ===");
-            Console.Write("What position would you like to add a number to? ");
-            int.TryParse(Console.ReadLine(), out int position2);
-            Console.Write("What Number would you like to add? ");
-            int.TryParse(Console.ReadLine(), out int num3);
-
-            AddToArrayPosition(num3, position2, array);
-
-            Console.WriteLine("\n=== REMOVING NUMBER FROM THE START ===");
-            RemoveAtStart(array);
-
-            Console.WriteLine("\n=== REMOVING NUMBER FROM THE END ===");
-            RemoveAtEnd(array);
-
-            Console.WriteLine("\n=== REMOVING NUMBER FROM ANY POSITION ===");
-            Console.Write("\nWhat position would you like to remove? ");
-            int.TryParse(Console.ReadLine(), out int position);
-            RemoveAtAny(array, position);
-
-            Console.WriteLine("\n=== SIGN UP ===");
-            SignUp();
-
-            Console.WriteLine("\n=== LOGIN ===");
-            Login();
+            AccountOptions();
 
             Console.ReadKey();
         }
 
         static void PrintArray(int[] array)
         {
-            var numbers = string.Join(" ",array);
+            var numbers = string.Join(" ", array);
             Console.WriteLine(numbers);
         }
 
         static void SortArray(int[] array) // Sort an array
         {
+            Console.WriteLine("=== SORTING AN ARRAY ===");
             int[] NewArray = new int[array.Length];
             Array.Copy(array, NewArray, array.Length);
 
-            for(int i = NewArray.Length - 1; i > 0; i--)
+            for (int i = NewArray.Length - 1; i > 0; i--)
             {
-                for(int j = 0; j < i; j++)
+                for (int j = 0; j < i; j++)
                 {
-                    if(NewArray[j] > NewArray[j+1])
+                    if (NewArray[j] > NewArray[j + 1])
                     {
                         int temp = NewArray[j + 1];
                         NewArray[j + 1] = NewArray[j];
@@ -73,22 +43,43 @@ namespace Homework2
                 }
             }
 
-            Console.WriteLine("Before: ");
-            PrintArray(array);
-            Console.WriteLine("After: ");
             PrintArray(NewArray);
         }
 
         #region AddToArray
 
-        static void AddToStart(int num, int[] array) // Add element at the start of an array
+        static void AddToArrayOptions(int[] array)
         {
+            AddToStart(array);
+            AddToEnd(array);
+            AddToArray(array);
+        }
+
+        static void AddToStart(int[] array) // Add element at the start of an array
+        {
+            Console.WriteLine("\n=== ADDING NUMBER TO THE START ===");
+            Console.Write("What Number would you like to add at the start? ");
+            int.TryParse(Console.ReadLine(), out int num);
             AddToArrayPosition(num, 0, array);
         }
 
-        static void AddToEnd(int num, int[] array) // Add element at the end of an array
+        static void AddToEnd(int[] array) // Add element at the end of an array
         {
+            Console.WriteLine("\n=== ADDING NUMBER TO THE END ===");
+            Console.Write("What Number would you like to add at the end? ");
+            int.TryParse(Console.ReadLine(), out int num);
             AddToArrayPosition(num, array.Length, array);
+        }
+
+        static void AddToArray(int[] array)
+        {
+            Console.WriteLine("\n=== ADDING NUMBER TO ANY POSITION ===");
+            Console.Write("What position would you like to add a number to? ");
+            int.TryParse(Console.ReadLine(), out int position2);
+            Console.Write("What Number would you like to add? ");
+            int.TryParse(Console.ReadLine(), out int num3);
+
+            AddToArrayPosition(num3, position2, array);
         }
 
         static void AddToArrayPosition(int num, int position, int[] array) // Add element at any position of an array
@@ -108,15 +99,26 @@ namespace Homework2
                 }
             }
 
-            Console.WriteLine("\nBefore: ");
-            PrintArray(array);
-            Console.WriteLine("\nAfter: ");
             PrintArray(NewArray);
         }
 
         #endregion
 
         #region RemoveFromArray
+
+        static void RemoveOutOfArrayOptions(int[] array)
+        {
+            Console.WriteLine("\n=== REMOVING NUMBER FROM THE START ===");
+            RemoveAtStart(array);
+
+            Console.WriteLine("\n=== REMOVING NUMBER FROM THE END ===");
+            RemoveAtEnd(array);
+
+            Console.WriteLine("\n=== REMOVING NUMBER FROM ANY POSITION ===");
+            Console.Write("\nWhat position would you like to remove? ");
+            int.TryParse(Console.ReadLine(), out int position);
+            RemoveAtAny(array, position);
+        }
 
         static void RemoveAtStart(int[] array) // Remove element at the start of an array
         {
@@ -140,9 +142,6 @@ namespace Homework2
                 }
             }
 
-            Console.WriteLine("\nBefore: ");
-            PrintArray(array);
-            Console.WriteLine("\nAfter: ");
             PrintArray(NewArray);
         }
 
@@ -153,8 +152,15 @@ namespace Homework2
         static string RegisteredUsername { get; set; }
         static string RegisteredPassword { get; set; }
 
+        static void AccountOptions()
+        {
+            SignUp();
+            Login();
+        }
+
         public static void SignUp() // sign up
         {
+            Console.WriteLine("\n=== SIGN UP ===");
             Console.Write("Username: ");
             RegisteredUsername = Console.ReadLine();
             Console.Write("Password: ");
@@ -163,6 +169,7 @@ namespace Homework2
 
         public static void Login() // log in
         {
+            Console.WriteLine("\n=== LOGIN ===");
             Console.Write("Username: ");
             string username = Console.ReadLine();
             Console.Write("Password: ");

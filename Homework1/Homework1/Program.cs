@@ -4,15 +4,19 @@ namespace Homework1
 {
     class Program
     {
-        static void CalculateBMI(double height, double weight)
+        static void Main(string[] args)
         {
-            height = height / 100; // converts from cm to m
-            double bmi = weight / (height * height);
-            Console.WriteLine($"Your BMI is {bmi}");
+            do
+            {
+                Get_Information();
+                Console.WriteLine("Would you like to do another person?");
+            } while (Console.ReadLine().ToLower() == "y");
         }
+
         static void Print_Information(string name, string surname, int age, double weight, double height)
         {
-            Console.WriteLine($"{name} {surname} is {age} years old, his weight is {weight}kg   and his height is {height}");
+            Console.WriteLine(
+                $"{name} {surname} is {age} years old, his weight is {weight}kg   and his height is {height}");
             CalculateBMI(height, weight);
         }
 
@@ -36,14 +40,11 @@ namespace Homework1
             Print_Information(name, surname, age, weight, height);
         }
 
-
-        static void Main(string[] args)
+        static void CalculateBMI(double height, double weight)
         {
-            do
-            {
-                Get_Information();
-                Console.WriteLine("Would you like to do another person?");
-            } while (Console.ReadLine().ToLower() == "y");
+            height = height / 100; // converts from cm to m
+            double bmi = weight / (height * height);
+            Console.WriteLine($"Your BMI is {bmi:F2}");
         }
     }
 }
