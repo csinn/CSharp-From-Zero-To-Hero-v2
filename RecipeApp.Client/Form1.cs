@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using RecipeApp.Core;
 
 namespace RecipeApp.Client
 {
@@ -25,14 +19,14 @@ namespace RecipeApp.Client
 
         private static string ReadContentsFromFileBrowser()
         {
-            // Prepare for browsing files
-            using (var dialog = new OpenFileDialog())
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                // Browse files... if file was confirmed
-                if (dialog.ShowDialog() == DialogResult.OK)
+                openFileDialog.Title = "Select Recipe";
+                openFileDialog.Filter = "Recipe files (*.recipe)|*.recipe"; // will only let extension be .recipe
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // Read the contents of that file
-                    var stream = dialog.OpenFile();
+                    var stream = openFileDialog.OpenFile();
                     using (var reader = new StreamReader(stream))
                     {
                         return reader.ReadToEnd();
@@ -40,15 +34,33 @@ namespace RecipeApp.Client
                 }
             }
 
-            // Happens if canceled.
             return string.Empty;
         }
 
         private void ConvertButton_Click(object sender, EventArgs e)
         {
-            var isConvertToSiUnits = SiUnitsRadioButton.Checked;
-            var input = SourceRichTextBox.Text;
-            ResultRichTextBox.Text = RecipeConverter.ConvertRecipe(input, isConvertToSiUnits);
+            string input = SourceRichTextBox.Text;
+            bool isConvertToSiUnit = SIUnitsRadioButton.Checked;
+            string converted;
+
+            try
+            {
+                bool isValidRecipe = RecipeConverter.ValidateRecipe(input, isConvertToSiUnit);
+
+                if (isValidRecipe)
+                {
+                    converted = RecipeConverter.CallConversion(input, isConvertToSiUnit);
+                    ResultRichTextBox.Text = converted;
+                }
+            }
+            catch (InvalidRecipeException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (NoNonRecipeFilesException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
