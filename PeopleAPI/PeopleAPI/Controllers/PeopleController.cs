@@ -54,6 +54,17 @@ namespace PeopleAPI.Controllers
             return Ok();
         }
 
+        [HttpGet("{id}/pets")]
+        public IActionResult GetPets(int id)
+        {
+            People person = FindPersonById(id);
+
+            if (person == null)
+                return NotFound($"Person with the id {id} was not found");
+
+            return Ok(person.pets);
+        }
+
         [HttpDelete("{PersonsId}")]
         public IActionResult DeletePerson(int PersonsId)
         {
