@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace ElectricBillApi.Exceptions
 {
     [Serializable]
-    internal class NoProviderFoundException : Exception
+    public class NoProviderFoundException : Exception
     {
         public NoProviderFoundException()
         {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ElectricBillApi.Models
 {
@@ -10,11 +8,19 @@ namespace ElectricBillApi.Models
         public double Y { get; set; }
         public double Z { get; set; }
 
-        public static double CalculateDistance(Location a, Location b)
+        public Location(double x, double y, double z)
         {
-            return Math.Sqrt(Math.Pow((a.X - b.X), 2) + Math.Pow((a.Y - b.Y), 2) + Math.Pow((a.Z - b.Z), 2));
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        public double CalculateDistanceTo(Location other)
+        {
+            return Math.Sqrt(
+                Math.Pow((X - other.X), 2) + 
+                Math.Pow((Y - other.Y), 2) + 
+                Math.Pow((Z - other.Z), 2));
         }
     }
-
-    
 }

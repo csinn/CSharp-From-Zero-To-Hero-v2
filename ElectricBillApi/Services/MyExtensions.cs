@@ -1,10 +1,4 @@
 ﻿using ElectricBillApi.Exceptions;
-using ElectricBillApi.Interfaces;
-using ElectricBillApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ElectricBillApi.Services
 {

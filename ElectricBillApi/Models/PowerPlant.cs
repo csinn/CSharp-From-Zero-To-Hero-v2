@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
-namespace ElectricBillApi.Models
+﻿namespace ElectricBillApi.Models
 {
     public class PowerPlant
     {
@@ -20,7 +16,7 @@ namespace ElectricBillApi.Models
 
             var other = obj as PowerPlant;
 
-            if (this.Name == other.Name)
+            if (this.Name.ToLower() == other.Name.ToLower())
             {
                 return true;
             }

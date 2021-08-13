@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace ElectricBillApi.Exceptions
 {
     [Serializable]
-    internal class AlreadySubscribedException : Exception
+    public class AlreadySubscribedException : Exception
     {
         public AlreadySubscribedException()
         {

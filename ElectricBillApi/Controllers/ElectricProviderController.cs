@@ -1,5 +1,4 @@
-﻿using ElectricBillApi.Exceptions;
-using ElectricBillApi.Interfaces;
+﻿using ElectricBillApi.Interfaces;
 using ElectricBillApi.Models;
 using ElectricBillApi.Services;
 using Microsoft.AspNetCore.Mvc;
