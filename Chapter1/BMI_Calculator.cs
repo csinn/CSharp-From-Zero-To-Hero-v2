@@ -4,6 +4,7 @@ using System.Text;
 
 namespace BootCamp.Chapter1
 {
+
     public static class BMICalculator
     {
         public static void BMI_Calculator()
