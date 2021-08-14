@@ -7,10 +7,6 @@ namespace Chapter1
     {
         static void Main(string[] args)
         {
-            // Call BMI_Calculator
-
-            //BMICalculator.BMI_Calculator(); 
-
             //int [] array = { 78, 55, 45, 98, 13 };
 
 

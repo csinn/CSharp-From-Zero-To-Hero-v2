@@ -98,7 +98,7 @@ namespace BootCamp.Chapter1
         {
            if (username.Equals("test", StringComparison.OrdinalIgnoreCase) && password.Equals("secret", StringComparison.Ordinal))
             {
-                Console.WriteLine("Loggged In");
+                Console.WriteLine("Loggged In ");
             }
         }
     }
