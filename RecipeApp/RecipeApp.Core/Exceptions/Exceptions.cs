@@ -1,5 +1,5 @@
-using RecipeApp.Core.Services.Logging;
 using System;
+using RecipeApp.Core.Services.Logging;
 
 namespace RecipeApp.Core
 {
@@ -18,5 +18,4 @@ namespace RecipeApp.Core
             ActiveLogger.iLogger.Log(reason, LoggingLevels.levels.Warn);
         }
     }
-
 }

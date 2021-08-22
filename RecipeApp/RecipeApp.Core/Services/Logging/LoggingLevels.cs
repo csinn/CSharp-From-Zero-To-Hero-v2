@@ -1,5 +1,4 @@
-﻿
-namespace RecipeApp.Core.Services.Logging
+﻿namespace RecipeApp.Core.Services.Logging
 {
     public class LoggingLevels
     {

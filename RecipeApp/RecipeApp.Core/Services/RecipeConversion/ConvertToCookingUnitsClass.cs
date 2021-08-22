@@ -2,7 +2,7 @@
 
 namespace RecipeApp.Core
 {
-    class ConvertToCookingUnitsClass : RecipeConverter
+    internal class ConvertToCookingUnitsClass : RecipeConverter
     {
         public static string ConvertToCookingUnits(string recipe)
         {
@@ -16,7 +16,7 @@ namespace RecipeApp.Core
             return string.Join(" ", words);
         }
 
-        static void ConvertToCookingUnit(int index, string[] words)
+        private static void ConvertToCookingUnit(int index, string[] words)
         {
             var ml = GetMl(index, words);
             if (ml == -1) return;
@@ -30,7 +30,7 @@ namespace RecipeApp.Core
             words[index] = unit;
         }
 
-        static int GetClosestCookingUnitIndex(double ml)
+        private static int GetClosestCookingUnitIndex(double ml)
         {
             var smallestDifference = double.MaxValue;
 

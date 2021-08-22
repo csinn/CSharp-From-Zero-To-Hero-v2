@@ -2,7 +2,7 @@
 
 namespace RecipeApp.Core.Services.Logging
 {
-    class ConsoleLogging : iLogger
+    public class ConsoleLogging : ILogger
     {
         public void Log(string message, LoggingLevels.levels level)
         {

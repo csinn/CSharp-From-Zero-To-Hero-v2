@@ -3,7 +3,7 @@ using System.IO;
 
 namespace RecipeApp.Core.Services.Logging
 {
-    class FileLogging : iLogger
+    internal class FileLogging : ILogger
     {
         private readonly string LogsFile = Directory.GetCurrentDirectory() + @".\logs.txt";
 

@@ -2,7 +2,7 @@
 
 namespace RecipeApp.Core
 {
-    class ConvertToSiUnitsClass : RecipeConverter
+    internal class ConvertToSiUnitsClass : RecipeConverter
     {
         public static string ConvertToSiUnits(string recipe)
         {
@@ -16,7 +16,7 @@ namespace RecipeApp.Core
             return string.Join(" ", words);
         }
 
-        static void StandardiseCookingUnit(int index, string[] words)
+        private static void StandardiseCookingUnit(int index, string[] words)
         {
             var cookingUnit = words[index];
             var multiplier = FindMultiplier(cookingUnit);

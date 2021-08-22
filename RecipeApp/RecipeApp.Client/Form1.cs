@@ -64,7 +64,7 @@ namespace RecipeApp.Client
             }
             catch(Exception ex)
             {
-                ActiveLogger.iLogger.Log(ex.Message, LoggingLevels.levels.Error);
+                 ActiveLogger.iLogger.Log(ex.Message, LoggingLevels.levels.Error);
             }
         }
     }
