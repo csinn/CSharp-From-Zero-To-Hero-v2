@@ -9,33 +9,9 @@ namespace Chapter1_Challenge3
     {
         const string file = @"user.txt";
 
-        public static string ReadFile()
+        public static void Login(string username, string password)
         {
-            String contents;
-            try
-            {
-                using (var stream = new StreamReader(file))
-                {
-                    contents = stream.ReadToEnd();
-                }
-            }
-            catch
-            {
-                throw new UsersNotFoundException();
-            }
-
-            return contents; 
-        }
-
-        
-
-        public static void Login()
-        {
-            Console.Write("May I have your username: ");
-            var username = Console.ReadLine();
-            Console.Write("May I have your password: ");
-            var password = Console.ReadLine(); 
-                        
+                    
             var content = ReadFile();
             var contentLines = content.Split("/n");
 
@@ -79,7 +55,7 @@ namespace Chapter1_Challenge3
 
             if (userdata.ContainsKey(username))
             {
-                throw new DuplicateUserCredentialsException(); 
+                throw new DuplicateUserCredentialsException(username); 
             }
             else
             {
@@ -88,6 +64,25 @@ namespace Chapter1_Challenge3
             }
 
         }
+
+        private static string ReadFile()
+        {
+            String contents;
+            try
+            {
+                using (var stream = new StreamReader(file))
+                {
+                    contents = stream.ReadToEnd();
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw new UsersNotFoundException();
+            }
+
+            return contents;
+        }
+
 
         private static void WriteData(string content, string username, string password)
         {
@@ -98,7 +93,7 @@ namespace Chapter1_Challenge3
                     stream.Write($"{content}{Environment.NewLine}{username} {password}");
                 }
             }
-            catch
+            catch (FileNotFoundException)
             {
                 throw new UsersNotFoundException();
             }

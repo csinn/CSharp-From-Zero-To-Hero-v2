@@ -21,7 +21,7 @@ namespace Chapter1_Challenge3
         {
            var valid = int.TryParse(Console.ReadLine(), out int choice);
 
-            if (!valid && choice < 1 || choice >3)
+            if (!valid && (choice < 1 || choice >3))
             {
                 Console.WriteLine("Choice must between the 1 and 3");
                 CustomMenu(); 
@@ -37,7 +37,7 @@ namespace Chapter1_Challenge3
             {
                 case 1: Authentication.Register();
                     break;
-                case 2: Authentication.Login();
+                case 2: Authentication.Login("roelof", "secret");
                     break; 
 
                 default: Stop();

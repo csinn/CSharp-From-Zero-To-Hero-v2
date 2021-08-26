@@ -6,9 +6,9 @@ namespace Chapter1_Challenge3
     [Serializable]
     internal class DuplicateUserCredentialsException : Exception
     {
-        public DuplicateUserCredentialsException()
+        public DuplicateUserCredentialsException(string username)
         {
-            Console.WriteLine("The user is already in the database"); 
+            Console.WriteLine($"The user with username: {username}  is already in the database"); 
         }
 
     }
