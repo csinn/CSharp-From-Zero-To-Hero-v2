@@ -2,9 +2,9 @@
 
 namespace RecipeApp.Core
 {
-    internal class ConvertToCookingUnitsClass : RecipeConverter
+    internal class ConvertToCookingUnits : RecipeConverter
     {
-        public static string ConvertToCookingUnits(string recipe)
+        public static string ConvertSiUnitsToCookingUnits(string recipe)
         {
             string[] words = recipe.Split(' ', '\n');
 

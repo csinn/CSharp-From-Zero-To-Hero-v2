@@ -7,7 +7,7 @@ namespace RecipeApp.Core
     {
         public InvalidRecipeException(string reason) : base(reason)
         {
-            ActiveLogger.iLogger.Log(reason, LoggingLevels.levels.Warn);
+            Instance.Logger.Log(reason, LoggingLevels.levels.Warn);
         }
     }
 
@@ -15,7 +15,7 @@ namespace RecipeApp.Core
     {
         public NoNonRecipeFilesException(string reason) : base(reason)
         {
-            ActiveLogger.iLogger.Log(reason, LoggingLevels.levels.Warn);
+            Instance.Logger.Log(reason, LoggingLevels.levels.Warn);
         }
     }
 }

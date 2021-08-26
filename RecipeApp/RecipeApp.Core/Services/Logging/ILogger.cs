@@ -2,6 +2,6 @@
 {
     public interface ILogger
     {
-        public abstract void Log(string message, LoggingLevels.levels level);
+        void Log(string message, LoggingLevels.levels level);
     }
 }

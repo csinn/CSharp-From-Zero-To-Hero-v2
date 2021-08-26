@@ -14,18 +14,18 @@ namespace RecipeApp.Core
         {
             string result;
 
-            ActiveLogger.iLogger.Log(isConvertToSiUnit ? "Converting Cooking Units To Si Units" : "Converting Si Units To Cooking Units", LoggingLevels.levels.Info);
+            Instance.Logger.Log(isConvertToSiUnit ? "Converting Cooking Units To Si Units" : "Converting Si Units To Cooking Units", LoggingLevels.levels.Info);
 
             if (isConvertToSiUnit)
             {
-                result = ConvertToSiUnitsClass.ConvertToSiUnits(input);
+                result = ConvertToSiUnits.ConvertCookingUnitsToSiUnits(input);
             }
             else
             {
-                result = ConvertToCookingUnitsClass.ConvertToCookingUnits(input);
+                result = ConvertToCookingUnits.ConvertSiUnitsToCookingUnits(input);
             }
 
-            ActiveLogger.iLogger.Log("Converting Finished", LoggingLevels.levels.Info);
+            Instance.Logger.Log("Converting Finished", LoggingLevels.levels.Info);
 
             return result;
         }
@@ -67,7 +67,8 @@ namespace RecipeApp.Core
 
         public static bool ValidateRecipe(string recipe, bool isConvertToSiUnit)
         {
-            ActiveLogger.iLogger.Log("Validating a recipe.", LoggingLevels.levels.Info);
+            Instance.Logger.Log("Validating a recipe.", LoggingLevels.levels.Info);
+
             if (string.IsNullOrEmpty(recipe)) // if is emptty
             {
                 throw new NoNonRecipeFilesException("Input is null or empty");
