@@ -4,8 +4,11 @@ using System.Text;
 
 namespace Chapter1_Challenge3
 {
-    public static class Menu
+    public class Menu
     {
+        const int LowestMenuChoice = 1;
+        const int  HighestMenuChoice = 3; 
+
         public static void ShowMenu()
         {
             Console.WriteLine("    Menu   ");
@@ -21,9 +24,9 @@ namespace Chapter1_Challenge3
         {
            var valid = int.TryParse(Console.ReadLine(), out int choice);
 
-            if (!valid && (choice < 1 || choice >3))
+            if (!valid || (choice < LowestMenuChoice || choice > HighestMenuChoice ))
             {
-                Console.WriteLine("Choice must between the 1 and 3");
+                Console.WriteLine($"Choice must between the {LowestMenuChoice} and {HighestMenuChoice}");
                 CustomMenu(); 
             }
 
@@ -37,7 +40,7 @@ namespace Chapter1_Challenge3
             {
                 case 1: Authentication.Register();
                     break;
-                case 2: Authentication.Login("roelof", "secret");
+                case 2: Authentication.Login("Roelof", "secret");
                     break; 
 
                 default: Stop();

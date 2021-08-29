@@ -6,7 +6,7 @@ namespace Chapter1_Challenge3
     {
         static void Main(string[] args)
         {
-            Menu.CustomMenu(); 
+            Menu.CustomMenu();  
         }
     }
 }

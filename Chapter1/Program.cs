@@ -9,7 +9,7 @@ namespace Chapter1
         {
             // Call BMI_Calculator
 
-            BMICalculator.BMI_Calculator(); 
+            Menu.ShowMenu(); 
                        
 
             Console.Read();
