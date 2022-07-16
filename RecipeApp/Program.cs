@@ -1,85 +1,137 @@
 ﻿using System;
-using System.Globalization;
 
-namespace RecipeApp
+namespace SecondLessonHomework
 {
-    class Program
+    internal class Program
     {
-        // Here is a list of standard cooking units:
-        // Cup	0.24 l
-        // Tablespoon  14.79 ml
-        // Teaspoon    4.93 ml
-
-        static double[] multipliers = {240, 14.79, 4.93};
-        static string[] units = {"cup", "tablespoon", "teaspoon"};
+        const string USERNAME = "usernaMe";
+        const string PASSWORD = "passworDas";
 
         static void Main(string[] args)
         {
-            string ingredients = "1.5 cups all-purpose flour. 3.5 teaspoons baking powder. " +
-                                 "1 teaspoon salt. 1 tablespoon white sugar. 1.25 cups milk. " +
-                                 "1 egg. 3 tablespoons butter, melted";
-
-            var standardised = StandardiseRecipe(ingredients);
-            Console.WriteLine(standardised);
+            PrintInformationAboutLogin();
+            PrintInformationAboutArrayMethods();
         }
 
-        static string StandardiseRecipe(string recipe)
+        static void PrintInformationAboutLogin()
         {
-            // Split(" ") - splits text by an empty space into words
-            // Words are stored into words array.
-            // array symbol is []
-            // string[] is an array of string
-            string[] words = recipe.Split(" ");
+            string usernameInput = PromptStringInput("What's your username?");
+            string passwordInput = PromptStringInput("What's your password?");
 
-            // a for loop has:
-            // a beginning (int index= 0);
-            // an end (index < words.Length)
-            // a change (index = index + 1)
-            // repeatable code
-            for (int index = 0; index < words.Length; index = index + 1)
+            bool usernameAndPasswordIsCorrect = IsUsernameAndPasswordCorrect(usernameInput, passwordInput);
+            if (usernameAndPasswordIsCorrect)
             {
-                StandardiseCookingUnit(index, words);
+                Console.WriteLine("Information was correct. User is now logged in!\n");
+            }
+            else
+            {
+                Console.WriteLine("Information was not correct. Rerun program to try again!\n");
+            }
+        }
+
+        static string PromptStringInput(string questionToAskUser)
+        {
+            string textToWrite = $"{questionToAskUser} ";
+            Console.Write(textToWrite);
+
+            string textInput = Console.ReadLine();
+            return textInput;
+        }
+
+        static bool IsUsernameAndPasswordCorrect(string username, string password)
+        {
+            return username.Equals(USERNAME, StringComparison.OrdinalIgnoreCase) && password.Equals(PASSWORD);
+        }
+
+        static void PrintInformationAboutArrayMethods()
+        {
+            int[] ints = { 1, 9, 6, 4, 3 };
+
+            ints = AddElementAtStartOfArray(ints, 12);
+            ints = AddElementAtEndOfArray(ints, 15);
+            ints = AddElementAtSelectedPositionOfArray(ints, 4, 10);
+            ints = RemoveElementAtStartOfArray(ints);
+            ints = RemoveElementAtEndOfArray(ints);
+            ints = RemoveElementAtSelectedPositionOfArray(ints, 2);
+
+            SortArray(ints);
+            foreach (var item in ints)
+            {
+                Console.Write(item + " ");
+            }
+        }
+
+        static int[] AddElementAtStartOfArray(int[] arrayToExpand, int elementToAdd)
+        {
+            int[] newArray = AddElementAtSelectedPositionOfArray(arrayToExpand, 0, elementToAdd);
+            return newArray;
+        }
+
+        static int[] AddElementAtEndOfArray(int[] arrayToExpand, int elementToAdd)
+        {
+            int[] newArray = AddElementAtSelectedPositionOfArray(arrayToExpand, arrayToExpand.Length, elementToAdd);
+            return newArray;
+        }
+
+        static int[] AddElementAtSelectedPositionOfArray(int[] arrayToExpand, int indexOfArrayToAdd, int elementToAdd)
+        {
+            if (indexOfArrayToAdd > arrayToExpand.Length + 1)
+            {
+                indexOfArrayToAdd = arrayToExpand.Length;
             }
 
-            // string.Join - combine parts of string into one string
-            return string.Join(" ", words);
+            int[] newArray = new int[arrayToExpand.Length + 1];
+
+            Array.Copy(arrayToExpand, 0, newArray, 0, indexOfArrayToAdd);
+            newArray[indexOfArrayToAdd] = elementToAdd;
+            Array.Copy(arrayToExpand, indexOfArrayToAdd, newArray, indexOfArrayToAdd + 1, arrayToExpand.Length - indexOfArrayToAdd);
+
+            return newArray;
         }
 
-        static void StandardiseCookingUnit(int index, string[] words)
+        static int[] RemoveElementAtStartOfArray(int[] arrayToDecrease)
         {
-            var cookingUnit = words[index];
-            // then find the equivalent ml multiplier for that amount
-            var multiplier = FindMultiplier(cookingUnit);
-            if (multiplier == -1) return;
-
-            // if it is, go back 1 word to find the amount
-            var amountText = words[index - 1];
-
-            // multiply the amount from multiplier
-            // Culture invariant allows parsing numbers which has a "." as a number decimal places separator.
-            var amountMl = double.Parse(amountText, CultureInfo.InvariantCulture) * multiplier;
-            // replace the old amount with the new amount
-            words[index] = "ml";
-            // replace the old unit with the new unit
-            words[index - 1] = amountMl.ToString();
+            int[] newArray = RemoveElementAtSelectedPositionOfArray(arrayToDecrease, 0);
+            return newArray;
         }
 
-        static double FindMultiplier(string cookingUnit)
+        static int[] RemoveElementAtEndOfArray(int[] arrayToDecrease)
         {
-            for (int index = 0; index < units.Length; index++)
+            int[] newArray = RemoveElementAtSelectedPositionOfArray(arrayToDecrease, arrayToDecrease.Length - 1);
+            return newArray;
+        }
+
+        static int[] RemoveElementAtSelectedPositionOfArray(int[] arrayToDecrease, int indexOfArrayToRemove)
+        {
+            if (indexOfArrayToRemove >= arrayToDecrease.Length)
             {
-                // || - or
-                // When you want to compare whether the strings are equal
-                // ignoring their casing
-                // use .Equals with StringComparison.OrdinalIgnoreCase.
-                if (units[index].Equals(cookingUnit, StringComparison.OrdinalIgnoreCase) || 
-                    (units[index]+"s").Equals(cookingUnit, StringComparison.OrdinalIgnoreCase))
+                return arrayToDecrease;
+            }
+
+            int[] newArray = new int[arrayToDecrease.Length - 1];
+
+            Array.Copy(arrayToDecrease, 0, newArray, 0, indexOfArrayToRemove);
+            Array.Copy(arrayToDecrease, indexOfArrayToRemove + 1, newArray, indexOfArrayToRemove, arrayToDecrease.Length - indexOfArrayToRemove - 1);
+
+            return newArray;
+        }
+
+        static void SortArray(int[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = 0; j < array.Length; j++)
                 {
-                    return multipliers[index];
+                    if (array[i] == array[j]) continue;
+
+                    if (array[i] < array[j])
+                    {
+                        int temporary = array[i];
+                        array[i] = array[j];
+                        array[j] = temporary;
+                    }
                 }
             }
-
-            return -1;
         }
     }
 }
