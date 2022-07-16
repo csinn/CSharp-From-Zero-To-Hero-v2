@@ -1,132 +1,180 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
+﻿using System.IO;
+using System;
+using System.Linq;
 
-namespace RecipeApp
+namespace ThirdLessonHomework
 {
-    class Program
+    internal class Program
     {
-        static double[] multipliers = {240, 14.79, 4.93};
-        static string[] units = {"cup", "tablespoon", "teaspoon"};
+        const string Login = "1";
+        const string Register = "2";
+        const string Exit = "3";
+        const string Path = "Users.txt";
 
         static void Main(string[] args)
         {
-            // 1. Read ingredients from a file (recipe.txt) +
-            // 2. Output converted recipe to a new file
-            // 3. Validate the file - if it's invalid (next to a cooking unit there is no number - throw error)
-            // 4. But handle that error by skipping the invalid (not a number)
-            // (Debugging)
-
-            // string marked with @ - is a verbatim string
-            // basically, it turns off special characters.
-            // Relative file path (from current directory where the app is running)
-            // . - current directory
-            // .. previous directory (directory above)
-            string ingredients = ReadAllText(@".\Recipe.txt");
-            var standardised = StandardiseRecipe(ingredients);
-            // backslash (\) is used to turn off special characters
-
-            WriteAllText(".\\Recipe-Converted.txt", standardised);
-            // Backslash at the start of a file name refers to root disk directory.
-            // Absolute path- full path to file.
+            RunApp();
         }
 
-        static string ReadAllText(string path)
+        static void RunApp()
         {
-            // 000101001010100101010
-            // 00010100 10101001 01001000
-            // 8 bits = 1 byte
-            // byte[] = stream
+            string usersDataInString = ReadUsersData(Path);
+            string[] usersDataSplit = SplitUsersData(usersDataInString);
+            string[] usernames = GetUsernamesFromSplitData(usersDataSplit);
+            string[] passwords = GetPasswordsFromSplitData(usersDataSplit);
 
-            // Using statement is the same as calling dispose at the end of it.
-            using (var stream = new StreamReader(path))
-            {
-                var contents = stream.ReadToEnd();
-                return contents;
-            }
+            string userAction = PromptUserChoice();
+            ExecuteUserChosenAction(userAction, usernames, passwords);
         }
 
-        static void WriteAllText(string path, string text)
+        static string ReadUsersData(string path)
         {
-            // Stream is an unamanaged resource.
-            // It means it needs to be cleaned up manually.
-            var stream = new StreamWriter(path);
-            stream.Write(text);
-            // We clean up manually by calling a dispose method
+            StreamReader stream = new StreamReader(path);
+            string contents = stream.ReadToEnd();
             stream.Dispose();
+
+            return contents;
         }
 
-
-
-        static string StandardiseRecipe(string recipe)
+        static string[] SplitUsersData(string usersData)
         {
-            string[] words = recipe.Split(' ', '\n');
+            string[] splitData = usersData.Split(' ', '\n');
+            return splitData;
+        }
 
-            for (int index = 0; index < words.Length; index = index + 1)
+        static string[] GetUsernamesFromSplitData(string[] splitData)
+        {
+            string[] usernames = new string[splitData.Length / 2];
+
+            for (int index = 0; index < splitData.Length; index++)
             {
-                try
+                if (index % 2 == 0)
                 {
-                    StandardiseCookingUnit(index, words);
-                }
-                catch (InvalidRecipeException ex)
-                {
-                    Console.WriteLine($"Skipping word, because: {ex.Message}");
-                }
-                finally
-                {
-                    // always happens regardless of success or fail
-                    Console.WriteLine("Always happens");
+                    usernames[index / 2] = splitData[index].Trim();
                 }
             }
 
-            return string.Join(" ", words);
+            return usernames;
         }
 
-        static void StandardiseCookingUnit(int index, string[] words)
+        static string[] GetPasswordsFromSplitData(string[] splitData)
         {
-            var cookingUnit = words[index];
-            var multiplier = FindMultiplier(cookingUnit);
-            if (multiplier == -1) return;
+            string[] passwords = new string[splitData.Length / 2];
 
-            var amountText = words[index - 1].Trim();
-
-            // TryParse always returns bool (whether the thing can be parsed)
-            // through out argument we get the actual parsed value.
-            // use out keyword when you want to get a second return value from a function.
-            // It is always used in tryParse pattern
-            var isNumber = double.TryParse(
-                amountText,
-                NumberStyles.AllowDecimalPoint,
-                CultureInfo.InvariantCulture,
-                out double amount);
-
-            if (!isNumber)
+            for (int index = 0; index < splitData.Length; index++)
             {
-                // Throw - raise an error
-                // Crash the application
-                // Don't allow to continue
-                // Unless it gets handled.
-                throw new InvalidRecipeException($"{amountText} is not a number.");
-            }
-
-            var amountMl = amount * multiplier;
-
-            words[index] = "ml";
-            words[index - 1] = amountMl.ToString();
-        }
-
-        static double FindMultiplier(string cookingUnit)
-        {
-            for (int index = 0; index < units.Length; index++)
-            {
-                if (units[index].Equals(cookingUnit, StringComparison.OrdinalIgnoreCase) || 
-                    (units[index]+"s").Equals(cookingUnit, StringComparison.OrdinalIgnoreCase))
+                if (index % 2 != 0)
                 {
-                    return multipliers[index];
+                    passwords[index / 2] = splitData[index].Trim();
                 }
             }
 
-            return -1;
+            return passwords;
+        }
+
+        static string PromptUserChoice()
+        {
+            Console.WriteLine("App has started!");
+            Console.WriteLine("To login enter - 1. To register enter - 2. To exit the app enter - 3.");
+
+            string userAction = Console.ReadLine();
+            return userAction;
+        }
+
+        static void ExecuteUserChosenAction(string userAction, string[] usernames, string[] passwords)
+        {
+            bool userChoseWrongAction = string.IsNullOrEmpty(userAction) || 
+                userAction != Login && 
+                userAction != Register && 
+                userAction != Exit;
+
+            if (userChoseWrongAction)
+                throw new Exception($"There was no action with your input: {userAction}. Try again!");
+
+            if (userAction == Login)
+            {
+                LoginToApp(usernames, passwords);
+            }
+            else if (userAction == Register)
+            {
+                RegisterToApp(usernames);
+            }
+            else if (userAction == Exit)
+            {
+                ExitApp();
+            }
+        }
+
+        static void LoginToApp(string[] usernames, string[] passwords)
+        {
+            string userInputtedUsername = PromptStringInput("What's your username?");
+            string userInputtedPassword = PromptStringInput("What's your password?");
+
+            bool userWasNotFound = !IsUserInDatabase(usernames, passwords, userInputtedUsername, userInputtedPassword);
+            if (userWasNotFound) throw new UsersNotFoundException("Username or password was wrong! Try again.");
+            else Console.WriteLine("Login was succesful. Welcome!");
+            
+        }
+
+        static void RegisterToApp(string[] usernames)
+        {
+            string selectedUsernameByUser = PromptStringInput("What username you want to use?");
+            string selecterdPasswordByUser = PromptStringInput("What password you want to use?");
+
+            bool userDuplicateFound = IsUserAlreadyInDatabase(usernames, selectedUsernameByUser);
+            var duplicateUserException = new DuplicateUserCredentialsException("Such username is already in database! Try another username.");
+            if (userDuplicateFound) throw duplicateUserException;
+
+            AppendUserToDatabase(Path, selectedUsernameByUser, selecterdPasswordByUser);
+            Console.WriteLine($"{selectedUsernameByUser} has been succesfully registered to the app!");
+        }
+
+        static void ExitApp()
+        {
+            Console.WriteLine("Program is being closed!");
+            Environment.Exit(0);
+        }
+
+        static string PromptStringInput(string question)
+        {
+            Console.Write($"{question} ");
+            string userInput = Console.ReadLine();
+            return userInput;
+        }
+
+        static bool IsUserInDatabase(string[] usernames, string[] passwords, string usernameByUser, string passwordByUser)
+        {
+            for (int i = 0; i < usernames.Length; i++)
+            {
+                bool informationIsCorrect = usernames[i].Equals(usernameByUser, StringComparison.OrdinalIgnoreCase) &&
+                    passwords[i].Equals(passwordByUser);
+
+                if (informationIsCorrect) return true;
+            }
+
+            return false;
+        }
+
+        static bool IsUserAlreadyInDatabase(string[] usernames, string usernameByUser)
+        {
+            for (int i = 0; i < usernames.Length; i++)
+            {
+                if (usernames[i].Equals(usernameByUser, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        static void AppendUserToDatabase(string path, string username, string password)
+        {
+            bool appendToFile = true;
+            using (StreamWriter stream = new StreamWriter(path, appendToFile))
+            {
+                stream.Write($"\n{username} {password}");
+            }
         }
     }
 }
